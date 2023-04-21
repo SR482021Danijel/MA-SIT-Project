@@ -2,4 +2,6 @@
     <string name="app_name">MA-SIT-PROJECT</string>
 
     <string name="btn_test">Test</string>
+    <string name="open_now">Otvori</string>
+    <string name="close_now">Close</string>
 </resources>
