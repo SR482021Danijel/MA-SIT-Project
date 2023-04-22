@@ -1,7 +1,18 @@
 <resources>
     <string name="app_name">MA-SIT-PROJECT</string>
 
-    <string name="btn_test">Test</string>
-    <string name="open_now">Otvori</string>
+    <string name="test">Test</string>
+    <string name="open_now">Open</string>
     <string name="close_now">Close</string>
+    <string name="play">Play</string>
+    <string name="rankList">Rank List</string>
+    <string name="friendsList">Friends List</string>
+    <string name="profile">Profile</string>
+    <string name="tokens">Tokens:</string>
+    <string name="stars">Stars:</string>
+    <string name="rank">Rank:</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="register">Register</string>
+    <string name="home">Home</string>
 </resources>

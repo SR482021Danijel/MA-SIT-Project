@@ -4,24 +4,31 @@
     tools:showIn = "navigation_view">
 
     <group android:checkableBehavior="single">
+
         <item android:id="@+id/a"
             android:icon="@drawable/baseline_home_24"
-            android:title="Home">
+            android:title="Home"
+            android:checked="true">
         </item>
+
         <item android:id="@+id/aa"
             android:icon="@drawable/baseline_person_24"
             android:title="Profile">
         </item>
+
         <item android:id="@+id/aaa"
             android:icon="@drawable/baseline_groups_2_24"
             android:title="Friends List"
             >
         </item>
+
         <item android:id="@+id/aaaa"
             android:icon="@drawable/baseline_format_list_numbered_24"
             android:title="Rank List">
         </item>
+
     </group>
+
     <item android:title="">
         <menu>
             <item android:id="@+id/aaaaa"

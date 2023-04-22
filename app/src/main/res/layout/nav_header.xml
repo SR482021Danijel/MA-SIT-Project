@@ -4,26 +4,31 @@
     android:layout_height="176dp"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:padding="16dp">
+
+<!--    android:theme="@style/ThemeOverlay.AppCompat.Dark"-->
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/baseline_account_circle_24"></ImageView>
+        android:src="@drawable/baseline_account_circle_24">
+
+    </ImageView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ime Prezime"
-        android:textColor="@color/black"
         android:textStyle="bold" />
+
+<!--    android:textColor="@color/black"-->
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="Nesto"
-        android:textColor="@color/black"
         android:textSize="14sp" />
+
+<!--    android:textColor="@color/black"-->
 </LinearLayout>

@@ -1,0 +1,18 @@
+<resources>
+
+    <style name="btnMainMenu" parent="Widget.Material3.Button.ElevatedButton">
+        <item name="android:textSize">30sp</item>
+        <item name="android:layout_marginHorizontal">20sp</item>
+        <item name="android:layout_marginVertical">15sp</item>
+
+    </style>
+
+    <style name="textViewMainMenu" parent="android:Widget.TextView">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="textViewAmountMainMenu" parent="android:Widget.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginRight">20sp</item>
+    </style>
+</resources>
