@@ -15,4 +15,18 @@
         <item name="android:textSize">20sp</item>
         <item name="android:layout_marginRight">20sp</item>
     </style>
+
+    <style name="textViewProfile" parent="android:Widget.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">10sp</item>
+    </style>
+
+    <style name="textViewAmountProfile" parent="android:Widget.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">10sp</item>
+    </style>
 </resources>
