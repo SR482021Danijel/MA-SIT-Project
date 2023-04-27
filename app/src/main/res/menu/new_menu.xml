@@ -21,14 +21,14 @@
         </item>
 
         <item
-            android:id="@+id/aaa"
+            android:id="@+id/friends_list"
             android:icon="@drawable/baseline_groups_2_24"
             android:title="Friends List">
 
         </item>
 
         <item
-            android:id="@+id/aaaa"
+            android:id="@+id/rank_list"
             android:icon="@drawable/baseline_format_list_numbered_24"
             android:title="Rank List">
 
@@ -40,7 +40,21 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/aaaaa"
+                    android:id="@+id/log_in"
+                    android:title="Login"
+                    android:icon="@drawable/baseline_attribution_24">
+
+                </item>
+
+                <item
+                    android:id="@+id/register"
+                    android:title="Register"
+                    android:icon="@drawable/baseline_add_circle_24">
+
+                </item>
+
+                <item
+                    android:id="@+id/log_out"
                     android:icon="@drawable/baseline_exit_to_app_24"
                     android:title="Logout" />
             </group>

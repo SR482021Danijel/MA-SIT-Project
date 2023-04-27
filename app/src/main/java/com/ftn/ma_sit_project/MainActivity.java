@@ -96,6 +96,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setReorderingAllowed(true)
                 .commit();
     }
-
-
 }
