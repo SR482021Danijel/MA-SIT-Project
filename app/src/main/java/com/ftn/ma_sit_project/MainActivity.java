@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.ftn.ma_sit_project.fragments.HomeFragment;
 import com.ftn.ma_sit_project.fragments.ProfileFragment;
+import com.ftn.ma_sit_project.fragments.RegistrationFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -57,9 +58,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_item_profile:
                 replaceFragment(new ProfileFragment());
                 break;
-//            case R.id.aaa:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  new NazivFragmenta()).commit();
-//                break;
+            case R.id.nav_item_register:
+                replaceFragment(new RegistrationFragment());
+                break;
 //            case R.id.aaaa:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  new NazivFragmenta()).commit();
 //                break;

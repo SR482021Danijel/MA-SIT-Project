@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:layout_marginHorizontal="10sp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Register"
+        android:textSize="40sp"
+        android:layout_marginTop="20sp">
+
+    </TextView>
+
+    <TextView
+        android:text="Email:"
+        style="@style/regText">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/reg_email"
+        android:inputType="textEmailAddress"
+        style="@style/regEdit">
+
+    </EditText>
+
+    <TextView
+        android:text="User name:"
+        style="@style/regText">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/reg_userName"
+        android:inputType="text"
+        style="@style/regEdit">
+
+    </EditText>
+
+    <TextView
+        android:text="Password:"
+        style="@style/regText">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/reg_password"
+        android:inputType="textPassword"
+        style="@style/regEdit">
+
+    </EditText>
+
+    <TextView
+        android:text="Password again:"
+        style="@style/regText">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/reg_password_again"
+        android:inputType="textPassword"
+        style="@style/regEdit">
+
+    </EditText>
+
+    <Button
+        android:id="@+id/btn_reg"
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:layout_gravity="center"
+        android:text="Register">
+
+    </Button>
+
+</LinearLayout>
