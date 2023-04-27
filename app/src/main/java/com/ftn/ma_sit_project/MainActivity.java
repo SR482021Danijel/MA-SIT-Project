@@ -8,20 +8,28 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ListView;
 
+import com.ftn.ma_sit_project.adapters.ProgramAdapter;
+import com.ftn.ma_sit_project.fragments.FrendListFragment;
 import com.ftn.ma_sit_project.fragments.HomeFragment;
-import com.ftn.ma_sit_project.fragments.LoginFragment;
 import com.ftn.ma_sit_project.fragments.ProfileFragment;
-import com.ftn.ma_sit_project.fragments.RegistrationFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+    ListView listView;
+    ProgramAdapter programAdapter;
+
+    String[] title = {"a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa"};
+    String[] description = {"b","bb","bbb","bbbb","bbbbb","bbbbbb","bbbbbbb","bbbbbbbb","bbbbbbbbb"};
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +67,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_item_profile:
                 replaceFragment(new ProfileFragment());
                 break;
-            case R.id.nav_item_register:
-                replaceFragment(new RegistrationFragment());
+            case R.id.friends_list:
+                replaceFragment(new FrendListFragment());
                 break;
 //            case R.id.aaaa:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  new NazivFragmenta()).commit();
@@ -68,9 +76,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            case R.id.aaaaa:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  new NazivFragmenta()).commit();
 //                break;
-            case R.id.nav_item_log_in:
-                replaceFragment(new LoginFragment());
-                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
