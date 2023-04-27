@@ -87,6 +87,54 @@
 
         </TableRow>
 
+        <TableRow>
+            <TextView
+                android:text="Statistika:"
+                android:textSize="30dp"/>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="20dp">
+            <TextView
+                android:text="Bodovi:"
+                android:textSize="20dp"
+                android:gravity="center"/>
+
+            <TextView android:text="10"
+                android:textSize="20dp"/>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="15dp">
+            <TextView
+                android:text="Partije:"
+                android:textSize="20dp"
+                android:gravity="center"/>
+
+            <TextView android:text="10"
+                android:textSize="20dp"/>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="15dp">
+            <TextView
+                android:text="Pobedjene:"
+                android:textSize="20dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:text="10"
+                android:textSize="20dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="15dp">
+            <TextView
+                android:text="Izgublene:"
+                android:textSize="20dp"
+                android:gravity="center"/>
+
+            <TextView android:text="10"
+                android:textSize="20dp"/>
+        </TableRow>
 
     </TableLayout>
 
