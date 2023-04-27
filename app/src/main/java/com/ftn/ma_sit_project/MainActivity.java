@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.ftn.ma_sit_project.fragments.HomeFragment;
+import com.ftn.ma_sit_project.fragments.LoginFragment;
 import com.ftn.ma_sit_project.fragments.ProfileFragment;
 import com.ftn.ma_sit_project.fragments.RegistrationFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -67,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            case R.id.aaaaa:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  new NazivFragmenta()).commit();
 //                break;
+            case R.id.nav_item_log_in:
+                replaceFragment(new LoginFragment());
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
