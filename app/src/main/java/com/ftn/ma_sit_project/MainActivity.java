@@ -5,30 +5,32 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
-import android.content.ClipData;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Button;
 
+import com.ftn.ma_sit_project.fragments.HomeFragment;
+import com.ftn.ma_sit_project.fragments.ProfileFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar1);
+        Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_now, R.string.close_now);
@@ -36,20 +38,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         if(savedInstanceState == null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.a);
-        }
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new HomeFragment())
+                    .setReorderingAllowed(true)
+//                   .addToBackStack("home")
+                    .commit();
 
+            navigationView.setCheckedItem(R.id.nav_item_home);
+        }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.a:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  new HomeFragment()).commit();
+            case R.id.nav_item_home:
+                replaceFragment(new HomeFragment());
                 break;
-            case R.id.aa:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  new ProfileFragment()).commit();
+            case R.id.nav_item_profile:
+                replaceFragment(new ProfileFragment());
                 break;
 //            case R.id.aaa:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  new NazivFragmenta()).commit();
@@ -64,5 +70,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else if (!(currentFragment instanceof HomeFragment)){
+            replaceFragment(new HomeFragment());
+            navigationView.setCheckedItem(R.id.nav_item_home);
+        }
+        else {
+            super.onBackPressed();
+        }
+
+    }
+
+    private void replaceFragment(Fragment fragment){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .setReorderingAllowed(true)
+                .commit();
+    }
+
 
 }

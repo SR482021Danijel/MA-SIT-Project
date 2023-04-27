@@ -1,39 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn = "navigation_view">
+    tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
 
-        <item android:id="@+id/a"
+        <item
+            android:id="@+id/nav_item_home"
+            android:checked="true"
             android:icon="@drawable/baseline_home_24"
-            android:title="Home"
-            android:checked="true">
+            android:title="Home">
+
         </item>
 
-        <item android:id="@+id/aa"
+        <item
+            android:id="@+id/nav_item_profile"
             android:icon="@drawable/baseline_person_24"
             android:title="Profile">
+
         </item>
 
-        <item android:id="@+id/aaa"
+        <item
+            android:id="@+id/aaa"
             android:icon="@drawable/baseline_groups_2_24"
-            android:title="Friends List"
-            >
+            android:title="Friends List">
+
         </item>
 
-        <item android:id="@+id/aaaa"
+        <item
+            android:id="@+id/aaaa"
             android:icon="@drawable/baseline_format_list_numbered_24"
             android:title="Rank List">
+
         </item>
 
     </group>
 
     <item android:title="">
         <menu>
-            <item android:id="@+id/aaaaa"
-                android:icon="@drawable/baseline_exit_to_app_24"
-                android:title="Logout"/>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/aaaaa"
+                    android:icon="@drawable/baseline_exit_to_app_24"
+                    android:title="Logout" />
+            </group>
         </menu>
     </item>
 </menu>
