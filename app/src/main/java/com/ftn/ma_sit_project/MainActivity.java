@@ -11,12 +11,15 @@ import androidx.fragment.app.Fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.ftn.ma_sit_project.adapters.ProgramAdapter;
 import com.ftn.ma_sit_project.fragments.FrendListFragment;
 import com.ftn.ma_sit_project.fragments.HomeFragment;
 import com.ftn.ma_sit_project.fragments.ProfileFragment;
+import com.ftn.ma_sit_project.fragments.WhoKnowsFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_item_profile:
                 replaceFragment(new ProfileFragment());
                 break;
-            case R.id.friends_list:
+            case R.id.nav_item_friends_list:
                 replaceFragment(new FrendListFragment());
                 break;
 //            case R.id.aaaa:

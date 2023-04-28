@@ -29,9 +29,11 @@ public class ProgramAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View singleitem = convertView;
 
-        if(singleitem == null)
+        if(singleitem == null){
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             singleitem = layoutInflater.inflate(R.layout.single_item, null);
+        }
+
 
         TextView title = singleitem.findViewById(R.id.titleId);
         TextView description = singleitem.findViewById(R.id.descriptionId);
