@@ -10,11 +10,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.ftn.ma_sit_project.R;
 
-public class SkockoFragment extends Fragment {
+public class MyNumberFragment extends Fragment {
 
     View view;
 
@@ -22,19 +21,9 @@ public class SkockoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_skocko, container, false);
+        view = inflater.inflate(R.layout.fragment_my_number, container, false);
 
-        Button btnNext = view.findViewById(R.id.btn_skocko);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getParentFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new MyNumberFragment())
-                        .setReorderingAllowed(true)
-                        .commit();
-            }
-        });
+
 
         return view;
     }

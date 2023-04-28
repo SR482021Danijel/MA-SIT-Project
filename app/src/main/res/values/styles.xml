@@ -54,4 +54,9 @@
         <item name="android:background">@android:color/holo_blue_light</item>
     </style>
 
+    <style name="number_game_numbers">
+        <item name="android:layout_marginHorizontal">5sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

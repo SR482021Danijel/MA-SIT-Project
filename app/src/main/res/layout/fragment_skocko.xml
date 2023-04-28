@@ -4,19 +4,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20sp"
-        android:text="Round 1"
-        android:gravity="center"
-        android:textSize="20sp">
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginVertical="20sp"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Round 1"-->
+<!--        android:textSize="20sp">-->
 
-    </TextView>
+<!--    </TextView>-->
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100sp">
 
         <TableRow android:gravity="center">
 
@@ -39,26 +40,22 @@
             <GridLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rowCount="2"
-                android:columnCount="2">
+                android:columnCount="2"
+                android:rowCount="2">
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
+
+                </ImageView>
+
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
@@ -87,26 +84,22 @@
             <GridLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rowCount="2"
-                android:columnCount="2">
+                android:columnCount="2"
+                android:rowCount="2">
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
+
+                </ImageView>
+
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
@@ -135,26 +128,22 @@
             <GridLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rowCount="2"
-                android:columnCount="2">
+                android:columnCount="2"
+                android:rowCount="2">
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
+
+                </ImageView>
+
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
@@ -183,26 +172,22 @@
             <GridLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rowCount="2"
-                android:columnCount="2">
+                android:columnCount="2"
+                android:rowCount="2">
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
+
+                </ImageView>
+
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
@@ -231,26 +216,22 @@
             <GridLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rowCount="2"
-                android:columnCount="2">
+                android:columnCount="2"
+                android:rowCount="2">
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
+
+                </ImageView>
+
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
@@ -279,26 +260,22 @@
             <GridLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rowCount="2"
-                android:columnCount="2">
+                android:columnCount="2"
+                android:rowCount="2">
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
-                <ImageView
-                    android:src="@drawable/outline_circle_24">
+                <ImageView android:src="@drawable/outline_circle_24">
+
+                </ImageView>
+
+                <ImageView android:src="@drawable/outline_circle_24">
 
                 </ImageView>
 
@@ -306,35 +283,42 @@
 
         </TableRow>
 
-        <TableRow android:gravity="center"
-            android:layout_marginTop="25sp">
+        <TableRow
+            android:layout_marginTop="25sp"
+            android:gravity="center">
 
-            <ImageView style="@style/image_placeholder"
+            <ImageView
+                style="@style/image_placeholder"
                 android:src="@drawable/jump_transparent">
 
             </ImageView>
 
-            <ImageView style="@style/image_placeholder"
+            <ImageView
+                style="@style/image_placeholder"
                 android:src="@drawable/baseline_rectangle_24">
 
             </ImageView>
 
-            <ImageView style="@style/image_placeholder"
+            <ImageView
+                style="@style/image_placeholder"
                 android:src="@drawable/baseline_circle_24">
 
             </ImageView>
 
-            <ImageView style="@style/image_placeholder"
+            <ImageView
+                style="@style/image_placeholder"
                 android:src="@drawable/baseline_heart_broken_24">
 
             </ImageView>
 
-            <ImageView style="@style/image_placeholder"
+            <ImageView
+                style="@style/image_placeholder"
                 android:src="@drawable/baseline_change_history_24">
 
             </ImageView>
 
-            <ImageView style="@style/image_placeholder"
+            <ImageView
+                style="@style/image_placeholder"
                 android:src="@drawable/baseline_star_24">
 
             </ImageView>
@@ -344,13 +328,13 @@
     </TableLayout>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/btn_skocko"
         style="@style/btnAnswers"
-        android:text="Next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20sp">
+        android:layout_marginTop="20sp"
+        android:text="Next">
 
     </Button>
 
