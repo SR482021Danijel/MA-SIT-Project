@@ -28,6 +28,7 @@
             android:gravity="center">
 
             <Button
+                android:id="@+id/btn_who_knows"
                 android:text="Answer#1"
                 style="@style/btnAnswers">
 

@@ -45,8 +45,13 @@
     <style name="btnAnswers" parent="Widget.Material3.Button.ElevatedButton">
         <item name="android:textSize">18sp</item>
         <item name="android:layout_marginHorizontal">12sp</item>
+    </style>
 
-
+    <style name="image_placeholder">
+        <item name="android:layout_height">130px</item>
+        <item name="android:layout_width">130px</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@android:color/holo_blue_light</item>
     </style>
 
 </resources>
