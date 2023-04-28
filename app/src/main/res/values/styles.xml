@@ -42,4 +42,11 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+    <style name="btnAnswers" parent="Widget.Material3.Button.ElevatedButton">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginHorizontal">12sp</item>
+
+
+    </style>
+
 </resources>

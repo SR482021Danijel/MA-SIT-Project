@@ -18,7 +18,10 @@ import android.widget.ListView;
 import com.ftn.ma_sit_project.adapters.ProgramAdapter;
 import com.ftn.ma_sit_project.fragments.FrendListFragment;
 import com.ftn.ma_sit_project.fragments.HomeFragment;
+import com.ftn.ma_sit_project.fragments.LoginFragment;
 import com.ftn.ma_sit_project.fragments.ProfileFragment;
+import com.ftn.ma_sit_project.fragments.RankListFragment;
+import com.ftn.ma_sit_project.fragments.RegistrationFragment;
 import com.ftn.ma_sit_project.fragments.WhoKnowsFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -73,12 +76,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_item_friends_list:
                 replaceFragment(new FrendListFragment());
                 break;
-//            case R.id.aaaa:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  new NazivFragmenta()).commit();
-//                break;
-//            case R.id.aaaaa:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  new NazivFragmenta()).commit();
-//                break;
+            case R.id.nav_item_rank_list:
+                replaceFragment(new RankListFragment());
+                break;
+            case R.id.nav_item_log_in:
+                replaceFragment(new LoginFragment());
+                break;
+            case R.id.nav_item_register:
+                replaceFragment(new RegistrationFragment());
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
