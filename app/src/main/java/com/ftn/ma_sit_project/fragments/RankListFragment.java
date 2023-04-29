@@ -17,14 +17,14 @@ public class RankListFragment extends Fragment {
     View view;
     ListView listView;
     ProgramAdapter arrayAdapter;
-    String[] title = {"a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa"};
-    String[] description = {"b","bb","bbb","bbbb","bbbbb","bbbbbb","bbbbbbb","bbbbbbbb","bbbbbbbbb"};
+    String[] title = {"QQQQ","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa"};
+    String[] description = {"WWW","bb","bbb","bbbb","bbbbb","bbbbbb","bbbbbbb","bbbbbbbb","bbbbbbbbb"};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_rank_list, container, false);
         listView = view.findViewById(R.id.rank_list_view);
-        arrayAdapter = new ProgramAdapter(getActivity(), title, description);
+        arrayAdapter = new ProgramAdapter(getActivity(), title, description, true);
         listView.setAdapter(arrayAdapter);
         return view;
     }

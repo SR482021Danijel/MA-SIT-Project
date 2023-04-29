@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.AssociationsFragment">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/a1_field"
+                style="@style/txtViewAssociation"
+                android:text="A1" />
+
+            <TextView
+                android:id="@+id/c1_field"
+                style="@style/txtViewAssociation"
+                android:text="C1" />
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/a2_field"
+                style="@style/txtViewAssociation"
+                android:text="A2" />
+
+            <TextView
+                android:id="@+id/c2_field"
+                style="@style/txtViewAssociation"
+                android:text="C2" />
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/a3_field"
+                style="@style/txtViewAssociation"
+                android:text="A3" />
+
+            <TextView
+                android:id="@+id/c3_field"
+                style="@style/txtViewAssociation"
+                android:text="C3" />
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/a4_field"
+                style="@style/txtViewAssociation"
+                android:text="A4" />
+
+            <TextView
+                android:id="@+id/c4_field"
+                style="@style/txtViewAssociation"
+                android:text="C4" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/a_field"
+                style="@style/txtViewAssociation"
+                android:text="A" />
+
+            <TextView
+                android:id="@+id/c_field"
+                style="@style/txtViewAssociation"
+                android:text="C" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/final_field"
+                style="@style/txtViewAssociation"
+                android:text="E" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/b_field"
+                style="@style/txtViewAssociation"
+                android:text="B" />
+
+            <TextView
+                android:id="@+id/d_field"
+                style="@style/txtViewAssociation"
+                android:text="D" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/b4_field"
+                style="@style/txtViewAssociation"
+                android:text="B4" />
+
+            <TextView
+                android:id="@+id/d4_field"
+                style="@style/txtViewAssociation"
+                android:text="D4" />
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/b3_field"
+                style="@style/txtViewAssociation"
+                android:text="B3" />
+
+            <TextView
+                android:id="@+id/d3_field"
+                style="@style/txtViewAssociation"
+                android:text="D3" />
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/b2_field"
+                style="@style/txtViewAssociation"
+                android:text="B2" />
+
+            <TextView
+                android:id="@+id/d2_field"
+                style="@style/txtViewAssociation"
+                android:text="D2" />
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/b1_field"
+                style="@style/txtViewAssociation"
+                android:text="B1" />
+
+            <TextView
+                android:id="@+id/d1_field"
+                style="@style/txtViewAssociation"
+                android:text="D1" />
+        </TableRow>
+
+    </TableLayout>
+
+</FrameLayout>
