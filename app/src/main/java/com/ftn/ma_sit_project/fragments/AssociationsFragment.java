@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -34,7 +35,13 @@ public class AssociationsFragment extends Fragment {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText((getActivity()), "Potvrdi", Toast.LENGTH_SHORT).show();
+//                Toast.makeText((getActivity()), "Potvrdi", Toast.LENGTH_SHORT).show();
+                getParentFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new SkockoFragment())
+                        .setReorderingAllowed(true)
+                        .commit();
+
                 dialog.dismiss();
             }
         });
@@ -86,11 +93,15 @@ public class AssociationsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 }

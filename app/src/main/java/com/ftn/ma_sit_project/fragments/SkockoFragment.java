@@ -30,7 +30,7 @@ public class SkockoFragment extends Fragment {
             public void onClick(View view) {
                 getParentFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new MyNumberFragment())
+                        .replace(R.id.fragment_container, new StepByStepFragment())
                         .setReorderingAllowed(true)
                         .commit();
             }

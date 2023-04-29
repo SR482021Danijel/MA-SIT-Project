@@ -32,7 +32,7 @@ public class WhoKnowsFragment extends Fragment {
             public void onClick(View view) {
                 getParentFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new SkockoFragment())
+                        .replace(R.id.fragment_container, new HyphensFragment())
                         .setReorderingAllowed(true)
                         .commit();
             }
