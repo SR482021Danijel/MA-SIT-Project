@@ -17,6 +17,8 @@
 
     <style name="txtViewAssociation" parent="android:Widget.TextView">
         <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">40sp</item>
+        <item name="android:layout_width">50sp</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@color/purple_500</item>
         <item name="android:textSize">30dp</item>
@@ -26,21 +28,26 @@
     </style>
 
     <style name="txtViewAssociation1" parent="android:Widget.TextView">
+        <item name="android:layout_weight">1</item>
+        <item name="android:radius">30dp</item>
+        <item name="android:layout_height">40sp</item>
+        <item name="android:layout_width">200sp</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@color/purple_500</item>
-        <item name="android:textSize">25dp</item>
+        <item name="android:textSize">35dp</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
     </style>
 
     <style name="txtViewAssociation2" parent="android:Widget.TextView">
+        <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@color/purple_500</item>
-        <item name="android:textSize">25dp</item>
+        <item name="android:textSize">30sp</item>
         <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginLeft">50dp</item>
-        <item name="android:layout_marginRight">75dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
     </style>
     <style name="textViewMainMenu" parent="android:Widget.TextView">
         <item name="android:textSize">20sp</item>

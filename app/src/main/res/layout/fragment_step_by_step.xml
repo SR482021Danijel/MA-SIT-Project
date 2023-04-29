@@ -8,90 +8,86 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="60dp">
 
         <TableRow>
 
             <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="9" />
+                android:text="@string/test_long"
+                android:id="@+id/step_by_stepTextView1"
+                style="@style/txtViewAssociation1" />
 
-            <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="1" />
         </TableRow>
 
         <TableRow>
 
             <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="9" />
+                android:id="@+id/step_by_stepTextView2"
+                style="@style/txtViewAssociation1"/>
 
-            <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="1" />
         </TableRow>
 
         <TableRow>
 
             <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="9" />
+                android:id="@+id/step_by_stepTextView3"
+                style="@style/txtViewAssociation1"/>
 
-            <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="1" />
         </TableRow>
 
         <TableRow>
 
             <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="9" />
+                android:id="@+id/step_by_stepTextView4"
+                style="@style/txtViewAssociation1"/>
 
-            <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="1" />
         </TableRow>
 
         <TableRow>
 
             <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="9" />
+                android:id="@+id/step_by_stepTextView5"
+                style="@style/txtViewAssociation1"/>
 
-            <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="1" />
         </TableRow>
 
         <TableRow>
 
             <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="9" />
+                android:id="@+id/step_by_stepTextView6"
+                style="@style/txtViewAssociation1"/>
 
-            <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="1" />
         </TableRow>
 
         <TableRow>
 
             <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="9" />
+                android:id="@+id/step_by_stepTextView7"
+                style="@style/txtViewAssociation1"/>
 
-            <TextView
-                style="@style/txtViewAssociation1"
-                android:layout_weight="1" />
         </TableRow>
 
-        <TableRow>
+        <TableRow android:gravity="center">
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <TextView
-                style="@style/txtViewAssociation2"
-                android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/step_by_stepTextView_points_left"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
+                    style="@style/txtViewAssociation2" />
+                <TextView
+                    android:id="@+id/step_by_stepTextView_answer"
+                    android:layout_width="300sp"
+                    android:layout_height="40sp"
+                    style="@style/txtViewAssociation2" />
+                <TextView
+                    android:id="@+id/step_by_stepTextView_points_right"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
+                    style="@style/txtViewAssociation2" />
+            </LinearLayout>
         </TableRow>
     </TableLayout>
 
