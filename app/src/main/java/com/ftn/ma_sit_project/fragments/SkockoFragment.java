@@ -8,16 +8,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.ftn.ma_sit_project.R;
+import com.ftn.ma_sit_project.commonUtils.ShowHideElements;
+
+import java.util.Locale;
 
 public class SkockoFragment extends Fragment {
 
     View view;
+
+    CountDownTimer countDownTimer;
+
+    AppCompatActivity activity;
 
 
     @Override
@@ -46,24 +55,43 @@ public class SkockoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        activity = (AppCompatActivity) getActivity();
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        TextView scoreTimer = activity.findViewById(R.id.score_timer);
 
-        ((AppCompatActivity) getActivity()).findViewById(R.id.score_board).setVisibility(View.VISIBLE);
+        ShowHideElements.showScoreBoard(activity);
 
-        DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        countDownTimer = new CountDownTimer(31000, 1000) {
+            @Override
+            public void onTick(long l) {
+                Long min = ((l / 1000) % 3600) / 60;
+                Long sec = (l / 1000);
+                String format = String.format(Locale.getDefault(), "%02d:%02d", min, sec);
+                scoreTimer.setText(format);
+            }
+
+            @Override
+            public void onFinish() {
+                scoreTimer.setText("00:00");
+            }
+        }.start();
+
+        activity.getSupportActionBar().hide();
+
+        ShowHideElements.lockDrawerLayout(activity);
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        countDownTimer.cancel();
 
-        getActivity().findViewById(R.id.score_board).setVisibility(View.GONE);
+        ShowHideElements.hideScoreBoard(activity);
 
-        DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        activity.getSupportActionBar().show();
+
+        ShowHideElements.unlockDrawerLayout(activity);
     }
 }

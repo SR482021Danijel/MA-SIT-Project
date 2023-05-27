@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new HomeFragment())
                     .setReorderingAllowed(true)
-//                   .addToBackStack("home")
                     .commit();
 
             navigationView.setCheckedItem(R.id.nav_item_home);

@@ -19,8 +19,8 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.fragment_home, container, false);
 
-        Button btnplay = view.findViewById(R.id.play);
-        btnplay.setOnClickListener(new View.OnClickListener() {
+        Button btnPlay = view.findViewById(R.id.play);
+        btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getParentFragmentManager()

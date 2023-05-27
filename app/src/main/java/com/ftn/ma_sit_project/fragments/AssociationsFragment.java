@@ -8,18 +8,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ftn.ma_sit_project.R;
+import com.ftn.ma_sit_project.commonUtils.ShowHideElements;
+
+import java.util.Locale;
 
 public class AssociationsFragment extends Fragment {
     View view;
     Dialog dialog;
+
+    CountDownTimer countDownTimer;
+
+    AppCompatActivity activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,7 +36,6 @@ public class AssociationsFragment extends Fragment {
         dialog.setContentView(R.layout.pop_up_dialog);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(false);
-
 
         Button ok = dialog.findViewById(R.id.ok_dialog);
         Button cancel = dialog.findViewById(R.id.cancel_dialog);
@@ -94,22 +100,42 @@ public class AssociationsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        activity = (AppCompatActivity) getActivity();
 
-        ((AppCompatActivity) getActivity()).findViewById(R.id.score_board).setVisibility(View.VISIBLE);
+        TextView scoreTimer = activity.findViewById(R.id.score_timer);
 
-        DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        ShowHideElements.showScoreBoard(activity);
+
+        countDownTimer = new CountDownTimer(31000, 1000) {
+            @Override
+            public void onTick(long l) {
+                Long min = ((l / 1000) % 3600) / 60;
+                Long sec = (l / 1000);
+                String format = String.format(Locale.getDefault(), "%02d:%02d", min, sec);
+                scoreTimer.setText(format);
+            }
+
+            @Override
+            public void onFinish() {
+                scoreTimer.setText("00:00");
+            }
+        }.start();
+
+        activity.getSupportActionBar().hide();
+
+        ShowHideElements.lockDrawerLayout(activity);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
-        getActivity().findViewById(R.id.score_board).setVisibility(View.GONE);
+        countDownTimer.cancel();
 
-        DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        ShowHideElements.hideScoreBoard(activity);
+
+        activity.getSupportActionBar().show();
+
+        ShowHideElements.unlockDrawerLayout(activity);
     }
 }

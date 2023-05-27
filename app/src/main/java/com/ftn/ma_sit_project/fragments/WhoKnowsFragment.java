@@ -1,5 +1,6 @@
 package com.ftn.ma_sit_project.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -8,12 +9,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.ftn.ma_sit_project.R;
+
+import java.util.Locale;
+import java.util.Objects;
 
 
 public class WhoKnowsFragment extends Fragment {
@@ -46,6 +53,23 @@ public class WhoKnowsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        TextView scoreTimer = getActivity().findViewById(R.id.score_timer);
+
+        new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long l) {
+                Long min = ((l / 1000) % 3600) / 60;
+                Long sec = (l / 1000);
+                String format = String.format(Locale.getDefault(), "%02d:%02d", min, sec);
+                scoreTimer.setText(format);
+            }
+
+            @Override
+            public void onFinish() {
+                scoreTimer.setText("00:00");
+            }
+        }.start();
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
