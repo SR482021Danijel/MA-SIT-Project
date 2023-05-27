@@ -31,6 +31,85 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <RelativeLayout
+            android:id="@+id/score_board"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/player_1_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_person_24"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/player_1_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User name"
+                android:layout_toRightOf="@id/player_1_pic"
+                android:layout_alignTop="@+id/player_1_pic"
+                android:layout_marginLeft="10dp">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:layout_below="@id/player_1_user_name"
+                android:layout_alignRight="@id/player_1_user_name"
+                android:layout_marginTop="5dp">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:layout_centerInParent="true">
+
+            </TextView>
+
+            <ImageView
+                android:id="@+id/player_2_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_person_24"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/player_2_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User name"
+                android:layout_toLeftOf="@id/player_2_pic"
+                android:layout_alignTop="@+id/player_2_pic"
+                android:layout_marginRight="10dp">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:layout_below="@id/player_2_user_name"
+                android:layout_alignLeft="@id/player_2_user_name"
+                android:layout_marginTop="5dp">
+
+            </TextView>
+
+        </RelativeLayout>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"

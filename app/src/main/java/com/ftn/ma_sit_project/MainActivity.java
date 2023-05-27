@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.ftn.ma_sit_project.adapters.ProgramAdapter;
 import com.ftn.ma_sit_project.fragments.FrendListFragment;
@@ -25,15 +26,16 @@ import com.ftn.ma_sit_project.fragments.RegistrationFragment;
 import com.ftn.ma_sit_project.fragments.WhoKnowsFragment;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ListView listView;
     ProgramAdapter programAdapter;
 
-    String[] title = {"a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa"};
-    String[] description = {"b","bb","bbb","bbbb","bbbbb","bbbbbb","bbbbbbb","bbbbbbbb","bbbbbbbbb"};
+    String[] title = {"a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa", "aaaaaaaaa"};
+    String[] description = {"b", "bb", "bbb", "bbbb", "bbbbb", "bbbbbb", "bbbbbbb", "bbbbbbbb", "bbbbbbbbb"};
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new HomeFragment())
                     .setReorderingAllowed(true)
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_item_home:
                 replaceFragment(new HomeFragment());
                 break;
@@ -95,20 +98,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else if (!(currentFragment instanceof HomeFragment)){
+        } else if (!(currentFragment instanceof HomeFragment)) {
             replaceFragment(new HomeFragment());
             navigationView.setCheckedItem(R.id.nav_item_home);
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
 
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)

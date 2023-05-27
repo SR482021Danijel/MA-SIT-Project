@@ -25,7 +25,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 getParentFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new WhoKnowsFragment())
+                        .replace(R.id.fragment_container, new AssociationsFragment())
                         .setReorderingAllowed(true)
                         .commit();
             }

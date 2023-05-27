@@ -1,5 +1,6 @@
 package com.ftn.ma_sit_project.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -13,12 +14,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ftn.ma_sit_project.R;
-import com.google.android.material.navigation.NavigationView;
 
 
 public class WhoKnowsFragment extends Fragment {
 
     View view;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,7 +47,10 @@ public class WhoKnowsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+
+        ((AppCompatActivity) getActivity()).findViewById(R.id.score_board).setVisibility(View.VISIBLE);
 
         DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -55,7 +60,9 @@ public class WhoKnowsFragment extends Fragment {
     public void onStop() {
         super.onStop();
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+
+        getActivity().findViewById(R.id.score_board).setVisibility(View.GONE);
 
         DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
