@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "626337004283",
+    "project_id": "ma-sit-project-9daba",
+    "storage_bucket": "ma-sit-project-9daba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626337004283:android:35247c259771bcb1df4e5e",
+        "android_client_info": {
+          "package_name": "com.ftn.ma_sit_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-hk9M5ODjZJ9c3_B104ZAStpXAMVTVe0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
