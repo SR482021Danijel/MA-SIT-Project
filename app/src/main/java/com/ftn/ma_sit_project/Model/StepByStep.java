@@ -4,7 +4,7 @@ public class StepByStep {
     private String first;
     private String second;
     private String third;
-    private String forth;
+    private String fourth;
     private String fifth;
     private String sixth;
     private String seventh;
@@ -17,7 +17,7 @@ public class StepByStep {
 
     public String getGuestion3(){ return this.third;}
 
-    public String getGuestion4(){ return this.forth;}
+    public String getGuestion4(){ return this.fourth;}
 
     public String getGuestion5(){ return this.fifth;}
 
@@ -33,7 +33,7 @@ public class StepByStep {
 
     public void setQuestion3(String third){ this.third = third;}
 
-    public void setQuestion4(String forth){ this.forth = forth;}
+    public void setQuestion4(String fourth){ this.fourth = fourth;}
 
     public void setQuestion5(String fifth){ this.fifth = fifth;}
 
@@ -43,11 +43,11 @@ public class StepByStep {
 
     public void setResponse(String response){ this.response = response;}
 
-    public StepByStep( String first, String second, String third, String forth, String fifth, String sixth, String seventh, String response){
+    public StepByStep( String first, String second, String third, String fourth, String fifth, String sixth, String seventh, String response){
         this.first = first;
         this.second = second;
         this.third = third;
-        this.forth = forth;
+        this.fourth = fourth;
         this.fifth = fifth;
         this.sixth = sixth;
         this.seventh = seventh;
@@ -62,7 +62,7 @@ public class StepByStep {
                 "question1='" + this.first + '\'' +
                 ", question2='" + this.second + '\'' +
                 ", question3='" + this.third + '\'' +
-                ", question4='" + this.forth + '\'' +
+                ", question4='" + this.fourth + '\'' +
                 ", question5='" + this.fifth + '\'' +
                 ", question6='" + this.sixth + '\'' +
                 ", question7='" + this.seventh + '\'' +
