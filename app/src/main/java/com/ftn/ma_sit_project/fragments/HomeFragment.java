@@ -4,14 +4,22 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.ftn.ma_sit_project.DAO.StepByStepDAO;
+import com.ftn.ma_sit_project.MainActivity;
+import com.ftn.ma_sit_project.Model.StepByStep;
 import com.ftn.ma_sit_project.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeFragment extends Fragment {
+    StepByStepDAO stepByStepDAO = new StepByStepDAO();
     View view;
 
     @Override
@@ -23,7 +31,7 @@ public class HomeFragment extends Fragment {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getParentFragmentManager()
+                         getParentFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, new AssociationsFragment())
                         .setReorderingAllowed(true)
