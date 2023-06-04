@@ -11,10 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.ftn.ma_sit_project.adapters.ProgramAdapter;
 import com.ftn.ma_sit_project.fragments.FrendListFragment;
@@ -23,8 +20,8 @@ import com.ftn.ma_sit_project.fragments.LoginFragment;
 import com.ftn.ma_sit_project.fragments.ProfileFragment;
 import com.ftn.ma_sit_project.fragments.RankListFragment;
 import com.ftn.ma_sit_project.fragments.RegistrationFragment;
-import com.ftn.ma_sit_project.fragments.WhoKnowsFragment;
 import com.google.android.material.navigation.NavigationView;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String[] description = {"b", "bb", "bbb", "bbbb", "bbbbb", "bbbbbb", "bbbbbbb", "bbbbbbbb", "bbbbbbbbb"};
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-
 
     @SuppressLint("MissingInflatedId")
     @Override

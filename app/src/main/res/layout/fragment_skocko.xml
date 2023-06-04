@@ -1,321 +1,418 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TableLayout
-        android:layout_width="match_parent"
+    <GridLayout
+        android:id="@+id/targets"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100sp">
+        android:layout_gravity="center"
+        android:layout_marginTop="100sp"
+        android:columnCount="5"
+        android:rowCount="6"
+        tools:ignore="ContentDescription">
 
-        <TableRow android:gravity="center">
+        <ImageView
+            android:id="@+id/slot_1_1"
+            style="@style/image_placeholder">
 
-            <ImageView style="@style/image_placeholder">
+        </ImageView>
 
-            </ImageView>
+        <ImageView
+            android:id="@+id/slot_1_2"
+            style="@style/image_placeholder">
 
-            <ImageView style="@style/image_placeholder">
+        </ImageView>
 
-            </ImageView>
+        <ImageView
+            android:id="@+id/slot_1_3"
+            style="@style/image_placeholder">
 
-            <ImageView style="@style/image_placeholder">
+        </ImageView>
 
-            </ImageView>
+        <ImageView
+            android:id="@+id/slot_1_4"
+            style="@style/image_placeholder">
 
-            <ImageView style="@style/image_placeholder">
+        </ImageView>
 
-            </ImageView>
-
-            <GridLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:rowCount="2">
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-            </GridLayout>
-
-        </TableRow>
-
-        <TableRow android:gravity="center">
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <GridLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:rowCount="2">
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-            </GridLayout>
-
-        </TableRow>
-
-        <TableRow android:gravity="center">
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <GridLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:rowCount="2">
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-            </GridLayout>
-
-        </TableRow>
-
-        <TableRow android:gravity="center">
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <GridLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:rowCount="2">
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-            </GridLayout>
-
-        </TableRow>
-
-        <TableRow android:gravity="center">
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <GridLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:rowCount="2">
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-            </GridLayout>
-
-        </TableRow>
-
-        <TableRow android:gravity="center">
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <ImageView style="@style/image_placeholder">
-
-            </ImageView>
-
-            <GridLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:rowCount="2">
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-                <ImageView android:src="@drawable/outline_circle_24">
-
-                </ImageView>
-
-            </GridLayout>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="25sp"
-            android:gravity="center">
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:columnCount="2"
+            android:rowCount="2">
 
             <ImageView
-                style="@style/image_placeholder"
-                android:src="@drawable/jump_transparent">
+                android:id="@+id/circle_1_1"
+                android:src="@drawable/guess_circle"
+                app:backgroundTint="@null">
 
             </ImageView>
 
             <ImageView
-                style="@style/image_placeholder"
-                android:src="@drawable/baseline_rectangle_24">
+                android:id="@+id/circle_1_2"
+                android:src="@drawable/guess_circle">
 
             </ImageView>
 
             <ImageView
-                style="@style/image_placeholder"
-                android:src="@drawable/baseline_circle_24">
+                android:id="@+id/circle_1_3"
+                android:src="@drawable/guess_circle">
 
             </ImageView>
 
             <ImageView
-                style="@style/image_placeholder"
-                android:src="@drawable/baseline_heart_broken_24">
+                android:id="@+id/circle_1_4"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+        </GridLayout>
+
+        <ImageView
+            android:id="@+id/slot_1_5"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_6"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_7"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_8"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:columnCount="2"
+            android:rowCount="2">
+
+            <ImageView
+                android:id="@+id/circle_2_1"
+                android:src="@drawable/guess_circle">
 
             </ImageView>
 
             <ImageView
-                style="@style/image_placeholder"
-                android:src="@drawable/baseline_change_history_24">
+                android:id="@+id/circle_2_2"
+                android:src="@drawable/guess_circle">
 
             </ImageView>
 
             <ImageView
-                style="@style/image_placeholder"
-                android:src="@drawable/baseline_star_24">
+                android:id="@+id/circle_2_3"
+                android:src="@drawable/guess_circle">
 
             </ImageView>
 
-        </TableRow>
+            <ImageView
+                android:id="@+id/circle_2_4"
+                android:src="@drawable/guess_circle">
 
-    </TableLayout>
+            </ImageView>
+
+        </GridLayout>
+
+        <ImageView
+            android:id="@+id/slot_1_9"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_10"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_11"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_12"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:columnCount="2"
+            android:rowCount="2">
+
+            <ImageView
+                android:id="@+id/circle_3_1"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/circle_3_2"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/circle_3_3"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/circle_3_4"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+        </GridLayout>
+
+        <ImageView
+            android:id="@+id/slot_1_13"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_14"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_15"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_16"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:columnCount="2"
+            android:rowCount="2">
+
+            <ImageView
+                android:id="@+id/circle_4_1"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/circle_4_2"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/circle_4_3"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/circle_4_4"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+        </GridLayout>
+
+        <ImageView
+            android:id="@+id/slot_1_17"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_18"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_19"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_20"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:columnCount="2"
+            android:rowCount="2">
+
+            <ImageView
+                android:id="@+id/circle_5_1"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/circle_5_2"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/circle_5_3"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/circle_5_4"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+        </GridLayout>
+
+        <ImageView
+            android:id="@+id/slot_1_21"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_22"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_23"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/slot_1_24"
+            style="@style/image_placeholder">
+
+        </ImageView>
+
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:columnCount="2"
+            android:rowCount="2">
+
+            <ImageView
+                android:id="@+id/circle_6_1"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/circle_6_2"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/circle_6_3"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/circle_6_4"
+                android:src="@drawable/guess_circle">
+
+            </ImageView>
+
+        </GridLayout>
+
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="25sp"
+        tools:ignore="ContentDescription">
+
+        <ImageView
+            android:id="@+id/option_skocko"
+            style="@style/image_placeholder"
+            android:src="@drawable/jump_transparent">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/option_rectangle"
+            style="@style/image_placeholder"
+            android:src="@drawable/baseline_rectangle_24">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/option_circle"
+            style="@style/image_placeholder"
+            android:src="@drawable/baseline_circle_24">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/option_heart"
+            style="@style/image_placeholder"
+            android:src="@drawable/baseline_heart_broken_24">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/option_triangle"
+            style="@style/image_placeholder"
+            android:src="@drawable/baseline_change_history_24">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/option_star"
+            style="@style/image_placeholder"
+            android:src="@drawable/baseline_star_24">
+
+        </ImageView>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_skocko"
@@ -324,7 +421,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20sp"
-        android:text="Next">
+        android:text="Guess">
 
     </Button>
 

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -14,22 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
+                <com.google.android.material.appbar.AppBarLayout
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar1"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:title="Slagalica">
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar1"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_scrollFlags="scroll|enterAlways"
+                        app:title="Slagalica">
 
-            </androidx.appcompat.widget.Toolbar>
+                    </androidx.appcompat.widget.Toolbar>
 
-        </com.google.android.material.appbar.AppBarLayout>
+                </com.google.android.material.appbar.AppBarLayout>
 
         <RelativeLayout
             android:id="@+id/score_board"
@@ -41,10 +40,10 @@
                 android:id="@+id/player_1_pic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_person_24"
                 android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp">
+                android:src="@drawable/baseline_person_24">
 
             </ImageView>
 
@@ -52,19 +51,21 @@
                 android:id="@+id/player_1_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User name"
-                android:layout_toRightOf="@id/player_1_pic"
                 android:layout_alignTop="@+id/player_1_pic"
-                android:layout_marginLeft="10dp">
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/player_1_pic"
+                android:text="User name">
+
             </TextView>
 
             <TextView
+                android:id="@+id/player_1_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100"
                 android:layout_below="@id/player_1_user_name"
                 android:layout_alignRight="@id/player_1_user_name"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:text="100">
 
             </TextView>
 
@@ -72,8 +73,8 @@
                 android:id="@+id/score_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:00"
-                android:layout_centerInParent="true">
+                android:layout_centerInParent="true"
+                android:text="00:00">
 
             </TextView>
 
@@ -81,10 +82,10 @@
                 android:id="@+id/player_2_pic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_person_24"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="15dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:src="@drawable/baseline_person_24">
 
             </ImageView>
 
@@ -92,34 +93,34 @@
                 android:id="@+id/player_2_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User name"
-                android:layout_toLeftOf="@id/player_2_pic"
                 android:layout_alignTop="@+id/player_2_pic"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@id/player_2_pic"
+                android:text="User name">
 
             </TextView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100"
                 android:layout_below="@id/player_2_user_name"
                 android:layout_alignLeft="@id/player_2_user_name"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:text="100">
 
             </TextView>
 
         </RelativeLayout>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.ftn.ma_sit_project.fragments.HomeFragment"
-        tools:layout="@layout/fragment_home">
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container"
+            android:name="com.ftn.ma_sit_project.fragments.HomeFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_home">
 
 
-    </androidx.fragment.app.FragmentContainerView>
+        </androidx.fragment.app.FragmentContainerView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -129,6 +130,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/new_menu"/>
+        app:menu="@menu/new_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

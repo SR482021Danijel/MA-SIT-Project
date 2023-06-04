@@ -1,24 +1,38 @@
 package com.ftn.ma_sit_project.fragments;
 
-import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.Region;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ftn.ma_sit_project.R;
+import com.ftn.ma_sit_project.commonUtils.Draggable;
 import com.ftn.ma_sit_project.commonUtils.ShowHideElements;
+import com.ftn.ma_sit_project.commonUtils.TempGetData;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class SkockoFragment extends Fragment {
 
@@ -26,8 +40,25 @@ public class SkockoFragment extends Fragment {
 
     CountDownTimer countDownTimer;
 
+    TextView player1Score;
+
     AppCompatActivity activity;
 
+    GridLayout gridLayout;
+
+    ArrayList<ImageView> activeSlots = new ArrayList<>();
+
+    ArrayList<String> answers = new ArrayList<>();
+
+    ArrayList<String> guesses = new ArrayList<>();
+
+    ArrayList<ImageView> circleAnswers = new ArrayList<>();
+
+    int score = 0;
+
+    int attempt = 0;
+
+    int j = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,16 +66,84 @@ public class SkockoFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_skocko, container, false);
 
+        TempGetData.getSkocko(new TempGetData.FireStoreCallback() {
+            @Override
+            public void onCallBack(ArrayList<String> list) {
+                answers.addAll(list);
+            }
+        });
+
+        gridLayout = view.findViewById(R.id.targets);
+
+        ImageView skocko = view.findViewById(R.id.option_skocko);
+        Draggable.makeDraggable(skocko, "1");
+
+        ImageView rectangle = view.findViewById(R.id.option_rectangle);
+        Draggable.makeDraggable(rectangle, "2");
+
+        ImageView circle = view.findViewById(R.id.option_circle);
+        Draggable.makeDraggable(circle, "3");
+
+        ImageView heart = view.findViewById(R.id.option_heart);
+        Draggable.makeDraggable(heart, "4");
+
+        ImageView triangle = view.findViewById(R.id.option_triangle);
+        Draggable.makeDraggable(triangle, "5");
+
+        ImageView star = view.findViewById(R.id.option_star);
+        Draggable.makeDraggable(star, "6");
+
+        j = setNewTargets(gridLayout, activeSlots);
 
         Button btnNext = view.findViewById(R.id.btn_skocko);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getParentFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new StepByStepFragment())
-                        .setReorderingAllowed(true)
-                        .commit();
+                boolean isFull = true;
+                for (ImageView imageView : activeSlots) {
+                    if (imageView != null && imageView.getTag() != null) {
+                        imageView.setOnDragListener(null);
+                        guesses.add((String) imageView.getTag());
+                        Log.i("tag", imageView.getTag() + "");
+                    } else {
+                        isFull = false;
+                        Log.i("error", "empty");
+                    }
+                }
+                if (isFull) {
+
+                    boolean isCorrect = guesses.equals(answers);
+                    Log.i("answer", isCorrect + "");
+                    if (isCorrect) {
+                        score = Integer.parseInt((String) player1Score.getText());
+                        switch (attempt) {
+                            case 1:
+                            case 2:
+                                score += 20;
+                                break;
+                            case 3:
+                            case 4:
+                                score += 15;
+                                break;
+                            case 5:
+                            case 6:
+                                score += 10;
+                                break;
+                        }
+                        player1Score.setText(score + "");
+                        getParentFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, new StepByStepFragment())
+                                .setReorderingAllowed(true)
+                                .commit();
+                    } else {
+                        displayAnswer();
+                        guesses.clear();
+                        activeSlots.clear();
+                        circleAnswers.clear();
+                        j = setNewTargets(gridLayout, activeSlots);
+                    }
+                }
             }
         });
 
@@ -58,6 +157,8 @@ public class SkockoFragment extends Fragment {
         activity = (AppCompatActivity) getActivity();
 
         TextView scoreTimer = activity.findViewById(R.id.score_timer);
+
+        player1Score = activity.findViewById(R.id.player_1_score);
 
         ShowHideElements.showScoreBoard(activity);
 
@@ -79,7 +180,6 @@ public class SkockoFragment extends Fragment {
         activity.getSupportActionBar().hide();
 
         ShowHideElements.lockDrawerLayout(activity);
-
     }
 
     @Override
@@ -93,5 +193,47 @@ public class SkockoFragment extends Fragment {
         activity.getSupportActionBar().show();
 
         ShowHideElements.unlockDrawerLayout(activity);
+    }
+
+    public int setNewTargets(ViewGroup parent, ArrayList<ImageView> list) {
+        int i;
+        for (i = j; i < j + 5; i++) {
+            final View child = parent.getChildAt(i);
+            if (!(child instanceof ViewGroup)) {
+                if (child != null) {
+                    Draggable.makeTarget((ImageView) child);
+                    list.add((ImageView) child);
+                }
+            } else {
+                for (int k = 0; k < 4; k++) {
+                    View circleChild = ((ViewGroup) child).getChildAt(k);
+                    if (circleChild != null) {
+                        circleAnswers.add((ImageView) circleChild);
+                    }
+                }
+            }
+        }
+        attempt++;
+        return j = i;
+    }
+
+    public void displayAnswer() {
+        ArrayList<Integer> statusList = new ArrayList<>();
+        for (int i = 0; i < answers.size(); i++) {
+            if (Objects.equals(answers.get(i), guesses.get(i))) {
+                statusList.add(1);
+            } else if (guesses.contains(answers.get(i))) {
+                statusList.add(2);
+            }
+        }
+        Collections.sort(statusList);
+        for (int i = 0; i < statusList.size(); i++) {
+            if (statusList.get(i) == 1) {
+                circleAnswers.get(i).setColorFilter(Color.RED);
+            } else if (statusList.get(i) == 2) {
+                circleAnswers.get(i).setColorFilter(Color.YELLOW);
+            }
+            Log.i("status", statusList.get(i).toString());
+        }
     }
 }
