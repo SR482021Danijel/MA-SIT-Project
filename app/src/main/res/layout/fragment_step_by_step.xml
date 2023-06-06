@@ -14,8 +14,7 @@
 
             <TextView
                 android:id="@+id/step_by_stepTextView1"
-                style="@style/txtViewAssociation1"
-                android:text="@string/test_long" />
+                style="@style/txtViewAssociation1" />
 
         </TableRow>
 
@@ -23,7 +22,8 @@
 
             <TextView
                 android:id="@+id/step_by_stepTextView2"
-                style="@style/txtViewAssociation1" />
+                style="@style/txtViewAssociation1"
+                android:textColor="@android:color/transparent"/>
 
         </TableRow>
 
@@ -31,7 +31,8 @@
 
             <TextView
                 android:id="@+id/step_by_stepTextView3"
-                style="@style/txtViewAssociation1" />
+                style="@style/txtViewAssociation1"
+                android:textColor="@android:color/transparent"/>
 
         </TableRow>
 
@@ -39,7 +40,8 @@
 
             <TextView
                 android:id="@+id/step_by_stepTextView4"
-                style="@style/txtViewAssociation1" />
+                style="@style/txtViewAssociation1"
+                android:textColor="@android:color/transparent"/>
 
         </TableRow>
 
@@ -47,7 +49,8 @@
 
             <TextView
                 android:id="@+id/step_by_stepTextView5"
-                style="@style/txtViewAssociation1" />
+                style="@style/txtViewAssociation1"
+                android:textColor="@android:color/transparent"/>
 
         </TableRow>
 
@@ -55,7 +58,8 @@
 
             <TextView
                 android:id="@+id/step_by_stepTextView6"
-                style="@style/txtViewAssociation1" />
+                style="@style/txtViewAssociation1"
+                android:textColor="@android:color/transparent"/>
 
         </TableRow>
 
@@ -63,7 +67,8 @@
 
             <TextView
                 android:id="@+id/step_by_stepTextView7"
-                style="@style/txtViewAssociation1" />
+                style="@style/txtViewAssociation1"
+                android:textColor="@android:color/transparent"/>
 
         </TableRow>
 
@@ -84,14 +89,17 @@
                     android:id="@+id/step_by_stepTextView_answer"
                     style="@style/txtViewAssociation2"
                     android:layout_width="300sp"
-                    android:layout_height="40sp" />
+                    android:layout_height="40sp"
+                    android:textColor="@android:color/transparent"/>
 
                 <TextView
                     android:id="@+id/step_by_stepTextView_points_right"
                     style="@style/txtViewAssociation2"
                     android:layout_width="40sp"
-                    android:layout_height="40sp" />
+                    android:layout_height="40sp"
+                    android:text=""/>
             </LinearLayout>
         </TableRow>
     </TableLayout>
+
 </FrameLayout>

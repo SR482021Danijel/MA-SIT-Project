@@ -12,7 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class TempGetData {
 
@@ -42,6 +41,60 @@ public class TempGetData {
                 }
             }
         });
+    }
+
+    public static void getKorakPoKorak(FireStoreCallback firestoreCallback) {
+        ArrayList<String> list = new ArrayList<String>();
+        db.collection("Games").document("KorakPoKorak")
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("selectTestById", "Task successful");
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d("selectTestById", "Document exists");
+                                List<String> runda1 = (List<String>) document.get("runda1");
+                                if (runda1 != null) {
+                                    list.addAll(runda1);
+                                }
+                                firestoreCallback.onCallBack(list);
+                            } else {
+                                Log.e("GRESKA", "No such document");
+                            }
+                        } else {
+                            Log.e("GRESKA", "LAVOR");
+                        }
+                    }
+                });
+
+    }
+
+    public static void getAsocijacije(FireStoreCallback firestoreCallback) {
+        ArrayList<String> list = new ArrayList<String>();
+        db.collection("Games").document("Asocijacije")
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("selectTestById", "Task successful");
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d("selectTestById", "Document exists");
+                                List<String> runda1 = (List<String>) document.get("runda1");
+                                if (runda1 != null) {
+                                    list.addAll(runda1);
+                                }
+                                firestoreCallback.onCallBack(list);
+                            } else {
+                                Log.e("GRESKA", "No such document");
+                            }
+                        } else {
+                            Log.e("GRESKA", "LAVOR");
+                        }
+                    }
+                });
+
     }
 
     public interface FireStoreCallback{

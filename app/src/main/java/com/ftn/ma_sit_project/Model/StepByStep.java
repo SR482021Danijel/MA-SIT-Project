@@ -55,18 +55,18 @@ public class StepByStep {
     }
 
     public StepByStep(){}
-
-    @Override
-    public String toString() {
-        return "StepByStep{" +
-                "question1='" + this.first + '\'' +
-                ", question2='" + this.second + '\'' +
-                ", question3='" + this.third + '\'' +
-                ", question4='" + this.fourth + '\'' +
-                ", question5='" + this.fifth + '\'' +
-                ", question6='" + this.sixth + '\'' +
-                ", question7='" + this.seventh + '\'' +
-                ", response='" + this.response + '\'' +
-                '}';
-    }
+//
+//    @Override
+//    public String toString() {
+//        return "StepByStep{" +
+//                "first='" + this.first + '\'' +
+//                ", second='" + this.second + '\'' +
+//                ", third='" + this.third + '\'' +
+//                ", fourth='" + this.fourth + '\'' +
+//                ", fifth='" + this.fifth + '\'' +
+//                ", sixth='" + this.sixth + '\'' +
+//                ", seventh='" + this.seventh + '\'' +
+//                ", response='" + this.response + '\'' +
+//                '}';
+//    }
 }

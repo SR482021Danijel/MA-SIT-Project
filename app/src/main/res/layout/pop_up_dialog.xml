@@ -14,7 +14,9 @@
                 />
         </TableRow>
         <TableRow android:gravity="center">
-            <EditText android:layout_margin="5dp"/>
+            <EditText
+                android:id="@+id/pop_up"
+                android:layout_margin="5dp"/>
         </TableRow>
         <RelativeLayout>
 

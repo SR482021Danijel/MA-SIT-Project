@@ -15,48 +15,48 @@
             <TextView
                 android:id="@+id/a1_field"
                 style="@style/txtViewAssociation"
-                android:text="A1" />
+                android:hint="A1" />
 
             <TextView
                 android:id="@+id/c1_field"
                 style="@style/txtViewAssociation"
-                android:text="C1" />
+                android:hint="C1" />
         </TableRow>
         <TableRow>
 
             <TextView
                 android:id="@+id/a2_field"
                 style="@style/txtViewAssociation"
-                android:text="A2" />
+                android:hint="A2" />
 
             <TextView
                 android:id="@+id/c2_field"
                 style="@style/txtViewAssociation"
-                android:text="C2" />
+                android:hint="C2" />
         </TableRow>
         <TableRow>
 
             <TextView
                 android:id="@+id/a3_field"
                 style="@style/txtViewAssociation"
-                android:text="A3" />
+                android:hint="A3" />
 
             <TextView
                 android:id="@+id/c3_field"
                 style="@style/txtViewAssociation"
-                android:text="C3" />
+                android:hint="C3" />
         </TableRow>
         <TableRow>
 
             <TextView
                 android:id="@+id/a4_field"
                 style="@style/txtViewAssociation"
-                android:text="A4" />
+                android:hint="A4" />
 
             <TextView
                 android:id="@+id/c4_field"
                 style="@style/txtViewAssociation"
-                android:text="C4" />
+                android:hint="C4" />
         </TableRow>
 
         <TableRow>
@@ -64,12 +64,12 @@
             <TextView
                 android:id="@+id/a_field"
                 style="@style/txtViewAssociation"
-                android:text="A" />
+                android:hint="A" />
 
             <TextView
                 android:id="@+id/c_field"
                 style="@style/txtViewAssociation"
-                android:text="C" />
+                android:hint="C" />
         </TableRow>
 
         <TableRow>
@@ -77,7 +77,7 @@
             <TextView
                 android:id="@+id/final_field"
                 style="@style/txtViewAssociation"
-                android:text="E" />
+                android:hint="E" />
         </TableRow>
 
         <TableRow>
@@ -85,12 +85,12 @@
             <TextView
                 android:id="@+id/b_field"
                 style="@style/txtViewAssociation"
-                android:text="B" />
+                android:hint="B" />
 
             <TextView
                 android:id="@+id/d_field"
                 style="@style/txtViewAssociation"
-                android:text="D" />
+                android:hint="D" />
         </TableRow>
 
         <TableRow>
@@ -98,48 +98,48 @@
             <TextView
                 android:id="@+id/b4_field"
                 style="@style/txtViewAssociation"
-                android:text="B4" />
+                android:hint="B4" />
 
             <TextView
                 android:id="@+id/d4_field"
                 style="@style/txtViewAssociation"
-                android:text="D4" />
+                android:hint="D4" />
         </TableRow>
         <TableRow>
 
             <TextView
                 android:id="@+id/b3_field"
                 style="@style/txtViewAssociation"
-                android:text="B3" />
+                android:hint="B3" />
 
             <TextView
                 android:id="@+id/d3_field"
                 style="@style/txtViewAssociation"
-                android:text="D3" />
+                android:hint="D3" />
         </TableRow>
         <TableRow>
 
             <TextView
                 android:id="@+id/b2_field"
                 style="@style/txtViewAssociation"
-                android:text="B2" />
+                android:hint="B2" />
 
             <TextView
                 android:id="@+id/d2_field"
                 style="@style/txtViewAssociation"
-                android:text="D2" />
+                android:hint="D2" />
         </TableRow>
         <TableRow>
 
             <TextView
                 android:id="@+id/b1_field"
                 style="@style/txtViewAssociation"
-                android:text="B1" />
+                android:hint="B1" />
 
             <TextView
                 android:id="@+id/d1_field"
                 style="@style/txtViewAssociation"
-                android:text="D1" />
+                android:hint="D1" />
         </TableRow>
 
     </TableLayout>

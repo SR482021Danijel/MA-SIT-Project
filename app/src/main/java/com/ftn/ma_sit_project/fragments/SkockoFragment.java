@@ -166,7 +166,7 @@ public class SkockoFragment extends Fragment {
             @Override
             public void onTick(long l) {
                 Long min = ((l / 1000) % 3600) / 60;
-                Long sec = (l / 1000);
+                Long sec = (l / 1000) % 60;
                 String format = String.format(Locale.getDefault(), "%02d:%02d", min, sec);
                 scoreTimer.setText(format);
             }

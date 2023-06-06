@@ -25,6 +25,10 @@
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
+<!--        <item name="android:autoSizeTextType">uniform</item>-->
+        <item name="android:autoSizeMinTextSize">12sp</item>
+        <item name="android:autoSizeMaxTextSize">90sp</item>
+        <item name="android:autoSizeStepGranularity">2sp</item>
     </style>
 
     <style name="txtViewAssociation1" parent="android:Widget.TextView">
@@ -38,7 +42,16 @@
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">12sp</item>
+        <item name="android:autoSizeMaxTextSize">100sp</item>
+        <item name="android:autoSizeStepGranularity">2sp</item>
     </style>
+
+<!--    android:autoSizeTextType="uniform"-->
+<!--    android:autoSizeMinTextSize="12sp"-->
+<!--    android:autoSizeMaxTextSize="100sp"-->
+<!--    android:autoSizeStepGranularity="2sp"-->
 
     <style name="txtViewAssociation2" parent="android:Widget.TextView">
         <item name="android:layout_weight">1</item>
@@ -48,6 +61,10 @@
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">12sp</item>
+        <item name="android:autoSizeMaxTextSize">100sp</item>
+        <item name="android:autoSizeStepGranularity">2sp</item>
     </style>
     <style name="textViewMainMenu" parent="android:Widget.TextView">
         <item name="android:textSize">20sp</item>
