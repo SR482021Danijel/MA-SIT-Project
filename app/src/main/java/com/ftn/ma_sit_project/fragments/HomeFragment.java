@@ -31,12 +31,12 @@ public class HomeFragment extends Fragment {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<StepByStep> stepBySteps = stepByStepDAO.selectAll();
-//                         getParentFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.fragment_container, new AssociationsFragment())
-//                        .setReorderingAllowed(true)
-//                        .commit();
+//                List<StepByStep> stepBySteps = stepByStepDAO.selectAll();
+                         getParentFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new AssociationsFragment())
+                        .setReorderingAllowed(true)
+                        .commit();
             }
         });
 

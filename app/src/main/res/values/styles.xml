@@ -97,8 +97,10 @@
     </style>
 
     <style name="number_game_numbers">
-        <item name="android:layout_marginHorizontal">5sp</item>
-        <item name="android:gravity">center</item>
+        <item name="android:layout_marginLeft">3.5dp</item>
+        <item name="android:layout_marginRight">3.5dp</item>
+        <item name="android:layout_width">65dp</item>
+
     </style>
 
 </resources>
