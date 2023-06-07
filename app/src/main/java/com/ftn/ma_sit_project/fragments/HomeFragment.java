@@ -23,7 +23,7 @@ public class HomeFragment extends Fragment {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Map<String, Object> d = associationDAO.selectById("runda1");
+//                List<StepByStep> stepBySteps = stepByStepDAO.selectAll();
                          getParentFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, new AssociationsFragment())
