@@ -90,8 +90,19 @@ public class AssociationsFragment extends Fragment {
         d_button.setText(dFields.get(4));
     }
 
+    public void setPoints(int poinst){
+        score = Integer.parseInt((String) player1Score.getText());
+        score+=poinst;
+        player1Score.setText(score + "");
+    }
+
     public void setEFields(){
         e.setText(arrayList.get(20));
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new SkockoFragment())
+                .setReorderingAllowed(true)
+                .commit();
     }
 
     @Override
@@ -119,7 +130,6 @@ public class AssociationsFragment extends Fragment {
         b_button = view.findViewById(R.id.b_field);
         c_button = view.findViewById(R.id.c_field);
         d_button = view.findViewById(R.id.d_field);
-        player1Score = view.findViewById(R.id.player_1_score);
         dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.pop_up_dialog);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -127,7 +137,7 @@ public class AssociationsFragment extends Fragment {
 
         Button ok = dialog.findViewById(R.id.ok_dialog);
         Button cancel = dialog.findViewById(R.id.cancel_dialog);
-        EditText editText = view.findViewById(R.id.pop_up);
+        EditText editText = dialog.findViewById(R.id.pop_up);
         tempGetData.getAsocijacije(new TempGetData.FireStoreCallback() {
             @Override
             public void onCallBack(ArrayList<String> list) {
@@ -198,12 +208,12 @@ public class AssociationsFragment extends Fragment {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                String editText1 = editText.getText().toString();
-                String editText1 = "DIM";
-                String editText2 = "GVOZDJE";
-                String editText3 = "KADA";
-                String editText4 = "SPUSTANJE";
-                String editText5 = "ZAVESA";
+                String editText1 = editText.getText().toString();
+//                String editText1 = "DIM";
+//                String editText2 = "GVOZDJE";
+//                String editText3 = "KADA";
+//                String editText4 = "SPUSTANJE";
+//                String editText5 = "ZAVESA";
                 String a = aFields.get(4);
                 String b = bFields.get(4);
                 String c = cFields.get(4);
@@ -224,13 +234,14 @@ public class AssociationsFragment extends Fragment {
                                 counter_a++;
                             }
                             poinst += 2;
+                            setPoints(poinst);
                             setAFields();
                             isTruea = true;
                         }
                     }
                 } else if (field_b != false) {
                     if(editText1 != ""){
-                        if(editText2.equals(b)){
+                        if(editText1.equals(b)){
                             int counter_b = 0;
                             for(TextView textView : textViewsb){
                                 if(textView.getText() == ""){
@@ -243,13 +254,14 @@ public class AssociationsFragment extends Fragment {
                                 counter_b++;
                             }
                             poinst += 2;
+                            setPoints(poinst);
                             setBFields();
                             isTrueb = true;
                         }
                     }
                 }else if (field_c != false) {
                     if(editText1 != ""){
-                        if(editText3.equals(c)){
+                        if(editText1.equals(c)){
                             int counter_c = 0;
                             for(TextView textView : textViewsc){
                                 if(textView.getText() == ""){
@@ -262,13 +274,14 @@ public class AssociationsFragment extends Fragment {
                                 counter_c++;
                             }
                             poinst += 2;
+                            setPoints(poinst);
                             setCFields();
                             isTruec = true;
                         }
                     }
                 }else if (field_d != false) {
                     if(editText1 != ""){
-                        if(editText4.equals(d)){
+                        if(editText1.equals(d)){
                             int counter_d = 0;
                             for(TextView textView : textViewsd){
                                 if(textView.getText() == ""){
@@ -281,13 +294,14 @@ public class AssociationsFragment extends Fragment {
                                 counter_d++;
                             }
                             poinst += 2;
+                            setPoints(poinst);
                             setDFields();
                             isTrued = true;
                         }
                     }
                 }else if(field_e != false){
                     if(editText1 != ""){
-                        if(editText5.equals(e)){
+                        if(editText1.equals(e)){
                             int counter_a = 0;
                             for(TextView textView : textViewsa){
                                 if(textView.getText() == ""){
@@ -345,6 +359,7 @@ public class AssociationsFragment extends Fragment {
                                 counter_d++;
                             }
                             poinst += 7;
+                            setPoints(poinst);
                             setAFields();
                             setBFields();
                             setCFields();
@@ -360,6 +375,7 @@ public class AssociationsFragment extends Fragment {
                 field_c = false;
                 field_d = false;
                 field_e = false;
+                editText.setText("");
                 dialog.dismiss();
             }
         });
@@ -566,6 +582,8 @@ public class AssociationsFragment extends Fragment {
 
         TextView scoreTimer = activity.findViewById(R.id.score_timer);
 
+        player1Score = activity.findViewById(R.id.player_1_score);
+
         ShowHideElements.showScoreBoard(activity);
 
         countDownTimer = new CountDownTimer(120000, 1000) {
@@ -580,6 +598,11 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onFinish() {
                 scoreTimer.setText("00:00");
+                getParentFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new SkockoFragment())
+                        .setReorderingAllowed(true)
+                        .commit();
             }
         }.start();
 

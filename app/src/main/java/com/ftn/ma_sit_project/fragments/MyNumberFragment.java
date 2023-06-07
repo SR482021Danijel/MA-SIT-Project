@@ -327,7 +327,7 @@ public class MyNumberFragment extends Fragment {
 
         ShowHideElements.showScoreBoard(activity);
 
-        countDownTimer = new CountDownTimer(61000, 1000) {
+        countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long l) {
                 Long min = ((l / 1000) % 3600) / 60;

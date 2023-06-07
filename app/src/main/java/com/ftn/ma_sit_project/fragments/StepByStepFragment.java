@@ -179,6 +179,11 @@ public class StepByStepFragment extends Fragment {
         }
         player1Score.setText(score + "");
         points_right.setTextColor(Color.RED);
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new MyNumberFragment())
+                .setReorderingAllowed(true)
+                .commit();
     }
 
     @Override
@@ -214,6 +219,11 @@ public class StepByStepFragment extends Fragment {
             public void onFinish() {
                 scoreTimer.setText("00:00");
                 count = 1;
+                getParentFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new MyNumberFragment())
+                        .setReorderingAllowed(true)
+                        .commit();
             }
         }.start();
 
