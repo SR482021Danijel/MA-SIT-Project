@@ -40,10 +40,7 @@ public class Draggable {
             switch(e.getAction()){
 
                 case DragEvent.ACTION_DRAG_STARTED:
-                    if (e.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)){
-                        return true;
-                    }
-                    return false;
+                    return e.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN);
 
                 case DragEvent.ACTION_DRAG_ENTERED:
                     v.invalidate();

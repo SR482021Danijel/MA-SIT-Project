@@ -73,7 +73,7 @@ public class StepByStepFragment extends Fragment {
         Button cancel = dialog.findViewById(R.id.cancel_dialog);
         EditText editText = dialog.findViewById(R.id.pop_up);
 
-        tempGetData.getKorakPoKorak(new TempGetData.FireStoreCallback() {
+        TempGetData.getKorakPoKorak(new TempGetData.FireStoreCallback() {
             @Override
             public void onCallBack(ArrayList<String> list) {
                 arrayList.addAll(list);

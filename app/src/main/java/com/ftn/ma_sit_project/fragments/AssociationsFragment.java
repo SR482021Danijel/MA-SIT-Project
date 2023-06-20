@@ -138,7 +138,7 @@ public class AssociationsFragment extends Fragment {
         Button ok = dialog.findViewById(R.id.ok_dialog);
         Button cancel = dialog.findViewById(R.id.cancel_dialog);
         EditText editText = dialog.findViewById(R.id.pop_up);
-        tempGetData.getAsocijacije(new TempGetData.FireStoreCallback() {
+        TempGetData.getAsocijacije(new TempGetData.FireStoreCallback() {
             @Override
             public void onCallBack(ArrayList<String> list) {
                 arrayList.addAll(list);
@@ -219,7 +219,7 @@ public class AssociationsFragment extends Fragment {
                 String c = cFields.get(4);
                 String d = dFields.get(4);
                 String e = arrayList.get(20);
-                if(field_a != false){
+                if(field_a){
                     if(editText1 != ""){
                         if(editText1.equals(a)){
                             int counter_a = 0;
@@ -239,7 +239,7 @@ public class AssociationsFragment extends Fragment {
                             isTruea = true;
                         }
                     }
-                } else if (field_b != false) {
+                } else if (field_b) {
                     if(editText1 != ""){
                         if(editText1.equals(b)){
                             int counter_b = 0;
@@ -259,7 +259,7 @@ public class AssociationsFragment extends Fragment {
                             isTrueb = true;
                         }
                     }
-                }else if (field_c != false) {
+                }else if (field_c) {
                     if(editText1 != ""){
                         if(editText1.equals(c)){
                             int counter_c = 0;
@@ -279,7 +279,7 @@ public class AssociationsFragment extends Fragment {
                             isTruec = true;
                         }
                     }
-                }else if (field_d != false) {
+                }else if (field_d) {
                     if(editText1 != ""){
                         if(editText1.equals(d)){
                             int counter_d = 0;
@@ -299,7 +299,7 @@ public class AssociationsFragment extends Fragment {
                             isTrued = true;
                         }
                     }
-                }else if(field_e != false){
+                }else if(field_e){
                     if(editText1 != ""){
                         if(editText1.equals(e)){
                             int counter_a = 0;
@@ -391,7 +391,7 @@ public class AssociationsFragment extends Fragment {
                         y++;
                     }
                 }
-                if(isTruea != true && y != 5){
+                if(!isTruea && y != 5){
                     dialog.show();
                     y=0;
                 }
