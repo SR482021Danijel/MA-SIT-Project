@@ -86,7 +86,16 @@
                 style="@style/btnMainMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/play">
+                android:text="Play 1v1">
+
+            </Button>
+
+            <Button
+                android:id="@+id/play_solo"
+                style="@style/btnMainMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Play Solo">
 
             </Button>
 

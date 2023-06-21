@@ -2,6 +2,8 @@ package com.ftn.ma_sit_project.commonUtils;
 
 import android.util.Log;
 
+import com.ftn.ma_sit_project.Model.User;
+import com.google.gson.Gson;
 import com.hivemq.client.mqtt.MqttGlobalPublishFilter;
 import com.hivemq.client.mqtt.datatypes.MqttQos;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
@@ -9,6 +11,8 @@ import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 import com.hivemq.client.mqtt.mqtt5.message.publish.Mqtt5Publish;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -20,7 +24,11 @@ import java.util.function.Consumer;
 public class MqttHandler {
 
     private Mqtt5BlockingClient client;
-    private String str;
+    private String str = "";
+
+    private User user = new User(1L, "Pera", "pera123", "pera@gmail.com");
+    Gson gson = new Gson();
+    private String sentPayload = gson.toJson(user);
 
     public void startMatchmaking() {
         client = Mqtt5Client.builder()
@@ -40,6 +48,13 @@ public class MqttHandler {
                 .callback(publish -> {
                     str = StandardCharsets.UTF_8.decode(publish.getPayload().get()).toString();
                     Log.i("mqtt", "payload = " + str);
+//                    try {
+//                        JSONObject jsonObject = new JSONObject(str);
+//                        Log.i("mqtt", "json = " + jsonObject);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+
                 })
                 .send()
                 .whenComplete(((mqtt3ConnAck, throwable) -> {
@@ -53,7 +68,7 @@ public class MqttHandler {
                                 .topic("test/Mobilne/Request")
                                 .qos(MqttQos.AT_LEAST_ONCE)
                                 .retain(true)
-                                .payload("1".getBytes())
+                                .payload(sentPayload.getBytes())
                                 .send()
                                 .whenComplete(((mqtt3ConnAck2, throwable2) -> {
                                     if (throwable2 != null) {
@@ -75,5 +90,9 @@ public class MqttHandler {
                 Log.i("mqtt", "Disconnected");
             }
         }));
+    }
+
+    public User getValue(){
+        return gson.fromJson(str, User.class);
     }
 }
