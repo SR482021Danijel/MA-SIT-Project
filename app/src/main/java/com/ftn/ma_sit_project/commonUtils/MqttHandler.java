@@ -26,7 +26,7 @@ public class MqttHandler {
     private Mqtt5BlockingClient client;
     private String str = "";
 
-    private User user = new User(1L, "Pera", "pera123", "pera@gmail.com");
+    private User user = new User("1", "Pera", "pera123", "pera@gmail.com");
     Gson gson = new Gson();
     private String sentPayload = gson.toJson(user);
 
