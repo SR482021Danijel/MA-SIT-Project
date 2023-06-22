@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TempGetData {
 
@@ -99,6 +100,57 @@ public class TempGetData {
 
     public interface FireStoreCallback{
         void onCallBack(ArrayList<String> list);
+    }
+
+    public interface FireStoreCallback1{
+        void onCallBack(Map<String, Object> map);
+    }
+
+//    public static void getSpojnice(FireStoreCallback firestoreCallback) {
+//        ArrayList<String> list = new ArrayList<String>();
+//        db.collection("Games").document("Spojnice")
+//                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            Log.d("selectTestById", "Task successful");
+//                            DocumentSnapshot document = task.getResult();
+//                            if (document.exists()) {
+//                                Log.d("selectTestById", "Document exists");
+//                                List<String> runda1 = (List<String>) document.get("runda1");
+//                                if (runda1 != null) {
+//                                    list.addAll(runda1);
+//                                }
+//                                firestoreCallback.onCallBack(list);
+//                            } else {
+//                                Log.e("GRESKA", "No such document");
+//                            }
+//                        } else {
+//                            Log.e("GRESKA", "LAVOR");
+//                        }
+//                    }
+//                });
+//
+//    }
+
+    public static void getDataAsMap(FireStoreCallback1 firestoreCallback) {
+        db.collection("Games").document("Spojnice")
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Map<String, Object> data = document.getData();
+                                firestoreCallback.onCallBack(data);
+                            } else {
+                                Log.e("ERROR", "No such document");
+                            }
+                        } else {
+                            Log.e("ERROR", "Task failed");
+                        }
+                    }
+                });
     }
 
 }

@@ -2,7 +2,6 @@ package com.ftn.ma_sit_project.Model;
 
 import com.google.gson.annotations.SerializedName;
 
-
 public class User {
 
     @SerializedName("id")

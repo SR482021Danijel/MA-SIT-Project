@@ -11,8 +11,16 @@
         <item name="android:textSize">20sp</item>
         <item name="android:layout_marginTop">20sp</item>
         <item name="android:layout_marginRight">5sp</item>
+        <item name="android:textAlignment">center</item>
         <item name="android:layout_marginLeft">5sp</item>
+        <item name="android:background">@color/purple_500</item>
+        <item name="android:layout_height">90sp</item>
+        <item name="android:layout_width">50sp</item>
         <item name="android:padding">20sp</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">12sp</item>
+        <item name="android:autoSizeMaxTextSize">100sp</item>
+        <item name="android:autoSizeStepGranularity">2sp</item>
     </style>
 
     <style name="txtViewAssociation" parent="android:Widget.TextView">
