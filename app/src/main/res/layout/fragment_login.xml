@@ -24,7 +24,7 @@
     </TextView>
 
     <EditText
-        android:id="@+id/reg_email"
+        android:id="@+id/log_email"
         android:inputType="textEmailAddress"
         style="@style/regEdit">
 
@@ -37,14 +37,14 @@
     </TextView>
 
     <EditText
-        android:id="@+id/reg_password"
+        android:id="@+id/log_password"
         android:inputType="textPassword"
         style="@style/regEdit">
 
     </EditText>
 
     <Button
-        android:id="@+id/btn_reg"
+        android:id="@+id/btn_log"
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:textSize="30sp"
         android:layout_width="wrap_content"

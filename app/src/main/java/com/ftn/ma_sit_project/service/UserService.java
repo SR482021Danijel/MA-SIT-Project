@@ -10,4 +10,8 @@ public class UserService {
     public void addUser(User user){
         userRepository.addUser(user);
     }
+
+    public void getUser(String email, String password, UserRepository.FireStoreCallback fireStoreCallback){
+        userRepository.getUser(email, password, fireStoreCallback);
+    }
 }

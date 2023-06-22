@@ -1,5 +1,8 @@
 package com.ftn.ma_sit_project.fragments;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -16,7 +19,6 @@ import com.ftn.ma_sit_project.R;
 import com.ftn.ma_sit_project.commonUtils.MqttHandler;
 
 import java.io.IOException;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class HomeFragment extends Fragment {
     View view;

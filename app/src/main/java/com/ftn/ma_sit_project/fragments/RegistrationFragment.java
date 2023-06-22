@@ -73,7 +73,7 @@ public class RegistrationFragment extends Fragment {
                                 .replace(R.id.fragment_container, new HomeFragment())
                                 .setReorderingAllowed(true)
                                 .commit();
-                        
+
                         navigationView.setCheckedItem(R.id.nav_item_home);
                     } else {
                         Toast.makeText(activity.getApplicationContext(), "Passwords must match", Toast.LENGTH_SHORT).show();
