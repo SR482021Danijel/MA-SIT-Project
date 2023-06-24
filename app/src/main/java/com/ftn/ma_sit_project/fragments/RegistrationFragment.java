@@ -63,8 +63,7 @@ public class RegistrationFragment extends Fragment {
                         User newUser = new User(UUID.randomUUID().toString(),
                                 usernameText.getText().toString(),
                                 passwordText.getText().toString(),
-                                emailText.getText().toString());
-
+                                emailText.getText().toString(), 0, 0, 0, 0, 0, 0, 0, 0, 0 );
                         userService.addUser(newUser);
                         Toast.makeText(activity.getApplicationContext(), "Successful registration", Toast.LENGTH_SHORT).show();
 

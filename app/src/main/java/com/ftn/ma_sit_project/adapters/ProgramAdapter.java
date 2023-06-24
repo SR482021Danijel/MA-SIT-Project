@@ -1,6 +1,7 @@
 package com.ftn.ma_sit_project.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.ftn.ma_sit_project.Model.User;
 import com.ftn.ma_sit_project.R;
+import com.ftn.ma_sit_project.repository.UserRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProgramAdapter extends ArrayAdapter<String> {
 
@@ -21,6 +27,8 @@ public class ProgramAdapter extends ArrayAdapter<String> {
     String[] title1;
     String[] description1;
     LayoutInflater layoutInflater;
+
+    List<User> users = new ArrayList<>();
     public ProgramAdapter(Context context, String[] title, String[] description) {
         super(context, R.layout.single_item, R.id.titleId, title);
         this.context = context;

@@ -11,10 +11,12 @@ import androidx.fragment.app.Fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.ftn.ma_sit_project.Model.Data;
+import com.ftn.ma_sit_project.Model.User;
 import com.ftn.ma_sit_project.adapters.ProgramAdapter;
 import com.ftn.ma_sit_project.commonUtils.MqttHandler;
 import com.ftn.ma_sit_project.fragments.FrendListFragment;
@@ -23,8 +25,12 @@ import com.ftn.ma_sit_project.fragments.LoginFragment;
 import com.ftn.ma_sit_project.fragments.ProfileFragment;
 import com.ftn.ma_sit_project.fragments.RankListFragment;
 import com.ftn.ma_sit_project.fragments.RegistrationFragment;
+import com.ftn.ma_sit_project.repository.UserRepository;
 import com.google.android.material.navigation.NavigationView;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ListView listView;
     ProgramAdapter programAdapter;
 
+    List<User> users = new ArrayList<>();
     String[] title = {"a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa", "aaaaaaaa", "aaaaaaaaa"};
     String[] description = {"b", "bb", "bbb", "bbbb", "bbbbb", "bbbbbb", "bbbbbbb", "bbbbbbbb", "bbbbbbbbb"};
     private DrawerLayout drawerLayout;

@@ -97,27 +97,6 @@ public class HyphensFragment extends Fragment {
                         if(counter == 5){
                             counter = 0;
 
-//            List<String> keys = new ArrayList<>(map1.keySet());
-//            List<Object> keysValues = new ArrayList<>(map1.values());
-//
-//            for (Button button : leftbtns) {
-//                if (!keys.isEmpty()) {
-//                    int randomIndex = new Random().nextInt(keys.size());
-//                    String randomKey = keys.get(randomIndex);
-//                    button.setText(randomKey);
-//                    keys.remove(randomIndex);
-//
-//                }
-//            }
-//
-//            for (Button button : rightbtns) {
-//                if (!keysValues.isEmpty()) {
-//                    int randomIndex = new Random().nextInt(keysValues.size());
-//                    String randomValue = keysValues.get(randomIndex).toString();
-//                    button.setText(randomValue);
-//                    keysValues.remove(randomIndex);
-//                }
-//            }
                             int i = 1;
                             int a = 2;
                             for (Map.Entry<String, Object> entry : map1.entrySet()) {

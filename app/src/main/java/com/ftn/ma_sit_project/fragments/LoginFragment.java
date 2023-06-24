@@ -1,5 +1,8 @@
 package com.ftn.ma_sit_project.fragments;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -10,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -75,6 +79,10 @@ public class LoginFragment extends Fragment {
 
                                         Log.i("loggin", Data.loggedInUser.getUsername() + " " + Data.loggedInUser.getEmail());
                                         Toast.makeText(activity.getApplicationContext(), "Successful login", Toast.LENGTH_SHORT).show();
+                                        if (view != null) {
+                                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                        }
                                     }
                                 }
                             });

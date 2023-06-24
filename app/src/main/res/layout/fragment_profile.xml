@@ -53,7 +53,7 @@
             <TextView
                 android:layout_weight="1"
                 android:gravity="center"
-                android:id="@+id/userName"
+                android:id="@+id/userNameText"
                 android:text="User Name:"
                 style="@style/textViewProfile">
 
@@ -62,25 +62,26 @@
             <TextView
                 android:layout_weight="1"
                 android:gravity="center"
-                android:id="@+id/userNameValue"
+                android:id="@+id/userName"
                 android:text="Pera"
                 style="@style/textViewAmountProfile">
 
             </TextView>
+
 
         </TableRow>
 
         <TableRow>
 
             <TextView
-                android:id="@+id/email"
+                android:id="@+id/emailText"
                 android:text="Email:"
                 style="@style/textViewProfile">
 
             </TextView>
 
             <TextView
-                android:id="@+id/emailValue"
+                android:id="@+id/email"
                 android:text="asdf@dsafe.com"
                 style="@style/textViewAmountProfile">
 
@@ -95,14 +96,51 @@
         </TableRow>
 
         <TableRow android:layout_marginTop="20dp">
-            <TextView
-                android:text="Bodovi:"
-                android:textSize="20dp"
-                android:gravity="center"/>
+                <TextView
+                    android:text="Ko zna zna:"
+                    android:textSize="20dp"
+                    android:gravity="center"/>
 
-            <TextView android:text="10"
-                android:textSize="20dp"/>
-        </TableRow>
+            <TextView
+                android:id="@+id/textViewKoZnaZna"
+                android:layout_width="38dp"
+                android:textSize="20dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:gravity="center"
+                android:text="Asocijacije: "
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textViewAsocijacije"
+                android:layout_width="wrap_content"
+                android:textSize="20dp"
+                android:layout_marginRight="10sp"
+                android:width="40sp"/>
+            </TableRow>
+
+            <TableRow android:layout_marginTop="15dp">
+                <TextView
+                    android:text="Spojnice:"
+                    android:textSize="20dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/textViewSpojnice"
+                    android:textSize="20dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:text="Skocko:"
+                    android:textSize="20dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/textViewSkocko"
+                    android:textSize="20dp"
+                    android:layout_marginRight="10sp"/>
+            </TableRow>
 
         <TableRow android:layout_marginTop="15dp">
             <TextView
@@ -110,8 +148,20 @@
                 android:textSize="20dp"
                 android:gravity="center"/>
 
-            <TextView android:text="10"
-                android:textSize="20dp"/>
+            <TextView
+                android:id="@+id/textViewPartije"
+                android:textSize="20dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:text="KpK:"
+                android:textSize="20dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/textViewKorakPoKorak"
+                android:textSize="20dp"
+                android:layout_marginRight="10sp"/>
         </TableRow>
 
         <TableRow android:layout_marginTop="15dp">
@@ -121,10 +171,19 @@
                 android:gravity="center"/>
 
             <TextView
-                android:text="10"
+                android:id="@+id/textViewPobedjene"
                 android:textSize="20dp"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
+                android:layout_weight="1"/>
+
+            <TextView
+                android:text="Moj Broj:"
+                android:textSize="20dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/textViewMojBroj"
+                android:textSize="20dp"
+                android:layout_marginRight="10sp"/>
         </TableRow>
 
         <TableRow android:layout_marginTop="15dp">
@@ -133,8 +192,10 @@
                 android:textSize="20dp"
                 android:gravity="center"/>
 
-            <TextView android:text="10"
-                android:textSize="20dp"/>
+            <TextView
+                android:id="@+id/textViewIzgubljene"
+                android:textSize="20dp"
+                android:layout_weight="1"/>
         </TableRow>
 
     </TableLayout>

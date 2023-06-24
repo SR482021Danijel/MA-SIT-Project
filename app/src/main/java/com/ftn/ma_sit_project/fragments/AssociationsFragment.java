@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class AssociationsFragment extends Fragment {
     View view;
-    TextView a1,a2,a3,a4,b1,b2,b3,b4,c1,c2,c3,c4,d1,d2,d3,d4,e,player1Score,a_button,b_button,c_button,d_button;
+    TextView a1,a2,a3,a4,b1,b2,b3,b4,c1,c2,c3,c4,d1,d2,d3,d4,e,player1Score,a_button,b_button,c_button,d_button, asocijacije;
     Dialog dialog;
     CountDownTimer countDownTimer;
     ArrayList<String> arrayList = new ArrayList<>();
@@ -93,6 +93,7 @@ public class AssociationsFragment extends Fragment {
     public void setPoints(int poinst){
         score = Integer.parseInt((String) player1Score.getText());
         score+=poinst;
+//        asocijacije.setText(score+"");
         player1Score.setText(score + "");
     }
 
@@ -130,6 +131,7 @@ public class AssociationsFragment extends Fragment {
         b_button = view.findViewById(R.id.b_field);
         c_button = view.findViewById(R.id.c_field);
         d_button = view.findViewById(R.id.d_field);
+        asocijacije = view.findViewById(R.id.textViewAsocijacije);
         dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.pop_up_dialog);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -600,7 +602,7 @@ public class AssociationsFragment extends Fragment {
                 scoreTimer.setText("00:00");
                 getParentFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new SkockoFragment())
+                        .replace(R.id.fragment_container, new HomeFragment())
                         .setReorderingAllowed(true)
                         .commit();
             }
