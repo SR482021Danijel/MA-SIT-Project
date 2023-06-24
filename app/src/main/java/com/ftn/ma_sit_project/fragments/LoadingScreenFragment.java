@@ -48,6 +48,8 @@ public class LoadingScreenFragment extends Fragment {
         mqttHandler.connect();
 
         mqttHandler.startMatchmaking();
+
+        mqttHandler.pointShareSubscribe();
     }
 
     @Override
@@ -84,7 +86,7 @@ public class LoadingScreenFragment extends Fragment {
 
             @Override
             public void onFinish() {
-                User p2 = mqttHandler.getValue();
+                User p2 = mqttHandler.getP2Username();
                 if (p2 != null && !Objects.equals(p2.getUsername(), Data.loggedInUser.getUsername())) {
                     p2Name.setText(p2.getUsername());
                     getParentFragmentManager()
