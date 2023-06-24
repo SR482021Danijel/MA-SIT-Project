@@ -104,7 +104,7 @@ public class MyNumberFragment extends Fragment {
                         player1Score.setText(score + "");
                         Toast.makeText(activity.getApplicationContext(), "Correct! Points: +20", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(activity.getApplicationContext(), "Incorrect!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity.getApplicationContext(), "Incorrect! Points: +0", Toast.LENGTH_SHORT).show();
                     }
                     CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
                         @Override

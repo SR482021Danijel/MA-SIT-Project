@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.ftn.ma_sit_project.R;
 import com.ftn.ma_sit_project.commonUtils.Draggable;
+import com.ftn.ma_sit_project.commonUtils.MqttHandler;
 import com.ftn.ma_sit_project.commonUtils.ShowHideElements;
 import com.ftn.ma_sit_project.commonUtils.TempGetData;
 
@@ -37,28 +38,18 @@ import java.util.Objects;
 public class SkockoFragment extends Fragment {
 
     View view;
-
     CountDownTimer countDownTimer;
-
     TextView player1Score;
-
     AppCompatActivity activity;
-
     GridLayout gridLayout;
-
     ArrayList<ImageView> activeSlots = new ArrayList<>();
-
     ArrayList<String> answers = new ArrayList<>();
-
     ArrayList<String> guesses = new ArrayList<>();
-
     ArrayList<ImageView> circleAnswers = new ArrayList<>();
-
     int score = 0;
-
     int attempt = 0;
-
     int j = 0;
+    MqttHandler mqttHandler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,11 +122,23 @@ public class SkockoFragment extends Fragment {
                                 break;
                         }
                         player1Score.setText(score + "");
-                        getParentFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, new StepByStepFragment())
-                                .setReorderingAllowed(true)
-                                .commit();
+                        Toast.makeText(activity.getApplicationContext(), "Correct! Points: +" + score, Toast.LENGTH_SHORT).show();
+                        CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
+                            @Override
+                            public void onTick(long l) {
+                                Long min = ((l / 1000) % 3600) / 60;
+                                Long sec = (l / 1000);
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                getParentFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragment_container, new StepByStepFragment())
+                                        .setReorderingAllowed(true)
+                                        .commit();
+                            }
+                        }.start();
                     } else {
                         displayAnswer();
                         guesses.clear();
@@ -161,6 +164,8 @@ public class SkockoFragment extends Fragment {
         player1Score = activity.findViewById(R.id.player_1_score);
 
         ShowHideElements.showScoreBoard(activity);
+
+        mqttHandler = new MqttHandler();
 
         countDownTimer = new CountDownTimer(31000, 1000) {
             @Override

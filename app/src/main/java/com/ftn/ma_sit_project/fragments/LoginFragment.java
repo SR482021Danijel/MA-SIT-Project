@@ -71,6 +71,7 @@ public class LoginFragment extends Fragment {
                                                 .commit();
 
                                         navigationView.setCheckedItem(R.id.nav_item_home);
+                                        activity.invalidateOptionsMenu();
 
                                         Log.i("loggin", Data.loggedInUser.getUsername() + " " + Data.loggedInUser.getEmail());
                                         Toast.makeText(activity.getApplicationContext(), "Successful login", Toast.LENGTH_SHORT).show();

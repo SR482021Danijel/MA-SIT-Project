@@ -34,30 +34,28 @@
 
         </item>
 
+
+        <item android:enabled="false" />
+
+        <item
+            android:id="@+id/nav_item_log_in"
+            android:icon="@drawable/baseline_attribution_24"
+            android:title="Login">
+
+        </item>
+
+        <item
+            android:id="@+id/nav_item_register"
+            android:icon="@drawable/baseline_add_circle_24"
+            android:title="Register">
+
+        </item>
+
+        <item
+            android:id="@+id/nav_item_log_out"
+            android:icon="@drawable/baseline_exit_to_app_24"
+            android:title="Logout" />
+
     </group>
 
-    <item android:title="">
-        <menu>
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_item_log_in"
-                    android:title="Login"
-                    android:icon="@drawable/baseline_attribution_24">
-
-                </item>
-
-                <item
-                    android:id="@+id/nav_item_register"
-                    android:title="Register"
-                    android:icon="@drawable/baseline_add_circle_24">
-
-                </item>
-
-                <item
-                    android:id="@+id/nav_item_log_out"
-                    android:icon="@drawable/baseline_exit_to_app_24"
-                    android:title="Logout" />
-            </group>
-        </menu>
-    </item>
 </menu>

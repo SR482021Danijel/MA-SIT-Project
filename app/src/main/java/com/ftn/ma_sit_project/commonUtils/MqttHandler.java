@@ -2,35 +2,29 @@ package com.ftn.ma_sit_project.commonUtils;
 
 import android.util.Log;
 
+import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.User;
 import com.google.gson.Gson;
-import com.hivemq.client.mqtt.MqttGlobalPublishFilter;
+
 import com.hivemq.client.mqtt.datatypes.MqttQos;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
-import com.hivemq.client.mqtt.mqtt5.message.publish.Mqtt5Publish;
 
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
+import java.util.Objects;
+
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Consumer;
+
 
 public class MqttHandler {
 
-    private Mqtt5BlockingClient client;
+    public static Mqtt5BlockingClient client;
     private String str = "";
-
-    private User user = new User("1", "Pera", "pera123", "pera@gmail.com");
     Gson gson = new Gson();
-    private String sentPayload = gson.toJson(user);
+    private String sentPayload;
 
-    public void startMatchmaking() {
+    public void connect() {
         client = Mqtt5Client.builder()
                 .identifier(UUID.randomUUID().toString())
                 .serverHost("broker.hivemq.com")
@@ -41,20 +35,19 @@ public class MqttHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void startMatchmaking() {
 
         client.toAsync().subscribeWith()
                 .topicFilter("test/Mobilne/Request")
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(publish -> {
-                    str = StandardCharsets.UTF_8.decode(publish.getPayload().get()).toString();
-                    Log.i("mqtt", "payload = " + str);
-//                    try {
-//                        JSONObject jsonObject = new JSONObject(str);
-//                        Log.i("mqtt", "json = " + jsonObject);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-
+                    User user = gson.fromJson(StandardCharsets.UTF_8.decode(publish.getPayload().get()).toString(), User.class);
+                    if (!Objects.equals(user.getUsername(), Data.loggedInUser.getUsername())) {
+                        str = StandardCharsets.UTF_8.decode(publish.getPayload().get()).toString();
+                    }
+                    Log.i("mqtt", "payload = " + user.getUsername());
                 })
                 .send()
                 .whenComplete(((mqtt3ConnAck, throwable) -> {
@@ -63,6 +56,12 @@ public class MqttHandler {
                         throwable.printStackTrace();
                     } else {
                         Log.i("mqtt", "Subscribed");
+
+
+                        User sentUser = new User();
+//                        sentUser.setUsername(Data.loggedInUser.getUsername());
+                        sentUser.setUsername("Pera");
+                        sentPayload = gson.toJson(sentUser);
                         client.toAsync()
                                 .publishWith()
                                 .topic("test/Mobilne/Request")
@@ -92,7 +91,43 @@ public class MqttHandler {
         }));
     }
 
-    public User getValue(){
+    public void pointShareSubscribe() {
+
+        client.toAsync().subscribeWith()
+                .topicFilter("Mobilne/PointShare")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .callback(mqtt5Publish -> {
+
+                })
+                .send()
+                .whenComplete((mqtt5SubAck, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "Point Subscribe Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Subscribed to point share");
+                    }
+                });
+    }
+
+    public void pointSharePublish(){
+
+        client.toAsync().publishWith()
+                .topic("Mobilne/PointShare")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .payload("".getBytes())
+                .send()
+                .whenComplete((mqtt5PublishResult, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "Point Publish Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Published point share");
+                    }
+                });
+    }
+
+    public User getValue() {
         return gson.fromJson(str, User.class);
     }
 }

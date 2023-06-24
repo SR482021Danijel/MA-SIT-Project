@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.R;
 import com.ftn.ma_sit_project.commonUtils.MqttHandler;
 
@@ -39,13 +40,18 @@ public class HomeFragment extends Fragment {
 //                if (!isOnline()) {
 //                    Toast.makeText(activity.getApplicationContext(), "No internet connection", Toast.LENGTH_SHORT).show();
 //                } else {
+                if (Data.loggedInUser == null) {
+                    Toast.makeText(activity.getApplicationContext(), "Please log in/register", Toast.LENGTH_SHORT).show();
+                } else {
                     getParentFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, new LoadingScreenFragment())
                             .setReorderingAllowed(true)
                             .commit();
                 }
-//            }
+
+            }
+//        }
         });
 
         return view;
