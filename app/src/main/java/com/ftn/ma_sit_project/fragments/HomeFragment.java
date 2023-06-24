@@ -51,8 +51,22 @@ public class HomeFragment extends Fragment {
                 }
 
             }
+
+
 //        }
         });
+        Button btnSolo = view.findViewById(R.id.play_solo);
+        btnSolo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new SkockoFragment())
+                        .setReorderingAllowed(true)
+                        .commit();
+            }
+        });
+
 
         return view;
     }

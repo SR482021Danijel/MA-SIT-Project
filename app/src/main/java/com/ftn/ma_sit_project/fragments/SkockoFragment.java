@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.R;
 import com.ftn.ma_sit_project.commonUtils.Draggable;
 import com.ftn.ma_sit_project.commonUtils.MqttHandler;
@@ -39,7 +40,7 @@ public class SkockoFragment extends Fragment {
 
     View view;
     CountDownTimer countDownTimer;
-    TextView player1Score;
+    TextView player1Score, player2UserName;
     AppCompatActivity activity;
     GridLayout gridLayout;
     ArrayList<ImageView> activeSlots = new ArrayList<>();
@@ -50,6 +51,7 @@ public class SkockoFragment extends Fragment {
     int attempt = 0;
     int j = 0;
     MqttHandler mqttHandler;
+    boolean isMyTurn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,6 +87,16 @@ public class SkockoFragment extends Fragment {
         Draggable.makeDraggable(star, "6");
 
         j = setNewTargets(gridLayout, activeSlots);
+
+        colorAllTiles(gridLayout, isMyTurn);
+
+//        if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
+//            mqttHandler.decideTurnPlayer(isMyTurn -> {
+//                colorAllTiles(gridLayout, isMyTurn);
+////                Log.i("mqtt", "turn = " + isMyTurn);
+//            });
+//        }
+
 
         Button btnNext = view.findViewById(R.id.btn_skocko);
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -162,12 +174,15 @@ public class SkockoFragment extends Fragment {
         TextView scoreTimer = activity.findViewById(R.id.score_timer);
 
         player1Score = activity.findViewById(R.id.player_1_score);
+        player2UserName = activity.findViewById(R.id.player_2_user_name);
 
         ShowHideElements.showScoreBoard(activity);
 
         mqttHandler = new MqttHandler();
 
-        countDownTimer = new CountDownTimer(31000, 1000) {
+        isMyTurn = mqttHandler.getTurnPlayer();
+
+        countDownTimer = new CountDownTimer(90000, 1000) {
             @Override
             public void onTick(long l) {
                 Long min = ((l / 1000) % 3600) / 60;
@@ -239,6 +254,19 @@ public class SkockoFragment extends Fragment {
                 circleAnswers.get(i).setColorFilter(Color.YELLOW);
             }
             Log.i("status", statusList.get(i).toString());
+        }
+    }
+
+    public void colorAllTiles(ViewGroup parent, boolean isMyTurn) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
+            if (!(child instanceof ViewGroup)) {
+                if (!isMyTurn) {
+                    child.setBackgroundColor(Color.RED);
+                } else {
+                    child.setBackgroundColor(Color.BLUE);
+                }
+            }
         }
     }
 }

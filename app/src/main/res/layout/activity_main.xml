@@ -55,7 +55,7 @@
                 android:layout_alignTop="@+id/player_1_pic"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/player_1_pic"
-                android:text="User name">
+                android:text="Guest">
 
             </TextView>
 
@@ -97,11 +97,12 @@
                 android:layout_alignTop="@+id/player_2_pic"
                 android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@id/player_2_pic"
-                android:text="User name">
+                android:text="Guest">
 
             </TextView>
 
             <TextView
+                android:id="@+id/player_2_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/player_2_user_name"

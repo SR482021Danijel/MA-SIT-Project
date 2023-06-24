@@ -7,6 +7,7 @@ import com.ftn.ma_sit_project.Model.User;
 import com.ftn.ma_sit_project.Model.UserDTO;
 import com.google.gson.Gson;
 
+import com.hivemq.client.internal.mqtt.message.MqttMessage;
 import com.hivemq.client.mqtt.datatypes.MqttQos;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
@@ -26,8 +27,8 @@ public class MqttHandler {
     private User user = new User("1", "Pera", "pera123", "pera@gmail.com", 0, 0, 0, 0, 0, 0, 0, 0, 0);
     Gson gson = new Gson();
     private String sentPayload;
-
-    public int points;
+    private static int points;
+    private static boolean isMyTurn = false;
 
     public void connect() {
         client = Mqtt5Client.builder()
@@ -52,7 +53,7 @@ public class MqttHandler {
                     if (!Objects.equals(user.getUsername(), Data.loggedInUser.getUsername())) {
                         str = StandardCharsets.UTF_8.decode(publish.getPayload().get()).toString();
                     }
-                    Log.i("mqtt", "payload = " + user.getUsername());
+//                    Log.i("mqtt", "payload = " + user.getUsername());
                 })
                 .send()
                 .whenComplete(((mqtt3ConnAck, throwable) -> {
@@ -60,12 +61,12 @@ public class MqttHandler {
                         Log.i("mqtt", "Subscribe Error");
                         throwable.printStackTrace();
                     } else {
-                        Log.i("mqtt", "Subscribed");
+//                        Log.i("mqtt", "Subscribed");
 
 
                         User sentUser = new User();
-//                        sentUser.setUsername(Data.loggedInUser.getUsername());
-                        sentUser.setUsername("Pera");
+                        sentUser.setUsername(Data.loggedInUser.getUsername());
+//                        sentUser.setUsername("Pera");
                         sentPayload = gson.toJson(sentUser);
                         client.toAsync()
                                 .publishWith()
@@ -79,7 +80,7 @@ public class MqttHandler {
                                         Log.i("mqtt", "Publish Error");
                                         throwable2.printStackTrace();
                                     } else {
-                                        Log.i("mqtt", "Published");
+//                                        Log.i("mqtt", "Published");
                                     }
                                 }));
                     }
@@ -96,6 +97,52 @@ public class MqttHandler {
         }));
     }
 
+    public void decideTurnPlayer() {
+
+        double rnd = Math.random();
+
+        client.toAsync().subscribeWith()
+                .topicFilter("Mobilne/Turn")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .callback(mqtt5Publish -> {
+                    UserDTO user = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), UserDTO.class);
+                    if (!Objects.equals(user.getUsername(), Data.loggedInUser.getUsername())) {
+                        Log.i("mqtt", "opponent:" + user.getTurnNumber());
+                        isMyTurn = rnd > user.getTurnNumber();
+                        Log.i("mqtt", "turn: " + isMyTurn);
+                    } else {
+                        Log.i("mqtt", "me: " + user.getTurnNumber());
+                    }
+
+                })
+                .send()
+                .whenComplete((mqtt5SubAck, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "Turn Subscribe Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Subscribed to turn topic");
+
+                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
+                        String sent = gson.toJson(userDTO);
+                        client.toAsync().publishWith()
+                                .topic("Mobilne/Turn")
+                                .qos(MqttQos.AT_LEAST_ONCE)
+                                .payload(sent.getBytes())
+                                .retain(true)
+                                .send()
+                                .whenComplete((mqtt5PublishResult, throwable1) -> {
+                                    if (throwable1 != null) {
+                                        Log.i("mqtt", "Turn Publish Error");
+                                        throwable1.printStackTrace();
+                                    } else {
+                                        Log.i("mqtt", "Published to turn topic");
+                                    }
+                                });
+                    }
+                });
+    }
+
     public void pointShareSubscribe() {
 
         client.toAsync().subscribeWith()
@@ -103,7 +150,7 @@ public class MqttHandler {
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
                     UserDTO user = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), UserDTO.class);
-                    if (!Objects.equals(user.getUsername(), Data.loggedInUser.getUsername())){
+                    if (!Objects.equals(user.getUsername(), Data.loggedInUser.getUsername())) {
                         points = user.getPoints();
                     }
                 })
@@ -113,15 +160,16 @@ public class MqttHandler {
                         Log.i("mqtt", "Point Subscribe Error");
                         throwable.printStackTrace();
                     } else {
-                        Log.i("mqtt", "Subscribed to point share");
+//                        Log.i("mqtt", "Subscribed to point share");
                     }
                 });
     }
 
     public void pointSharePublish(int points) {
 
-        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), points);
+        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), points, 0.0);
         sentPayload = gson.toJson(userDTO);
+
         client.toAsync().publishWith()
                 .topic("Mobilne/PointShare")
                 .qos(MqttQos.AT_LEAST_ONCE)
@@ -132,7 +180,7 @@ public class MqttHandler {
                         Log.i("mqtt", "Point Publish Error");
                         throwable.printStackTrace();
                     } else {
-                        Log.i("mqtt", "Published point share");
+//                        Log.i("mqtt", "Published point share");
                     }
                 });
     }
@@ -141,7 +189,15 @@ public class MqttHandler {
         return gson.fromJson(str, User.class);
     }
 
-    public int getP2Points(){
+    public int getP2Points() {
         return points;
+    }
+
+    public boolean getTurnPlayer() {
+        return isMyTurn;
+    }
+
+    public interface TurnPlayerCallback {
+        public void onCallback(boolean isMyTurn);
     }
 }

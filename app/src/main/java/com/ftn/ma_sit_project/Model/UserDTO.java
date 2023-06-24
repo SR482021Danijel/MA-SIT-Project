@@ -10,9 +10,13 @@ public class UserDTO {
     @SerializedName("points")
     private int points;
 
-    public UserDTO(String username, int points) {
+    @SerializedName("turnNumber")
+    private double turnNumber;
+
+    public UserDTO(String username, int points, double turnNumber) {
         this.username = username;
         this.points = points;
+        this.turnNumber = turnNumber;
     }
 
     public UserDTO() {
@@ -32,5 +36,13 @@ public class UserDTO {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public double getTurnNumber() {
+        return turnNumber;
+    }
+
+    public void setTurnNumber(double turnNumber) {
+        this.turnNumber = turnNumber;
     }
 }

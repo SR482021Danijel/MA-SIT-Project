@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.User;
@@ -43,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String[] description = {"b", "bb", "bbb", "bbbb", "bbbbb", "bbbbbb", "bbbbbbb", "bbbbbbbb", "bbbbbbbbb"};
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    TextView p2UserName, p2Score;
+
+    MqttHandler mqttHandler = new MqttHandler();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -70,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             navigationView.setCheckedItem(R.id.nav_item_home);
         }
+
+        p2Score = findViewById(R.id.player_2_score);
+        p2UserName = findViewById(R.id.player_2_user_name);
     }
 
     @Override
@@ -119,6 +126,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (!(currentFragment instanceof HomeFragment)) {
             replaceFragment(new HomeFragment());
             navigationView.setCheckedItem(R.id.nav_item_home);
+            try {
+                mqttHandler.disconnect();
+                p2Score.setText("0");
+                p2UserName.setText("Guest");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             super.onBackPressed();
         }

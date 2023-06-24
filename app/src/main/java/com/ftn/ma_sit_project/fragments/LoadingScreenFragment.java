@@ -50,6 +50,8 @@ public class LoadingScreenFragment extends Fragment {
         mqttHandler.startMatchmaking();
 
         mqttHandler.pointShareSubscribe();
+
+        mqttHandler.decideTurnPlayer();
     }
 
     @Override
@@ -91,7 +93,7 @@ public class LoadingScreenFragment extends Fragment {
                     p2Name.setText(p2.getUsername());
                     getParentFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, new AssociationsFragment())
+                            .replace(R.id.fragment_container, new SkockoFragment())
                             .setReorderingAllowed(true)
                             .commit();
                 } else {
