@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.User;
+import com.ftn.ma_sit_project.Model.UserDTO;
 import com.google.gson.Gson;
 
 import com.hivemq.client.mqtt.datatypes.MqttQos;
@@ -25,6 +26,8 @@ public class MqttHandler {
     private User user = new User("1", "Pera", "pera123", "pera@gmail.com", 0, 0, 0, 0, 0, 0, 0, 0, 0);
     Gson gson = new Gson();
     private String sentPayload;
+
+    public int points;
 
     public void connect() {
         client = Mqtt5Client.builder()
@@ -99,7 +102,10 @@ public class MqttHandler {
                 .topicFilter("Mobilne/PointShare")
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
-
+                    UserDTO user = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), UserDTO.class);
+                    if (!Objects.equals(user.getUsername(), Data.loggedInUser.getUsername())){
+                        points = user.getPoints();
+                    }
                 })
                 .send()
                 .whenComplete((mqtt5SubAck, throwable) -> {
@@ -112,12 +118,14 @@ public class MqttHandler {
                 });
     }
 
-    public void pointSharePublish(){
+    public void pointSharePublish(int points) {
 
+        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), points);
+        sentPayload = gson.toJson(userDTO);
         client.toAsync().publishWith()
                 .topic("Mobilne/PointShare")
                 .qos(MqttQos.AT_LEAST_ONCE)
-                .payload("".getBytes())
+                .payload(sentPayload.getBytes())
                 .send()
                 .whenComplete((mqtt5PublishResult, throwable) -> {
                     if (throwable != null) {
@@ -129,7 +137,11 @@ public class MqttHandler {
                 });
     }
 
-    public User getValue() {
+    public User getP2Username() {
         return gson.fromJson(str, User.class);
+    }
+
+    public int getP2Points(){
+        return points;
     }
 }
