@@ -48,6 +48,7 @@ public class HyphensFragment extends Fragment {
 
     int counter = 0;
 
+
     boolean isClickedAgain = false;
 
     boolean isMyTurn = false;
@@ -57,6 +58,8 @@ public class HyphensFragment extends Fragment {
     boolean azaz = true;
 
     AppCompatActivity activity;
+
+    int score = 0;
 
     private void setupButtonListeners(List<TextView> leftButtons, List<TextView> rightButtons) {
         String[] lastLeftButtonText = new String[1];
@@ -101,6 +104,7 @@ public class HyphensFragment extends Fragment {
                             lastLetButton.isEnabled();
                             mqttHandler.textViewSharePublish(lastLetButton);
                             mqttHandler.textViewSharePublish(rightButton);
+                            score += 2;
                             Log.d("TextView", Integer.toString(lastLetButton.getId()));
                         } else {
                             Log.d("LITS", "JOK");
@@ -168,6 +172,7 @@ public class HyphensFragment extends Fragment {
                         lastLetButton.isEnabled();
                         mqttHandler.textViewSharePublish(lastLetButton);
                         mqttHandler.textViewSharePublish(rightButton);
+                        score += 2;
                         Log.d("TextView", Integer.toString(lastLetButton.getId()));
                     } else {
                         Log.d("LITS", "JOK");
@@ -253,6 +258,15 @@ public class HyphensFragment extends Fragment {
                         }
                     }
                         Log.d("LITS", map1.toString());
+
+                    if(mqttHandler.getTurnPlayer() == false){
+                        for(TextView textView : leftbtns){
+                            textView.setClickable(false);
+                        }
+                        for(TextView textView : rightbtns){
+                            textView.setClickable(false);
+                        }
+                    }
             }
         });
 
@@ -261,6 +275,7 @@ public class HyphensFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true){
+                    Log.d("mqtt", "isMyTurn");
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -271,7 +286,7 @@ public class HyphensFragment extends Fragment {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mqttHandler.getTurnPlayer() == false){
+                if(isMyTurn = true){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -282,7 +297,7 @@ public class HyphensFragment extends Fragment {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mqttHandler.getTurnPlayer() == false){
+                if(isMyTurn = true){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -293,7 +308,7 @@ public class HyphensFragment extends Fragment {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mqttHandler.getTurnPlayer() == false){
+                if(isMyTurn = true){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -304,7 +319,7 @@ public class HyphensFragment extends Fragment {
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mqttHandler.getTurnPlayer() == false){
+                if(isMyTurn = true){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -315,7 +330,7 @@ public class HyphensFragment extends Fragment {
         btn6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mqttHandler.getTurnPlayer() == false){
+                if(isMyTurn = true){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -326,7 +341,7 @@ public class HyphensFragment extends Fragment {
         btn7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mqttHandler.getTurnPlayer() == false){
+                if(isMyTurn = true){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -337,7 +352,7 @@ public class HyphensFragment extends Fragment {
         btn8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mqttHandler.getTurnPlayer() == false){
+                if(isMyTurn = true){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -348,7 +363,7 @@ public class HyphensFragment extends Fragment {
         btn9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mqttHandler.getTurnPlayer() == false){
+                if(isMyTurn = true){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -359,7 +374,7 @@ public class HyphensFragment extends Fragment {
         btn10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mqttHandler.getTurnPlayer() == false){
+                if(isMyTurn = true){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -367,7 +382,7 @@ public class HyphensFragment extends Fragment {
             }
         });
 
-        setupButtonListeners(leftbtns, rightbtns);
+//        setupButtonListeners(leftbtns, rightbtns);
 //        if(isMyTurn == true){
 //            setup(leftbtns, rightbtns);
 //        }else{
@@ -422,6 +437,13 @@ public class HyphensFragment extends Fragment {
             public void onFinish() {
 //                if(isMyTurn == true){
                     isMyTurn = true;
+                    score = 0;
+                    for(TextView textView : leftbtns){
+                        ColorDrawable viewColor = (ColorDrawable) textView.getBackground();
+                        if(viewColor.getColor() == Color.RED){
+                            textView.setClickable(true);
+                        }
+                    }
                     countDownTimer = new CountDownTimer(30000, 1000) {
                         @Override
                         public void onTick(long l) {
@@ -483,6 +505,7 @@ public class HyphensFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        score = 0;
 
         countDownTimer.cancel();
 
