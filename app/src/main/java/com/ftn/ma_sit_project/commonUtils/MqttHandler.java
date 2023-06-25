@@ -1,8 +1,12 @@
 package com.ftn.ma_sit_project.commonUtils;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.ftn.ma_sit_project.Model.Data;
+import com.ftn.ma_sit_project.Model.Hyphens;
 import com.ftn.ma_sit_project.Model.User;
 import com.ftn.ma_sit_project.Model.UserDTO;
 import com.google.gson.Gson;
@@ -30,6 +34,8 @@ public class MqttHandler {
     private static int points;
     private static boolean isMyTurn = false;
 
+    public TextView textView;
+    public Hyphens hyphens;
     public void connect() {
         client = Mqtt5Client.builder()
                 .identifier(UUID.randomUUID().toString())
@@ -185,6 +191,45 @@ public class MqttHandler {
                 });
     }
 
+    public void textViewShareSubscribe() {
+
+        client.toAsync().subscribeWith()
+                .topicFilter("Mobilne/TextViewShare")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .callback(mqtt5Publish -> {
+                    hyphens = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), Hyphens.class);
+                })
+                .send()
+                .whenComplete((mqtt5SubAck, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "Point Subscribe Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Subscribed to point share");
+                    }
+                });
+    }
+
+    public void textViewSharePublish(TextView hyphens) {
+
+        ColorDrawable viewColor = (ColorDrawable) hyphens.getBackground();
+        Hyphens hyphens1 = new Hyphens(hyphens.getId(), hyphens.getText().toString(), viewColor.getColor());
+        sentPayload = gson.toJson(hyphens1);
+        client.toAsync().publishWith()
+                .topic("Mobilne/TextViewShare")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .payload(sentPayload.getBytes())
+                .send()
+                .whenComplete((mqtt5PublishResult, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "Point Publish Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Published point share");
+                    }
+                });
+    }
+
     public User getP2Username() {
         return gson.fromJson(str, User.class);
     }
@@ -199,5 +244,14 @@ public class MqttHandler {
 
     public interface TurnPlayerCallback {
         public void onCallback(boolean isMyTurn);
+    }
+
+    public boolean getP2Boolean() {
+        return isMyTurn;
+    }
+
+    public Hyphens getP2Hyphens(){
+//        Hyphens hyphens1 = new Hyphens(2131230830,"a", Color.RED);
+        return hyphens;
     }
 }

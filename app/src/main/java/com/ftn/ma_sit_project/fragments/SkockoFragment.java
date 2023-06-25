@@ -139,7 +139,7 @@ public class SkockoFragment extends Fragment {
                             @Override
                             public void onTick(long l) {
                                 Long min = ((l / 1000) % 3600) / 60;
-                                Long sec = (l / 1000);
+                                Long sec = (l / 1000) % 60;
                             }
 
                             @Override
