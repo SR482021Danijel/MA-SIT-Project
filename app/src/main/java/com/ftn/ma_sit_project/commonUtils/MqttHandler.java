@@ -18,6 +18,7 @@ import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import java.util.UUID;
@@ -191,21 +192,23 @@ public class MqttHandler {
                 });
     }
 
-    public void textViewShareSubscribe() {
+    public void textViewShareSubscribe(TextViewStoreCallback textViewStoreCallback) {
 
         client.toAsync().subscribeWith()
                 .topicFilter("Mobilne/TextViewShare")
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
                     hyphens = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), Hyphens.class);
+                    textViewStoreCallback.onCallBack(hyphens);
                 })
                 .send()
                 .whenComplete((mqtt5SubAck, throwable) -> {
                     if (throwable != null) {
-                        Log.i("mqtt", "Point Subscribe Error");
+                        Log.i("mqtt", "TextView Subscribe Error");
                         throwable.printStackTrace();
                     } else {
-                        Log.i("mqtt", "Subscribed to point share");
+                        Log.i("mqtt", "Subscribed to TextView share");
+                        Log.i("mqtt", hyphens+"");
                     }
                 });
     }
@@ -222,10 +225,11 @@ public class MqttHandler {
                 .send()
                 .whenComplete((mqtt5PublishResult, throwable) -> {
                     if (throwable != null) {
-                        Log.i("mqtt", "Point Publish Error");
+                        Log.i("mqtt", "TextView Publish Error");
                         throwable.printStackTrace();
                     } else {
-                        Log.i("mqtt", "Published point share");
+                        Log.i("mqtt", "Published TextView share");
+                        Log.i("mqtt", sentPayload+"");
                     }
                 });
     }
@@ -252,6 +256,11 @@ public class MqttHandler {
 
     public Hyphens getP2Hyphens(){
 //        Hyphens hyphens1 = new Hyphens(2131230830,"a", Color.RED);
+        Log.i("mqtt", hyphens+"to je to");
         return hyphens;
+    }
+
+    public interface TextViewStoreCallback{
+        void onCallBack(Hyphens hyphens);
     }
 }

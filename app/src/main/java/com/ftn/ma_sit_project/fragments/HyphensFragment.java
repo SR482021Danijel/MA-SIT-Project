@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.ftn.ma_sit_project.Model.Hyphens;
 import com.ftn.ma_sit_project.R;
 import com.ftn.ma_sit_project.commonUtils.MqttHandler;
+import com.ftn.ma_sit_project.commonUtils.ShowHideElements;
 import com.ftn.ma_sit_project.commonUtils.TempGetData;
 
 import java.util.ArrayList;
@@ -113,45 +114,9 @@ public class HyphensFragment extends Fragment {
                         for (TextView b : rightButtons) {
                             b.setEnabled(false);
                         }
-//                        counter++;
-//                        if(counter == 5){
-//                            counter = 0;
-//
-//                            int i = 1;
-//                            int a = 2;
-//                            for (Map.Entry<String, Object> entry : map1.entrySet()) {
-//                                String buttonKey = entry.getKey();
-//                                String buttonValue = entry.getValue().toString();
-//                                int resIDKey = getResources().getIdentifier("btn" + i, "id", getActivity().getPackageName());
-//                                TextView buttonKey1 = getActivity().findViewById(resIDKey);
-//                                buttonKey1.setText(buttonKey);
-//                                int resIDValue = getResources().getIdentifier("btn" + a, "id", getActivity().getPackageName());
-//                                TextView buttonValue1 = getActivity().findViewById(resIDValue);
-//                                buttonValue1.setText(buttonValue);
-//                                i += 2;
-//                                a += 2;
-//                                ColorDrawable viewColor = (ColorDrawable) buttonKey1.getBackground();
-//                                if(viewColor.getColor() == Color.GREEN){
-//                                    buttonKey1.setBackgroundColor(Color.GREEN);
-//                                    buttonValue1.setBackgroundColor(Color.GREEN);
-//                                }else {
-//                                    buttonKey1.setBackgroundColor(Color.RED);
-//                                    buttonValue1.setBackgroundColor(Color.RED);
-//                                }
-//                            }
-//                        }
                     }
                 });
             }
-
-//        }else{
-//            for (TextView textView : leftButtons){
-//                textView.isEnabled();
-//            }
-//            for (TextView textView : rightButtons){
-//                textView.isEnabled();
-//            }
-//        }
 
     }
 
@@ -216,48 +181,11 @@ public class HyphensFragment extends Fragment {
                     for (TextView b : rightButtons) {
                         b.setEnabled(false);
                     }
-//                    counter++;
-//                    if (counter == 5) {
-//                        counter = 0;
-//
-//                        int i = 1;
-//                        int a = 2;
-//                        for (Map.Entry<String, Object> entry : map1.entrySet()) {
-//                            String buttonKey = entry.getKey();
-//                            String buttonValue = entry.getValue().toString();
-//                            int resIDKey = getResources().getIdentifier("btn" + i, "id", getActivity().getPackageName());
-//                            TextView buttonKey1 = getActivity().findViewById(resIDKey);
-//                            buttonKey1.setText(buttonKey);
-//                            int resIDValue = getResources().getIdentifier("btn" + a, "id", getActivity().getPackageName());
-//                            TextView buttonValue1 = getActivity().findViewById(resIDValue);
-//                            buttonValue1.setText(buttonValue);
-//                            i += 2;
-//                            a += 2;
-//                            ColorDrawable viewColor = (ColorDrawable) buttonKey1.getBackground();
-//                            if (viewColor.getColor() == Color.GREEN) {
-//                                buttonKey1.setBackgroundColor(Color.GREEN);
-//                                buttonValue1.setBackgroundColor(Color.GREEN);
-//                            } else {
-//                                buttonKey1.setBackgroundColor(Color.RED);
-//                                buttonValue1.setBackgroundColor(Color.RED);
-//                            }
-//                        }
-//                    }
                 }
             });
         }
 
-//        }else{
-//            for (TextView textView : leftButtons){
-//                textView.isEnabled();
-//            }
-//            for (TextView textView : rightButtons){
-//                textView.isEnabled();
-//            }
-//        }
-
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -313,17 +241,6 @@ public class HyphensFragment extends Fragment {
                             button.setText(randomKey);
                             keys.remove(randomIndex);
                         }
-                        if(mqttHandler.getTurnPlayer() == true){
-                            Hyphens hyphens = mqttHandler.getP2Hyphens();
-                            if(hyphens != null){
-                                for(TextView textView : leftbtns){
-                                    if(textView.getId() == hyphens.getId()){
-                                        textView.setBackgroundColor(hyphens.getColor());
-                                    }
-                                }
-                            }
-                            button.setClickable(false);
-                        }
                     }
 
                     for (TextView button : rightbtns) {
@@ -334,29 +251,11 @@ public class HyphensFragment extends Fragment {
                             keysValues.remove(randomIndex);
                             button.setClickable(false);
                         }
-                        if(mqttHandler.getTurnPlayer() == true){
-                            Hyphens hyphens = mqttHandler.getP2Hyphens();
-                            if(hyphens != null){
-                                for(TextView textView : leftbtns){
-                                    if(textView.getId() == hyphens.getId()){
-                                        textView.setBackgroundColor(hyphens.getColor());
-                                    }
-                                }
-                            }
-                            button.setClickable(false);
-                        }
                     }
                         Log.d("LITS", map1.toString());
-//                }else {
-//                    for(TextView textView : leftbtns){
-//                        textView.setEnabled(true);
-//                    }
-//                    for(TextView textView : rightbtns){
-//                        textView.setEnabled(true);
-//                    }
-//                }
             }
         });
+
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -372,7 +271,7 @@ public class HyphensFragment extends Fragment {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isMyTurn == true){
+                if(mqttHandler.getTurnPlayer() == false){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -383,7 +282,7 @@ public class HyphensFragment extends Fragment {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isMyTurn == true){
+                if(mqttHandler.getTurnPlayer() == false){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -394,7 +293,7 @@ public class HyphensFragment extends Fragment {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isMyTurn == true){
+                if(mqttHandler.getTurnPlayer() == false){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -405,7 +304,7 @@ public class HyphensFragment extends Fragment {
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isMyTurn == true){
+                if(mqttHandler.getTurnPlayer() == false){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -416,7 +315,7 @@ public class HyphensFragment extends Fragment {
         btn6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isMyTurn == true){
+                if(mqttHandler.getTurnPlayer() == false){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -427,7 +326,7 @@ public class HyphensFragment extends Fragment {
         btn7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isMyTurn == true){
+                if(mqttHandler.getTurnPlayer() == false){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -438,7 +337,7 @@ public class HyphensFragment extends Fragment {
         btn8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isMyTurn == true){
+                if(mqttHandler.getTurnPlayer() == false){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -449,7 +348,7 @@ public class HyphensFragment extends Fragment {
         btn9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isMyTurn == true){
+                if(mqttHandler.getTurnPlayer() == false){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -460,7 +359,7 @@ public class HyphensFragment extends Fragment {
         btn10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isMyTurn == true){
+                if(mqttHandler.getTurnPlayer() == false){
                     setup(leftbtns, rightbtns);
                 }else{
                     setupButtonListeners(leftbtns, rightbtns);
@@ -480,7 +379,25 @@ public class HyphensFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mqttHandler.textViewShareSubscribe();
+        mqttHandler.textViewShareSubscribe(new MqttHandler.TextViewStoreCallback() {
+            @Override
+            public void onCallBack(Hyphens hyphens) {
+                    if(hyphens != null){
+                        for(TextView textView : leftbtns){
+                            if(textView.getId() == hyphens.getId()){
+                                textView.setBackgroundColor(hyphens.getColor());
+                                textView.setClickable(false);
+                            }
+                        }
+                        for(TextView textView : rightbtns){
+                            if(textView.getId() == hyphens.getId()){
+                                textView.setBackgroundColor(hyphens.getColor());
+                                textView.setClickable(false);
+                            }
+                        }
+                    }
+                }
+        });
 
         activity = (AppCompatActivity) getActivity();
 
@@ -566,11 +483,13 @@ public class HyphensFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
-        getActivity().findViewById(R.id.score_board).setVisibility(View.GONE);
+        countDownTimer.cancel();
 
-        DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        ShowHideElements.hideScoreBoard(activity);
+
+        activity.getSupportActionBar().show();
+
+        ShowHideElements.unlockDrawerLayout(activity);
     }
 }
