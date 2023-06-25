@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String[] description = {"b", "bb", "bbb", "bbbb", "bbbbb", "bbbbbb", "bbbbbbb", "bbbbbbbb", "bbbbbbbbb"};
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    TextView p2UserName, p2Score;
+    TextView p2UserName, p2Score, p1UserName, p1Score;
 
     MqttHandler mqttHandler = new MqttHandler();
 
@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         p2Score = findViewById(R.id.player_2_score);
         p2UserName = findViewById(R.id.player_2_user_name);
+        p1UserName = findViewById(R.id.player_1_user_name);
+        p1Score = findViewById(R.id.player_1_score);
     }
 
     @Override
@@ -128,7 +130,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_item_home);
             try {
                 mqttHandler.disconnect();
+                p1Score.setText("0");
                 p2Score.setText("0");
+                p1UserName.setText("Guest");
                 p2UserName.setText("Guest");
             } catch (Exception e) {
                 e.printStackTrace();

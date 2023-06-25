@@ -40,7 +40,7 @@ public class SkockoFragment extends Fragment {
 
     View view;
     CountDownTimer countDownTimer;
-    TextView player1Score, player2UserName;
+    TextView player1Score, player2UserName, p1UserName;
     AppCompatActivity activity;
     GridLayout gridLayout;
     ArrayList<ImageView> activeSlots = new ArrayList<>();
@@ -67,35 +67,40 @@ public class SkockoFragment extends Fragment {
         });
 
         gridLayout = view.findViewById(R.id.targets);
+        ViewGroup linear = view.findViewById(R.id.skocko_options);
 
         ImageView skocko = view.findViewById(R.id.option_skocko);
-        Draggable.makeDraggable(skocko, "1");
-
         ImageView rectangle = view.findViewById(R.id.option_rectangle);
-        Draggable.makeDraggable(rectangle, "2");
-
         ImageView circle = view.findViewById(R.id.option_circle);
-        Draggable.makeDraggable(circle, "3");
-
         ImageView heart = view.findViewById(R.id.option_heart);
-        Draggable.makeDraggable(heart, "4");
-
         ImageView triangle = view.findViewById(R.id.option_triangle);
-        Draggable.makeDraggable(triangle, "5");
-
         ImageView star = view.findViewById(R.id.option_star);
-        Draggable.makeDraggable(star, "6");
+
+        if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
+            colorAllTiles(gridLayout, isMyTurn);
+            colorAllTiles(linear, isMyTurn);
+            if (isMyTurn) {
+                Draggable.makeDraggable(skocko, "1");
+                Draggable.makeDraggable(rectangle, "2");
+                Draggable.makeDraggable(circle, "3");
+                Draggable.makeDraggable(heart, "4");
+                Draggable.makeDraggable(triangle, "5");
+                Draggable.makeDraggable(star, "6");
+            }
+        } else {
+            Draggable.makeDraggable(skocko, "1");
+            Draggable.makeDraggable(rectangle, "2");
+            Draggable.makeDraggable(circle, "3");
+            Draggable.makeDraggable(heart, "4");
+            Draggable.makeDraggable(triangle, "5");
+            Draggable.makeDraggable(star, "6");
+        }
 
         j = setNewTargets(gridLayout, activeSlots);
 
-        colorAllTiles(gridLayout, isMyTurn);
-
-//        if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
-//            mqttHandler.decideTurnPlayer(isMyTurn -> {
-//                colorAllTiles(gridLayout, isMyTurn);
-////                Log.i("mqtt", "turn = " + isMyTurn);
-//            });
-//        }
+        if (Data.loggedInUser != null) {
+            p1UserName.setText(Data.loggedInUser.getUsername());
+        }
 
 
         Button btnNext = view.findViewById(R.id.btn_skocko);
@@ -173,6 +178,7 @@ public class SkockoFragment extends Fragment {
 
         TextView scoreTimer = activity.findViewById(R.id.score_timer);
 
+        p1UserName = activity.findViewById(R.id.player_1_user_name);
         player1Score = activity.findViewById(R.id.player_1_score);
         player2UserName = activity.findViewById(R.id.player_2_user_name);
 
