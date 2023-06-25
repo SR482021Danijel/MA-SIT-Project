@@ -26,6 +26,6 @@ public class Skocko {
 
     public static Integer getImage(CharSequence id){
 
-        return getOptions().get(id);
+        return options.get(id);
     }
 }

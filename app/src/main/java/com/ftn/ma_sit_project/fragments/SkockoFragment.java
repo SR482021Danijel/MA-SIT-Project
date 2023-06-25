@@ -1,15 +1,13 @@
 package com.ftn.ma_sit_project.fragments;
 
-import android.content.Context;
+
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.Region;
+
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
@@ -24,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftn.ma_sit_project.Model.Data;
+import com.ftn.ma_sit_project.Model.Skocko;
 import com.ftn.ma_sit_project.R;
 import com.ftn.ma_sit_project.commonUtils.Draggable;
 import com.ftn.ma_sit_project.commonUtils.MqttHandler;
@@ -47,11 +46,11 @@ public class SkockoFragment extends Fragment {
     ArrayList<String> answers = new ArrayList<>();
     ArrayList<String> guesses = new ArrayList<>();
     ArrayList<ImageView> circleAnswers = new ArrayList<>();
-    int score = 0;
-    int attempt = 0;
-    int j = 0;
+    int score = 0, j = 0, attempt = 0;
     MqttHandler mqttHandler;
     boolean isMyTurn;
+
+    Button btnNext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,6 +75,9 @@ public class SkockoFragment extends Fragment {
         ImageView triangle = view.findViewById(R.id.option_triangle);
         ImageView star = view.findViewById(R.id.option_star);
 
+        btnNext = view.findViewById(R.id.btn_skocko);
+        btnNext.setClickable(false);
+
         if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
             colorAllTiles(gridLayout, isMyTurn);
             colorAllTiles(linear, isMyTurn);
@@ -86,6 +88,7 @@ public class SkockoFragment extends Fragment {
                 Draggable.makeDraggable(heart, "4");
                 Draggable.makeDraggable(triangle, "5");
                 Draggable.makeDraggable(star, "6");
+                btnNext.setClickable(true);
             }
         } else {
             Draggable.makeDraggable(skocko, "1");
@@ -94,7 +97,10 @@ public class SkockoFragment extends Fragment {
             Draggable.makeDraggable(heart, "4");
             Draggable.makeDraggable(triangle, "5");
             Draggable.makeDraggable(star, "6");
+            btnNext.setClickable(true);
         }
+
+        setCheckButton();
 
         j = setNewTargets(gridLayout, activeSlots);
 
@@ -102,8 +108,77 @@ public class SkockoFragment extends Fragment {
             p1UserName.setText(Data.loggedInUser.getUsername());
         }
 
+        return view;
+    }
 
-        Button btnNext = view.findViewById(R.id.btn_skocko);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        activity = (AppCompatActivity) getActivity();
+
+        TextView scoreTimer = activity.findViewById(R.id.score_timer);
+
+        p1UserName = activity.findViewById(R.id.player_1_user_name);
+        player1Score = activity.findViewById(R.id.player_1_score);
+        player2UserName = activity.findViewById(R.id.player_2_user_name);
+
+        ShowHideElements.showScoreBoard(activity);
+
+        mqttHandler = new MqttHandler();
+
+        isMyTurn = mqttHandler.getTurnPlayer();
+
+        mqttHandler.skockoSubscribe(new MqttHandler.SkockoCallback() {
+            @Override
+            public void onCallback(ArrayList<String> dataList) {
+                if (!isMyTurn) {
+                    for (int i = 0; i < 4; i++) {
+                        Integer imageId = Skocko.getImage(dataList.get(i));
+                        activeSlots.get(i).setImageResource(imageId);
+                        activeSlots.get(i).setTag(dataList.get(i));
+                        activeSlots.get(i).invalidate();
+                    }
+
+                    btnNext.performClick();
+                }
+            }
+        });
+
+        countDownTimer = new CountDownTimer(90000, 1000) {
+            @Override
+            public void onTick(long l) {
+                Long min = ((l / 1000) % 3600) / 60;
+                Long sec = (l / 1000) % 60;
+                String format = String.format(Locale.getDefault(), "%02d:%02d", min, sec);
+                scoreTimer.setText(format);
+            }
+
+            @Override
+            public void onFinish() {
+                scoreTimer.setText("00:00");
+            }
+        }.start();
+
+        activity.getSupportActionBar().hide();
+
+        ShowHideElements.lockDrawerLayout(activity);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        countDownTimer.cancel();
+
+        ShowHideElements.hideScoreBoard(activity);
+
+        activity.getSupportActionBar().show();
+
+        ShowHideElements.unlockDrawerLayout(activity);
+    }
+
+    public void setCheckButton() {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,7 +231,9 @@ public class SkockoFragment extends Fragment {
                                         .commit();
                             }
                         }.start();
+
                     } else {
+                        mqttHandler.skockoPublish(guesses);
                         displayAnswer();
                         guesses.clear();
                         activeSlots.clear();
@@ -166,59 +243,6 @@ public class SkockoFragment extends Fragment {
                 }
             }
         });
-
-        return view;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        activity = (AppCompatActivity) getActivity();
-
-        TextView scoreTimer = activity.findViewById(R.id.score_timer);
-
-        p1UserName = activity.findViewById(R.id.player_1_user_name);
-        player1Score = activity.findViewById(R.id.player_1_score);
-        player2UserName = activity.findViewById(R.id.player_2_user_name);
-
-        ShowHideElements.showScoreBoard(activity);
-
-        mqttHandler = new MqttHandler();
-
-        isMyTurn = mqttHandler.getTurnPlayer();
-
-        countDownTimer = new CountDownTimer(90000, 1000) {
-            @Override
-            public void onTick(long l) {
-                Long min = ((l / 1000) % 3600) / 60;
-                Long sec = (l / 1000) % 60;
-                String format = String.format(Locale.getDefault(), "%02d:%02d", min, sec);
-                scoreTimer.setText(format);
-            }
-
-            @Override
-            public void onFinish() {
-                scoreTimer.setText("00:00");
-            }
-        }.start();
-
-        activity.getSupportActionBar().hide();
-
-        ShowHideElements.lockDrawerLayout(activity);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        countDownTimer.cancel();
-
-        ShowHideElements.hideScoreBoard(activity);
-
-        activity.getSupportActionBar().show();
-
-        ShowHideElements.unlockDrawerLayout(activity);
     }
 
     public int setNewTargets(ViewGroup parent, ArrayList<ImageView> list) {

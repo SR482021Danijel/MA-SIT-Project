@@ -3,12 +3,14 @@ package com.ftn.ma_sit_project.commonUtils;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.Hyphens;
 import com.ftn.ma_sit_project.Model.User;
 import com.ftn.ma_sit_project.Model.UserDTO;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import com.hivemq.client.internal.mqtt.message.MqttMessage;
@@ -17,8 +19,11 @@ import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 
 
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import java.util.UUID;
@@ -37,6 +42,7 @@ public class MqttHandler {
 
     public TextView textView;
     public Hyphens hyphens;
+
     public void connect() {
         client = Mqtt5Client.builder()
                 .identifier(UUID.randomUUID().toString())
@@ -72,8 +78,8 @@ public class MqttHandler {
 
 
                         User sentUser = new User();
-//                        sentUser.setUsername(Data.loggedInUser.getUsername());
-                        sentUser.setUsername("Pera");
+                        sentUser.setUsername(Data.loggedInUser.getUsername());
+//                        sentUser.setUsername("Pera");
                         sentPayload = gson.toJson(sentUser);
                         client.toAsync()
                                 .publishWith()
@@ -130,8 +136,8 @@ public class MqttHandler {
                     } else {
                         Log.i("mqtt", "Subscribed to turn topic");
 
-//                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
-                        UserDTO userDTO = new UserDTO("Pera", 0, rnd - 1);
+                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
+//                        UserDTO userDTO = new UserDTO("Pera", 0, rnd - 1);
                         String sent = gson.toJson(userDTO);
                         client.toAsync().publishWith()
                                 .topic("Mobilne/Turn")
@@ -209,7 +215,7 @@ public class MqttHandler {
                         throwable.printStackTrace();
                     } else {
                         Log.i("mqtt", "Subscribed to TextView share");
-                        Log.i("mqtt", hyphens+"");
+                        Log.i("mqtt", hyphens + "");
                     }
                 });
     }
@@ -230,10 +236,57 @@ public class MqttHandler {
                         throwable.printStackTrace();
                     } else {
                         Log.i("mqtt", "Published TextView share");
-                        Log.i("mqtt", sentPayload+"");
+                        Log.i("mqtt", sentPayload + "");
                     }
                 });
     }
+
+    public void skockoSubscribe(SkockoCallback skockoCallback) {
+
+        client.toAsync().subscribeWith()
+                .topicFilter("Mobilne/Skocko")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .callback(mqtt5Publish -> {
+                    String[] strList = mqtt5Publish.getPayload().toString().split(",");
+                    ArrayList<String> list = new ArrayList<>(Arrays.asList(strList));
+//                    Type listType = new TypeToken<ArrayList<ImageView>>() {
+//                    }.getType();
+//                    ArrayList<ImageView> list = gson.fromJson(mqtt5Publish.getPayload().toString(), listType);
+                    skockoCallback.onCallback(list);
+                    Log.i("mqtt", "List: " + mqtt5Publish.getPayload().get());
+                })
+                .send()
+                .whenComplete((mqtt5SubAck, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "Skocko Subscribe Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Subscribed to Skocko");
+                    }
+                });
+    }
+
+    public void skockoPublish(ArrayList<String> dataList) {
+
+//        Type listType = new TypeToken<ArrayList<ImageView>>() {
+//        }.getType();
+//        String sent = gson.toJson(dataList, listType);
+        String sent = String.join(",", dataList);
+        client.toAsync().publishWith()
+                .topic("Mobilne/Skocko")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .payload(sent.getBytes())
+                .send()
+                .whenComplete((mqtt5PublishResult, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "Point Publish Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Published skocko");
+                    }
+                });
+    }
+
 
     public User getP2Username() {
         return gson.fromJson(str, User.class);
@@ -247,21 +300,21 @@ public class MqttHandler {
         return isMyTurn;
     }
 
-    public interface TurnPlayerCallback {
-        public void onCallback(boolean isMyTurn);
+    public interface SkockoCallback {
+        public void onCallback(ArrayList<String> dataList);
     }
 
     public boolean getP2Boolean() {
         return isMyTurn;
     }
 
-    public Hyphens getP2Hyphens(){
+    public Hyphens getP2Hyphens() {
 //        Hyphens hyphens1 = new Hyphens(2131230830,"a", Color.RED);
-        Log.i("mqtt", hyphens+"to je to");
+        Log.i("mqtt", hyphens + "to je to");
         return hyphens;
     }
 
-    public interface TextViewStoreCallback{
+    public interface TextViewStoreCallback {
         void onCallBack(Hyphens hyphens);
     }
 }
