@@ -207,7 +207,9 @@ public class MqttHandler {
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
                     hyphens = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), Hyphens.class);
-                    textViewStoreCallback.onCallBack(hyphens);
+                    if (!Objects.equals(hyphens.getUserName(), Data.loggedInUser.getUsername())){
+                        textViewStoreCallback.onCallBack(hyphens);
+                    }
                 })
                 .send()
                 .whenComplete((mqtt5SubAck, throwable) -> {
@@ -224,8 +226,8 @@ public class MqttHandler {
     public void textViewSharePublish(TextView hyphens) {
 
         ColorDrawable viewColor = (ColorDrawable) hyphens.getBackground();
-        Hyphens hyphens1 = new Hyphens(hyphens.getId(), hyphens.getText().toString(), viewColor.getColor());
-        sentPayload = gson.toJson(hyphens1);
+        Hyphens hyphens1 = new Hyphens(hyphens.getId(), hyphens.getText().toString(), viewColor.getColor(), Data.loggedInUser.getUsername());
+        sentPayload = gson.toJson(hyphens1, Hyphens.class);
         client.toAsync().publishWith()
                 .topic("Mobilne/TextViewShare")
                 .qos(MqttQos.AT_LEAST_ONCE)

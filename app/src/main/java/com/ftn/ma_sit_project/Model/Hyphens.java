@@ -5,6 +5,8 @@ import android.graphics.drawable.ColorDrawable;
 import com.google.gson.annotations.SerializedName;
 
 public class Hyphens {
+    @SerializedName("userName")
+    private String userName;
     @SerializedName("id")
     private int id;
     @SerializedName("text")
@@ -12,10 +14,11 @@ public class Hyphens {
     @SerializedName("color")
     private int color;
 
-    public Hyphens(int id, String text, int color){
+    public Hyphens(int id, String text, int color, String userName){
         this.id = id;
         this.text = text;
         this.color = color;
+        this.userName = userName;
     }
 
     public Hyphens(){
@@ -44,5 +47,12 @@ public class Hyphens {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

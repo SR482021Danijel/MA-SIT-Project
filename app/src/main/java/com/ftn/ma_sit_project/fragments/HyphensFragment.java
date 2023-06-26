@@ -398,18 +398,23 @@ public class HyphensFragment extends Fragment {
             @Override
             public void onCallBack(Hyphens hyphens) {
                     if(hyphens != null){
-                        for(TextView textView : leftbtns){
-                            if(textView.getId() == hyphens.getId()){
-                                textView.setBackgroundColor(hyphens.getColor());
-                                textView.setClickable(false);
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                for(TextView textView : leftbtns){
+                                    if(textView.getId() == hyphens.getId()){
+                                        textView.setBackgroundColor(hyphens.getColor());
+                                        textView.setClickable(false);
+                                    }
+                                }
+                                for(TextView textView : rightbtns){
+                                    if(textView.getId() == hyphens.getId()){
+                                        textView.setBackgroundColor(hyphens.getColor());
+                                        textView.setClickable(false);
+                                    }
+                                }
                             }
-                        }
-                        for(TextView textView : rightbtns){
-                            if(textView.getId() == hyphens.getId()){
-                                textView.setBackgroundColor(hyphens.getColor());
-                                textView.setClickable(false);
-                            }
-                        }
+                        });
                     }
                 }
         });
