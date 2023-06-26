@@ -55,4 +55,14 @@ public class Hyphens {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+    @Override
+    public String toString() {
+        return "Hyphens{" +
+                "userName='" + userName + '\'' +
+                ", id=" + id +
+                ", text='" + text + '\'' +
+                ", color=" + color +
+                '}';
+    }
 }

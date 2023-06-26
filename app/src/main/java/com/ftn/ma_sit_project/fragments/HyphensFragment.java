@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.Hyphens;
 import com.ftn.ma_sit_project.R;
 import com.ftn.ma_sit_project.commonUtils.MqttHandler;
@@ -39,7 +40,7 @@ import java.util.Random;
 public class HyphensFragment extends Fragment {
     View view;
 
-    TextView btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,btn10,lastLetButton;
+    TextView btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,btn10,lastLetButton, player2UserName;
     Map<String, Object> map1 = new HashMap<>();
     List<TextView> leftbtns = new ArrayList<>();
     List<TextView> rightbtns = new ArrayList<>();
@@ -394,9 +395,11 @@ public class HyphensFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mqttHandler.textViewShareSubscribe(new MqttHandler.TextViewStoreCallback() {
-            @Override
-            public void onCallBack(Hyphens hyphens) {
+        player2UserName = activity.findViewById(R.id.player_2_user_name);
+        if(Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")){
+            mqttHandler.textViewShareSubscribe(new MqttHandler.TextViewStoreCallback() {
+                @Override
+                public void onCallBack(Hyphens hyphens) {
                     if(hyphens != null){
                         activity.runOnUiThread(new Runnable() {
                             @Override
@@ -404,20 +407,26 @@ public class HyphensFragment extends Fragment {
                                 for(TextView textView : leftbtns){
                                     if(textView.getId() == hyphens.getId()){
                                         textView.setBackgroundColor(hyphens.getColor());
-                                        textView.setClickable(false);
+                                        textView.invalidate();
+                                        Log.i("mqtt", hyphens + "");
+                                        Log.i("mqtt", textView + "");
+//                                        textView.setClickable(false);
                                     }
                                 }
                                 for(TextView textView : rightbtns){
                                     if(textView.getId() == hyphens.getId()){
                                         textView.setBackgroundColor(hyphens.getColor());
-                                        textView.setClickable(false);
+                                        textView.invalidate();
+                                        Log.i("mqtt", hyphens + "");
+//                                        textView.setClickable(false);
                                     }
                                 }
                             }
                         });
                     }
                 }
-        });
+            });
+        }
 
         activity = (AppCompatActivity) getActivity();
 

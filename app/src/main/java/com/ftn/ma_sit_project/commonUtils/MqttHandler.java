@@ -42,7 +42,7 @@ public class MqttHandler {
     private static boolean isMyTurn = false;
 
     public TextView textView;
-    public Hyphens hyphens;
+//    public Hyphens hyphens;
 
     public void connect() {
         client = Mqtt5Client.builder()
@@ -206,9 +206,10 @@ public class MqttHandler {
                 .topicFilter("Mobilne/TextViewShare")
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
-                    hyphens = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), Hyphens.class);
+                    Hyphens hyphens = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), Hyphens.class);
                     if (!Objects.equals(hyphens.getUserName(), Data.loggedInUser.getUsername())){
                         textViewStoreCallback.onCallBack(hyphens);
+//                        Log.i("mqtt", hyphens.toString() + "");
                     }
                 })
                 .send()
@@ -218,7 +219,6 @@ public class MqttHandler {
                         throwable.printStackTrace();
                     } else {
                         Log.i("mqtt", "Subscribed to TextView share");
-                        Log.i("mqtt", hyphens + "");
                     }
                 });
     }
@@ -321,11 +321,11 @@ public class MqttHandler {
         return isMyTurn;
     }
 
-    public Hyphens getP2Hyphens() {
-//        Hyphens hyphens1 = new Hyphens(2131230830,"a", Color.RED);
-        Log.i("mqtt", hyphens + "to je to");
-        return hyphens;
-    }
+//    public Hyphens getP2Hyphens() {
+////        Hyphens hyphens1 = new Hyphens(2131230830,"a", Color.RED);
+//        Log.i("mqtt", hyphens + "to je to");
+//        return hyphens;
+//    }
 
     public interface TextViewStoreCallback {
         void onCallBack(Hyphens hyphens);
