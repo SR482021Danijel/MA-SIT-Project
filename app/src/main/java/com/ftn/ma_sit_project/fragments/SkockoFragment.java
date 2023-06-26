@@ -23,13 +23,16 @@ import android.widget.Toast;
 
 import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.Skocko;
+import com.ftn.ma_sit_project.Model.SkockoDTO;
 import com.ftn.ma_sit_project.R;
 import com.ftn.ma_sit_project.commonUtils.Draggable;
 import com.ftn.ma_sit_project.commonUtils.MqttHandler;
 import com.ftn.ma_sit_project.commonUtils.ShowHideElements;
 import com.ftn.ma_sit_project.commonUtils.TempGetData;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -89,6 +92,13 @@ public class SkockoFragment extends Fragment {
                 Draggable.makeDraggable(triangle, "5");
                 Draggable.makeDraggable(star, "6");
                 btnNext.setClickable(true);
+
+//                guesses.add("1");
+//                guesses.add("2");
+//                guesses.add("3");
+//                guesses.add("4");
+//                SkockoDTO skockoDTO = new SkockoDTO(guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
+//                mqttHandler.skockoPublish(skockoDTO);
             }
         } else {
             Draggable.makeDraggable(skocko, "1");
@@ -125,25 +135,31 @@ public class SkockoFragment extends Fragment {
 
         ShowHideElements.showScoreBoard(activity);
 
-        mqttHandler = new MqttHandler();
+        if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
+            mqttHandler = new MqttHandler();
+            isMyTurn = mqttHandler.getTurnPlayer();
 
-        isMyTurn = mqttHandler.getTurnPlayer();
-
-        mqttHandler.skockoSubscribe(new MqttHandler.SkockoCallback() {
-            @Override
-            public void onCallback(ArrayList<String> dataList) {
-                if (!isMyTurn) {
-                    for (int i = 0; i < 4; i++) {
-                        Integer imageId = Skocko.getImage(dataList.get(i));
-                        activeSlots.get(i).setImageResource(imageId);
-                        activeSlots.get(i).setTag(dataList.get(i));
-                        activeSlots.get(i).invalidate();
+            mqttHandler.skockoSubscribe(new MqttHandler.SkockoCallback() {
+                @Override
+                public void onCallback(ArrayList<String> dataList) {
+                    if (!isMyTurn) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (int i = 0; i < 4; i++) {
+                                    int imageId = Skocko.getImage(dataList.get(i));
+                                    activeSlots.get(i).setImageResource(imageId);
+                                    activeSlots.get(i).setTag(dataList.get(i));
+                                    activeSlots.get(i).invalidate();
+                                }
+                                btnNext.performClick();
+                            }
+                        });
                     }
-
-                    btnNext.performClick();
                 }
-            }
-        });
+            });
+        }
+
 
         countDownTimer = new CountDownTimer(90000, 1000) {
             @Override
@@ -203,18 +219,21 @@ public class SkockoFragment extends Fragment {
                             case 1:
                             case 2:
                                 score += 20;
+                                Toast.makeText(activity.getApplicationContext(), "Correct! Points: +" + 20, Toast.LENGTH_SHORT).show();
                                 break;
                             case 3:
                             case 4:
                                 score += 15;
+                                Toast.makeText(activity.getApplicationContext(), "Correct! Points: +" + 15, Toast.LENGTH_SHORT).show();
                                 break;
                             case 5:
                             case 6:
                                 score += 10;
+                                Toast.makeText(activity.getApplicationContext(), "Correct! Points: +" + 10, Toast.LENGTH_SHORT).show();
                                 break;
                         }
                         player1Score.setText(score + "");
-                        Toast.makeText(activity.getApplicationContext(), "Correct! Points: +" + score, Toast.LENGTH_SHORT).show();
+
                         CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
                             @Override
                             public void onTick(long l) {
@@ -233,7 +252,10 @@ public class SkockoFragment extends Fragment {
                         }.start();
 
                     } else {
-                        mqttHandler.skockoPublish(guesses);
+                        if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
+                            SkockoDTO skockoDTO = new SkockoDTO(guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
+                        mqttHandler.skockoPublish(skockoDTO);
+                        }
                         displayAnswer();
                         guesses.clear();
                         activeSlots.clear();

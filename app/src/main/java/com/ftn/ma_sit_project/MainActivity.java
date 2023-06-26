@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     TextView p2UserName, p2Score, p1UserName, p1Score;
-
     MqttHandler mqttHandler = new MqttHandler();
 
     @SuppressLint("MissingInflatedId")
@@ -75,10 +74,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_item_home);
         }
 
-        p2Score = findViewById(R.id.player_2_score);
-        p2UserName = findViewById(R.id.player_2_user_name);
         p1UserName = findViewById(R.id.player_1_user_name);
         p1Score = findViewById(R.id.player_1_score);
+        p2UserName = findViewById(R.id.player_2_user_name);
+        p2Score = findViewById(R.id.player_2_score);
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.Hyphens;
+import com.ftn.ma_sit_project.Model.SkockoDTO;
 import com.ftn.ma_sit_project.Model.User;
 import com.ftn.ma_sit_project.Model.UserDTO;
 import com.google.common.reflect.TypeToken;
@@ -78,8 +79,8 @@ public class MqttHandler {
 
 
                         User sentUser = new User();
-                        sentUser.setUsername(Data.loggedInUser.getUsername());
-//                        sentUser.setUsername("Pera");
+//                        sentUser.setUsername(Data.loggedInUser.getUsername());
+                        sentUser.setUsername("Pera");
                         sentPayload = gson.toJson(sentUser);
                         client.toAsync()
                                 .publishWith()
@@ -136,8 +137,8 @@ public class MqttHandler {
                     } else {
                         Log.i("mqtt", "Subscribed to turn topic");
 
-                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
-//                        UserDTO userDTO = new UserDTO("Pera", 0, rnd - 1);
+//                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
+                        UserDTO userDTO = new UserDTO("Pera", 0, rnd + 1);
                         String sent = gson.toJson(userDTO);
                         client.toAsync().publishWith()
                                 .topic("Mobilne/Turn")
@@ -247,13 +248,19 @@ public class MqttHandler {
                 .topicFilter("Mobilne/Skocko")
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
-                    String[] strList = mqtt5Publish.getPayload().toString().split(",");
-                    ArrayList<String> list = new ArrayList<>(Arrays.asList(strList));
+                    SkockoDTO skockoDTO = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), SkockoDTO.class);
+                    ArrayList<String> list = new ArrayList<>();
+                    list.add(skockoDTO.getFirstTag());
+                    list.add(skockoDTO.getSecondTag());
+                    list.add(skockoDTO.getThirdTag());
+                    list.add(skockoDTO.getFourthTag());
+//                    String[] strList = mqtt5Publish.getPayload().toString().split(",");
+//                    ArrayList<String> list = new ArrayList<>(Arrays.asList(strList));
 //                    Type listType = new TypeToken<ArrayList<ImageView>>() {
 //                    }.getType();
 //                    ArrayList<ImageView> list = gson.fromJson(mqtt5Publish.getPayload().toString(), listType);
                     skockoCallback.onCallback(list);
-                    Log.i("mqtt", "List: " + mqtt5Publish.getPayload().get());
+                    Log.i("mqtt", "List: " + list.get(0) + list.get(1) + list.get(2) + list.get(3));
                 })
                 .send()
                 .whenComplete((mqtt5SubAck, throwable) -> {
@@ -266,12 +273,18 @@ public class MqttHandler {
                 });
     }
 
-    public void skockoPublish(ArrayList<String> dataList) {
+    public void skockoPublish(SkockoDTO skockoDTO) {
 
 //        Type listType = new TypeToken<ArrayList<ImageView>>() {
 //        }.getType();
 //        String sent = gson.toJson(dataList, listType);
-        String sent = String.join(",", dataList);
+//        String sent = String.join(",", dataList);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        String sent = gson.toJson(skockoDTO, SkockoDTO.class);
         client.toAsync().publishWith()
                 .topic("Mobilne/Skocko")
                 .qos(MqttQos.AT_LEAST_ONCE)
@@ -279,7 +292,7 @@ public class MqttHandler {
                 .send()
                 .whenComplete((mqtt5PublishResult, throwable) -> {
                     if (throwable != null) {
-                        Log.i("mqtt", "Point Publish Error");
+                        Log.i("mqtt", "Skocko Publish Error");
                         throwable.printStackTrace();
                     } else {
                         Log.i("mqtt", "Published skocko");
