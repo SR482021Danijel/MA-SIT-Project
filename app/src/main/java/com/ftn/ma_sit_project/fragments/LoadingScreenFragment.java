@@ -111,6 +111,8 @@ public class LoadingScreenFragment extends Fragment {
     public void onStop() {
         super.onStop();
 
+        countDownTimer.cancel();
+
         activity.getSupportActionBar().show();
 
         ShowHideElements.unlockDrawerLayout(activity);
