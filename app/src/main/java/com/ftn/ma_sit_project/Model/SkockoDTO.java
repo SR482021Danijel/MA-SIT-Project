@@ -4,16 +4,19 @@ import com.google.gson.annotations.SerializedName;
 
 public class SkockoDTO {
 
+    @SerializedName("userName")
+    private String userName;
     @SerializedName("firstTag")
-    String firstTag;
+    private String firstTag;
     @SerializedName("secondTag")
-    String secondTag;
+    private String secondTag;
     @SerializedName("thirdTag")
-    String thirdTag;
+    private String thirdTag;
     @SerializedName("fourthTag")
-    String fourthTag;
+    private String fourthTag;
 
-    public SkockoDTO(String firstTag, String secondTag, String thirdTag, String fourthTag) {
+    public SkockoDTO(String userName, String firstTag, String secondTag, String thirdTag, String fourthTag) {
+        this.userName = userName;
         this.firstTag = firstTag;
         this.secondTag = secondTag;
         this.thirdTag = thirdTag;
@@ -21,6 +24,14 @@ public class SkockoDTO {
     }
 
     public SkockoDTO() {
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getFirstTag() {

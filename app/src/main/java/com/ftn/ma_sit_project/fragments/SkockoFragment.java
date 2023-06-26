@@ -253,7 +253,7 @@ public class SkockoFragment extends Fragment {
 
                     } else {
                         if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
-                            SkockoDTO skockoDTO = new SkockoDTO(guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
+                            SkockoDTO skockoDTO = new SkockoDTO(Data.loggedInUser.getUsername(), guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
                         mqttHandler.skockoPublish(skockoDTO);
                         }
                         displayAnswer();
