@@ -1,6 +1,7 @@
 package com.ftn.ma_sit_project.fragments;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -9,14 +10,21 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ftn.ma_sit_project.Model.Asocijacije;
+import com.ftn.ma_sit_project.Model.Data;
+import com.ftn.ma_sit_project.Model.Hyphens;
+import com.ftn.ma_sit_project.Model.StrDTO;
 import com.ftn.ma_sit_project.R;
+import com.ftn.ma_sit_project.commonUtils.MqttHandler;
 import com.ftn.ma_sit_project.commonUtils.ShowHideElements;
 import com.ftn.ma_sit_project.commonUtils.TempGetData;
 
@@ -27,7 +35,7 @@ import java.util.Map;
 
 public class AssociationsFragment extends Fragment {
     View view;
-    TextView a1,a2,a3,a4,b1,b2,b3,b4,c1,c2,c3,c4,d1,d2,d3,d4,e,player1Score,a_button,b_button,c_button,d_button, asocijacije;
+    TextView a1,a2,a3,a4,b1,b2,b3,b4,c1,c2,c3,c4,d1,d2,d3,d4,e,player1Score,a_button,b_button,c_button,d_button, asocijacije, p1UserName, player2UserName;
     Dialog dialog;
     CountDownTimer countDownTimer;
     ArrayList<String> arrayList = new ArrayList<>();
@@ -52,8 +60,14 @@ public class AssociationsFragment extends Fragment {
     boolean isTrued = false;
     AppCompatActivity activity;
 
+    MqttHandler mqttHandler = new MqttHandler();
+
+    boolean isClicked;
     int poinst = 0;
     int score = 0;
+
+    boolean isMyTurn;
+
 //    private void Score(int poinst){
 //        score = Integer.parseInt((String) player1Score.getText());
 //        score += poinst;
@@ -67,6 +81,11 @@ public class AssociationsFragment extends Fragment {
         a3.setText(aFields.get(2));
         a4.setText(aFields.get(3));
         a_button.setText(aFields.get(4));
+        mqttHandler.asocijacijePublish(a1);
+        mqttHandler.asocijacijePublish(a2);
+        mqttHandler.asocijacijePublish(a3);
+        mqttHandler.asocijacijePublish(a4);
+        mqttHandler.asocijacijePublish(a_button);
     }
     public void setBFields(){
         b1.setText(bFields.get(0));
@@ -74,6 +93,11 @@ public class AssociationsFragment extends Fragment {
         b3.setText(bFields.get(2));
         b4.setText(bFields.get(3));
         b_button.setText(bFields.get(4));
+        mqttHandler.asocijacijePublish(b1);
+        mqttHandler.asocijacijePublish(b2);
+        mqttHandler.asocijacijePublish(b3);
+        mqttHandler.asocijacijePublish(b4);
+        mqttHandler.asocijacijePublish(b_button);
     }
     public void setCFields(){
         c1.setText(cFields.get(0));
@@ -81,6 +105,11 @@ public class AssociationsFragment extends Fragment {
         c3.setText(cFields.get(2));
         c4.setText(cFields.get(3));
         c_button.setText(cFields.get(4));
+        mqttHandler.asocijacijePublish(c1);
+        mqttHandler.asocijacijePublish(c2);
+        mqttHandler.asocijacijePublish(c3);
+        mqttHandler.asocijacijePublish(c4);
+        mqttHandler.asocijacijePublish(c_button);
     }
     public void setDFields(){
         d1.setText(dFields.get(0));
@@ -88,6 +117,19 @@ public class AssociationsFragment extends Fragment {
         d3.setText(dFields.get(2));
         d4.setText(dFields.get(3));
         d_button.setText(dFields.get(4));
+        mqttHandler.asocijacijePublish(d1);
+        mqttHandler.asocijacijePublish(d2);
+        mqttHandler.asocijacijePublish(d3);
+        mqttHandler.asocijacijePublish(d4);
+        mqttHandler.asocijacijePublish(d_button);
+    }
+
+    public void setIsMyTurn(){
+        if(isMyTurn == true){
+            isMyTurn = false;
+        }else{
+            isMyTurn = true;
+        }
     }
 
     public void setPoints(int poinst){
@@ -99,6 +141,7 @@ public class AssociationsFragment extends Fragment {
 
     public void setEFields(){
         e.setText(arrayList.get(20));
+        mqttHandler.asocijacijePublish(e);
         getParentFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new SkockoFragment())
@@ -197,6 +240,7 @@ public class AssociationsFragment extends Fragment {
                         dFields.add(arrayList.get(i));
                     }
                 }
+                isMyTurn = mqttHandler.getTurnPlayer();
             }
         });
 
@@ -239,6 +283,12 @@ public class AssociationsFragment extends Fragment {
                             setPoints(poinst);
                             setAFields();
                             isTruea = true;
+                        }else{
+                            StrDTO strDTO = new StrDTO("a",editText1, Data.loggedInUser.getUsername());
+                            mqttHandler.StringPublish(strDTO);
+                            Toast.makeText(getActivity(), "Column A try : " + editText1+"", Toast.LENGTH_LONG).show();
+                            setIsMyTurn();
+                            isClicked = false;
                         }
                     }
                 } else if (field_b) {
@@ -259,6 +309,12 @@ public class AssociationsFragment extends Fragment {
                             setPoints(poinst);
                             setBFields();
                             isTrueb = true;
+                        }else{
+                            StrDTO strDTO = new StrDTO("b", editText1, Data.loggedInUser.getUsername());
+                            mqttHandler.StringPublish(strDTO);
+                            Toast.makeText(getActivity(), "Column B try : " + editText1+"", Toast.LENGTH_LONG);
+                            setIsMyTurn();
+                            isClicked = false;
                         }
                     }
                 }else if (field_c) {
@@ -279,7 +335,14 @@ public class AssociationsFragment extends Fragment {
                             setPoints(poinst);
                             setCFields();
                             isTruec = true;
+                        }else{
+                            StrDTO strDTO = new StrDTO("c", editText1, Data.loggedInUser.getUsername());
+                            mqttHandler.StringPublish(strDTO);
+                            Toast.makeText(getActivity(), "Column C try : " + editText1+"", Toast.LENGTH_LONG);
+                            setIsMyTurn();
+                            isClicked = false;
                         }
+
                     }
                 }else if (field_d) {
                     if(editText1 != ""){
@@ -299,6 +362,12 @@ public class AssociationsFragment extends Fragment {
                             setPoints(poinst);
                             setDFields();
                             isTrued = true;
+                        }else{
+                            StrDTO strDTO = new StrDTO("d", editText1, Data.loggedInUser.getUsername());
+                            mqttHandler.StringPublish(strDTO);
+                            Toast.makeText(getActivity(), "Column D try : " + editText1+"", Toast.LENGTH_LONG);
+                            setIsMyTurn();
+                            isClicked = false;
                         }
                     }
                 }else if(field_e){
@@ -369,6 +438,12 @@ public class AssociationsFragment extends Fragment {
                             setEFields();
                             isTrued = true;
                             countDownTimer.cancel();
+                        }else{
+                            StrDTO strDTO = new StrDTO("e", editText1, Data.loggedInUser.getUsername());
+                            mqttHandler.StringPublish(strDTO);
+                            Toast.makeText(getActivity(), "Field E try : " + editText1+"", Toast.LENGTH_LONG);
+                            setIsMyTurn();
+                            isClicked = false;
                         }
                     }
                 }
@@ -386,16 +461,18 @@ public class AssociationsFragment extends Fragment {
         a_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                field_a = true;
-                int y = 0;
-                for(TextView textView : textViewsa){
-                    if(textView.getText() == ""){
-                        y++;
+                if(isMyTurn == true){
+                    field_a = true;
+                    int y = 0;
+                    for(TextView textView : textViewsa){
+                        if(textView.getText() == ""){
+                            y++;
+                        }
                     }
-                }
-                if(!isTruea && y != 5){
-                    dialog.show();
-                    y=0;
+                    if(!isTruea && y != 5){
+                        dialog.show();
+                        y=0;
+                    }
                 }
             }
         });
@@ -403,36 +480,63 @@ public class AssociationsFragment extends Fragment {
         a1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                a1.setText(aFields.get(0));
+                if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
+                    a1.setClickable(true);
+                    a1.setText(aFields.get(0));
+                    mqttHandler.asocijacijePublish(a1);
+                }else{
+                    a1.setClickable(false);
+                }
             }
         });
 
         a2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                a2.setText(aFields.get(1));
+                if(isMyTurn == true && isClicked == false){
+                    a2.setClickable(true);
+                    a2.setText(aFields.get(1));
+                    mqttHandler.asocijacijePublish(a2);
+                }else{
+                    a2.setClickable(false);
+                }
             }
         });
 
         a3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                a3.setText(aFields.get(2));
+                if(isMyTurn == true && isClicked == false){
+                    a3.setClickable(true);
+                    a3.setText(aFields.get(2));
+                    mqttHandler.asocijacijePublish(a3);
+                }else{
+                    a3.setClickable(false);
+                }
             }
         });
 
         a4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                a4.setText(aFields.get(3));
+                if(isMyTurn == true && isClicked == false){
+                    a4.setClickable(true);
+                    a4.setText(aFields.get(3));
+                    mqttHandler.asocijacijePublish(a4);
+                }else{
+                    a4.setClickable(false);
+                }
             }
         });
         b_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                field_b = true;
-                if(!isTrueb){
-                    dialog.show();
+                if(isMyTurn == true){
+                    field_b = true;
+                    if(!isTrueb){
+                        dialog.show();
+                    }
                 }
             }
         });
@@ -440,37 +544,63 @@ public class AssociationsFragment extends Fragment {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                b1.setText(bFields.get(0));
+                if(isMyTurn == true && isClicked == false){
+                    b1.setClickable(true);
+                    b1.setText(bFields.get(0));
+                    mqttHandler.asocijacijePublish(b1);
+                }else{
+                    b1.setClickable(false);
+                }
             }
         });
 
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                b2.setText(bFields.get(1));
+                if(isMyTurn == true && isClicked == false){
+                    b2.setClickable(true);
+                    b2.setText(bFields.get(1));
+                    mqttHandler.asocijacijePublish(b2);
+                }else{
+                    b2.setClickable(false);
+                }
             }
         });
 
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                b3.setText(bFields.get(2));
+                if(isMyTurn == true && isClicked == false){
+                    b3.setClickable(true);
+                    b3.setText(bFields.get(2));
+                    mqttHandler.asocijacijePublish(b3);
+                }else{
+                    b3.setClickable(false);
+                }
             }
         });
 
         b4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                b4.setText(bFields.get(3));
+                if(isMyTurn == true && isClicked == false){
+                    b4.setClickable(true);
+                    b4.setText(bFields.get(3));
+                    mqttHandler.asocijacijePublish(b4);
+                }else{
+                    b4.setClickable(false);
+                }
             }
         });
 
         c_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                field_c = true;
-                if(!isTruec){
-                    dialog.show();
+                if(isMyTurn == true){
+                    field_c = true;
+                    if(!isTruec){
+                        dialog.show();
+                    }
                 }
             }
         });
@@ -478,37 +608,63 @@ public class AssociationsFragment extends Fragment {
         c1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                c1.setText(cFields.get(0));
+                if(isMyTurn == true && isClicked == false){
+                    c1.setClickable(true);
+                    c1.setText(cFields.get(0));
+                    mqttHandler.asocijacijePublish(c1);
+                }else{
+                    c1.setClickable(false);
+                }
             }
         });
 
         c2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                c2.setText(cFields.get(1));
+                if(isMyTurn == true && isClicked == false){
+                    c2.setClickable(true);
+                    c2.setText(cFields.get(1));
+                    mqttHandler.asocijacijePublish(c2);
+                }else{
+                    c2.setClickable(false);
+                }
             }
         });
 
         c3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                c3.setText(cFields.get(2));
+                if(isMyTurn == true && isClicked == false){
+                    d3.setClickable(true);
+                    c3.setText(cFields.get(2));
+                    mqttHandler.asocijacijePublish(c3);
+                }else{
+                    c3.setClickable(false);
+                }
             }
         });
 
         c4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                c4.setText(cFields.get(3));
+                if(isMyTurn == true && isClicked == false){
+                    c4.setClickable(true);
+                    c4.setText(cFields.get(3));
+                    mqttHandler.asocijacijePublish(c4);
+                }else{
+                    c4.setClickable(false);
+                }
             }
         });
 
         d_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                field_d = true;
-                if(!isTrued){
-                    dialog.show();
+                if(isMyTurn == true){
+                    field_d = true;
+                    if(!isTrued){
+                        dialog.show();
+                    }
                 }
             }
         });
@@ -516,28 +672,52 @@ public class AssociationsFragment extends Fragment {
         d1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                d1.setText(dFields.get(0));
+                if(isMyTurn == true && isClicked == false){
+                    d1.setClickable(true);
+                    d1.setText(dFields.get(0));
+                    mqttHandler.asocijacijePublish(d1);
+                }else{
+                    d1.setClickable(false);
+                }
             }
         });
 
         d2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                d2.setText(dFields.get(1));
+                if(isMyTurn == true && isClicked == false){
+                    d2.setClickable(true);
+                    d2.setText(dFields.get(1));
+                    mqttHandler.asocijacijePublish(d2);
+                }else{
+                    d2.setClickable(false);
+                }
             }
         });
 
         d3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                d3.setText(dFields.get(2));
+                if(isMyTurn == true && isClicked == false){
+                    d3.setClickable(true);
+                    d3.setText(dFields.get(2));
+                    mqttHandler.asocijacijePublish(d3);
+                }else{
+                    d3.setClickable(false);
+                }
             }
         });
 
         d4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                d4.setText(dFields.get(3));
+                if(isMyTurn == true && isClicked == false){
+                    d4.setClickable(true);
+                    d4.setText(dFields.get(3));
+                    mqttHandler.asocijacijePublish(d4);
+                }else{
+                    d4.setClickable(false);
+                }
             }
         });
 
@@ -585,6 +765,59 @@ public class AssociationsFragment extends Fragment {
         TextView scoreTimer = activity.findViewById(R.id.score_timer);
 
         player1Score = activity.findViewById(R.id.player_1_score);
+
+        p1UserName = activity.findViewById(R.id.player_1_user_name);
+        player2UserName = activity.findViewById(R.id.player_2_user_name);
+
+        if(Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")){
+            mqttHandler.asocijacijeSubscribe(new MqttHandler.AsocijacijeCallback() {
+                @Override
+                public void onCallBack(Asocijacije asocijacije) {
+                    if(asocijacije != null){
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (TextView textView : textViewsa){
+                                    if(textView.getId() == asocijacije.getId()){
+                                        textView.setText(asocijacije.getText());
+                                        textView.invalidate();
+                                    }
+                                }
+                                for (TextView textView : textViewsb){
+                                    if(textView.getId() == asocijacije.getId()){
+                                        textView.setText(asocijacije.getText());
+                                        textView.invalidate();
+                                    }
+                                }
+                                for (TextView textView : textViewsc){
+                                    if(textView.getId() == asocijacije.getId()){
+                                        textView.setText(asocijacije.getText());
+                                        textView.invalidate();
+                                    }
+                                }
+                                for (TextView textView : textViewsd){
+                                    if(textView.getId() == asocijacije.getId()){
+                                        textView.setText(asocijacije.getText());
+                                        textView.invalidate();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+
+            mqttHandler.StringSubscribe(new MqttHandler.StringCallBack() {
+                @Override
+                public void OnCallBack(StrDTO strDTO) {
+                    if(strDTO != null){
+                        Toast.makeText(getActivity(), strDTO.getColumnName().toUpperCase(Locale.ROOT)
+                                +" try:"+strDTO.getText()+"", Toast.LENGTH_LONG);
+                        setIsMyTurn();
+                    }
+                }
+            });
+        }
 
         ShowHideElements.showScoreBoard(activity);
 

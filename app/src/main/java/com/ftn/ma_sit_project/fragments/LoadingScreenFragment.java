@@ -94,7 +94,7 @@ public class LoadingScreenFragment extends Fragment {
                     p2Name.setText(p2.getUsername());
                     getParentFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, new HyphensFragment())
+                            .replace(R.id.fragment_container, new AssociationsFragment())
                             .setReorderingAllowed(true)
                             .commit();
                 } else {

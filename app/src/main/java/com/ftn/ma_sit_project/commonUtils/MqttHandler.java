@@ -6,9 +6,11 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ftn.ma_sit_project.Model.Asocijacije;
 import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.Hyphens;
 import com.ftn.ma_sit_project.Model.SkockoDTO;
+import com.ftn.ma_sit_project.Model.StrDTO;
 import com.ftn.ma_sit_project.Model.User;
 import com.ftn.ma_sit_project.Model.UserDTO;
 import com.google.common.reflect.TypeToken;
@@ -42,6 +44,8 @@ public class MqttHandler {
     private static boolean isMyTurn = false;
 
     public TextView textView;
+
+    public String string1;
 //    public Hyphens hyphens;
 
     public void connect() {
@@ -79,8 +83,8 @@ public class MqttHandler {
 
 
                         User sentUser = new User();
-                        sentUser.setUsername(Data.loggedInUser.getUsername());
-//                        sentUser.setUsername("Pera");
+//                        sentUser.setUsername(Data.loggedInUser.getUsername());
+                        sentUser.setUsername("Pera");
                         sentPayload = gson.toJson(sentUser);
                         client.toAsync()
                                 .publishWith()
@@ -137,8 +141,8 @@ public class MqttHandler {
                     } else {
                         Log.i("mqtt", "Subscribed to turn topic");
 
-                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
-//                        UserDTO userDTO = new UserDTO("Pera", 0, rnd + 1);
+//                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
+                        UserDTO userDTO = new UserDTO("Pera", 0, rnd - 1);
                         String sent = gson.toJson(userDTO);
                         client.toAsync().publishWith()
                                 .topic("Mobilne/Turn")
@@ -207,10 +211,10 @@ public class MqttHandler {
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
                     Hyphens hyphens = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), Hyphens.class);
-                    if (!Objects.equals(hyphens.getUserName(), Data.loggedInUser.getUsername())){
-                        textViewStoreCallback.onCallBack(hyphens);
-//                        Log.i("mqtt", hyphens.toString() + "");
-                    }
+//                    if (!Objects.equals(hyphens.getUserName(), Data.loggedInUser.getUsername())){
+                    textViewStoreCallback.onCallBack(hyphens);
+                    Log.i("mqtt", hyphens.toString() + "");
+//                    }
                 })
                 .send()
                 .whenComplete((mqtt5SubAck, throwable) -> {
@@ -300,6 +304,89 @@ public class MqttHandler {
                 });
     }
 
+    public void asocijacijeSubscribe(AsocijacijeCallback asocijacijeCallback) {
+
+        client.toAsync().subscribeWith()
+                .topicFilter("Mobilne/Asocijacije")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .callback(mqtt5Publish -> {
+                    Asocijacije  asocijacije = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), Asocijacije.class);
+                    if (!Objects.equals(asocijacije.getUserName(), Data.loggedInUser.getUsername())){
+                        asocijacijeCallback.onCallBack(asocijacije);
+                        Log.i("mqtt", asocijacije+"");
+                    }
+                })
+                .send()
+                .whenComplete((mqtt5SubAck, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "Asocijacije Subscribe Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Subscribed to Asocijacije");
+                    }
+                });
+    }
+
+    public void asocijacijePublish(TextView textView) {
+
+        Asocijacije asocijacije = new Asocijacije(textView.getId(), textView.getText().toString(), Data.loggedInUser.getUsername());
+        String sent = gson.toJson(asocijacije, Asocijacije.class);
+        client.toAsync().publishWith()
+                .topic("Mobilne/Asocijacije")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .payload(sent.getBytes())
+                .send()
+                .whenComplete((mqtt5PublishResult, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "Asocijacije Publish Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Published asocijacije");
+                    }
+                });
+    }
+
+    public void StringSubscribe(StringCallBack stringCallBack) {
+
+        client.toAsync().subscribeWith()
+                .topicFilter("Mobilne/string")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .callback(mqtt5Publish -> {
+                    StrDTO string = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), StrDTO.class);
+                    if (!Objects.equals(string.getUserName(), Data.loggedInUser.getUsername())){
+                        stringCallBack.OnCallBack(string);
+                        Log.i("mqtt", string1+"");
+                    }
+                })
+                .send()
+                .whenComplete((mqtt5SubAck, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "Asocijacije Subscribe Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Subscribed to Asocijacije");
+                    }
+                });
+    }
+
+    public void StringPublish(StrDTO string) {
+
+        String sent = gson.toJson(string, StrDTO.class);
+        client.toAsync().publishWith()
+                .topic("Mobilne/string")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .payload(sent.getBytes())
+                .send()
+                .whenComplete((mqtt5PublishResult, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "Stirng Publish Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Published string");
+                    }
+                });
+    }
+
 
     public User getP2Username() {
         return gson.fromJson(str, User.class);
@@ -329,5 +416,17 @@ public class MqttHandler {
 
     public interface TextViewStoreCallback {
         void onCallBack(Hyphens hyphens);
+    }
+
+    public interface AsocijacijeCallback {
+        void onCallBack(Asocijacije asocijacije);
+    }
+
+    public interface StringCallBack{
+        void OnCallBack(StrDTO strDTO);
+    }
+
+    public String getString1(){
+        return string1;
     }
 }

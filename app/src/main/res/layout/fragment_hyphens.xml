@@ -90,22 +90,21 @@
                     android:layout_weight="1"
                     style="@style/btnHyphens"></TextView>
             </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/hyphens1"
+                    style="@style/btnHyphens"
+                    android:layout_weight="1"
+                    android:text="Dugme1"/>
+                <TextView
+                    android:id="@+id/hyphens2"
+                    style="@style/btnHyphens"
+                    android:layout_weight="1"
+                    android:text="Dugme2"/>
+            </TableRow>
         </TableLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Button
-                android:id="@+id/hyphens"
-                style="@style/btnHyphens"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:text="Sledeca Igra" />
-
-        </RelativeLayout>
 
     </LinearLayout>
 

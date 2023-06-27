@@ -40,7 +40,7 @@ import java.util.Random;
 public class HyphensFragment extends Fragment {
     View view;
 
-    TextView btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,btn10,lastLetButton, player2UserName;
+    TextView btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,btn10,lastLetButton, player2UserName, p1UserName, hyphens1, hyphens2;
     Map<String, Object> map1 = new HashMap<>();
     List<TextView> leftbtns = new ArrayList<>();
     List<TextView> rightbtns = new ArrayList<>();
@@ -207,18 +207,20 @@ public class HyphensFragment extends Fragment {
         btn8 = view.findViewById(R.id.btn8);
         btn9 = view.findViewById(R.id.btn9);
         btn10 = view.findViewById(R.id.btn10);
+        hyphens1 = view.findViewById(R.id.hyphens1);
+        hyphens2 = view.findViewById(R.id.hyphens2);
 
-        Button btnNext = view.findViewById(R.id.hyphens);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getParentFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new AssociationsFragment())
-                        .setReorderingAllowed(true)
-                        .commit();
-            }
-        });
+//        Button btnNext = view.findViewById(R.id.hyphens);
+//        btnNext.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getParentFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.fragment_container, new AssociationsFragment())
+//                        .setReorderingAllowed(true)
+//                        .commit();
+//            }
+//        });
 
         TempGetData.getDataAsMap(new TempGetData.FireStoreCallback1() {
             @Override
@@ -267,6 +269,7 @@ public class HyphensFragment extends Fragment {
                         for(TextView textView : rightbtns){
                             textView.setClickable(false);
                         }
+                        hyphens2.setClickable(false);
                     }
             }
         });
@@ -383,19 +386,33 @@ public class HyphensFragment extends Fragment {
             }
         });
 
+        hyphens1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
 //        setupButtonListeners(leftbtns, rightbtns);
 //        if(isMyTurn == true){
 //            setup(leftbtns, rightbtns);
 //        }else{
 //            setupButtonListeners(leftbtns, rightbtns);
 //        }
+        if (Data.loggedInUser != null) {
+            p1UserName.setText(Data.loggedInUser.getUsername());
+        }
         return view;
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        activity = (AppCompatActivity) getActivity();
+
+        p1UserName = activity.findViewById(R.id.player_1_user_name);
         player2UserName = activity.findViewById(R.id.player_2_user_name);
+
         if(Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")){
             mqttHandler.textViewShareSubscribe(new MqttHandler.TextViewStoreCallback() {
                 @Override
@@ -421,6 +438,10 @@ public class HyphensFragment extends Fragment {
 //                                        textView.setClickable(false);
                                     }
                                 }
+//                                if(hyphens.getId() == hyphens1.getId()){
+//                                    hyphens2.setBackgroundColor(hyphens.getColor());
+//                                    hyphens2.invalidate();
+//                                }
                             }
                         });
                     }
@@ -428,7 +449,6 @@ public class HyphensFragment extends Fragment {
             });
         }
 
-        activity = (AppCompatActivity) getActivity();
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
