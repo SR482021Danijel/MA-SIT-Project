@@ -291,7 +291,9 @@ public class AssociationsFragment extends Fragment {
                             Log.i("mqtt","Column A try (Before set) Turn is : "+isMyTurn + " and User" + Data.loggedInUser.getUsername());
                             setIsMyTurn();
                             Log.i("mqtt","Column A try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());
+                            Log.i("mqtt", "isClickedA before: "+isClicked);
                             isClicked = false;
+                            Log.i("mqtt", "isClickedA after: "+isClicked);
                         }
                     }
                 } else if (field_b) {
@@ -319,7 +321,9 @@ public class AssociationsFragment extends Fragment {
                             Log.i("mqtt","Column B try (Before set) Turn is : "+isMyTurn + " and User" + Data.loggedInUser.getUsername());
                             setIsMyTurn();
                             Log.i("mqtt","Column B try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());
+                            Log.i("mqtt", "isClickedB before: "+isClicked);
                             isClicked = false;
+                            Log.i("mqtt", "isClickedB after: "+isClicked);
                         }
                     }
                 }else if (field_c) {
@@ -346,8 +350,10 @@ public class AssociationsFragment extends Fragment {
 //                            Toast.makeText(getActivity(), "Column C try : " + editText1+"", Toast.LENGTH_LONG);
                             Log.i("mqtt","Column C try (Before set) Turn is : "+isMyTurn + " and User" + Data.loggedInUser.getUsername());
                             setIsMyTurn();
-                            Log.i("mqtt","Column C try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());();
+                            Log.i("mqtt","Column C try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());
+                            Log.i("mqtt", "isClickedC before: "+isClicked);
                             isClicked = false;
+                            Log.i("mqtt", "isClickedC after: "+isClicked);
                         }
 
                     }
@@ -376,7 +382,9 @@ public class AssociationsFragment extends Fragment {
                             Log.i("mqtt","Column D try (Before set) Turn is : "+isMyTurn + " and User" + Data.loggedInUser.getUsername());
                             setIsMyTurn();
                             Log.i("mqtt","Column D try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());
+                            Log.i("mqtt", "isClickedD before: "+isClicked);
                             isClicked = false;
+                            Log.i("mqtt", "isClickedD after: "+isClicked);
                         }
                     }
                 }else if(field_e){
@@ -799,7 +807,7 @@ public class AssociationsFragment extends Fragment {
 
         ShowHideElements.showScoreBoard(activity);
 
-        countDownTimer = new CountDownTimer(120000, 1000) {
+        countDownTimer = new CountDownTimer(200000, 1000) {
             @Override
             public void onTick(long l) {
                 Long min = ((l / 1000) % 3600) / 60;
