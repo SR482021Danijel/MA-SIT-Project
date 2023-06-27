@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ftn.ma_sit_project.Model.Asocijacije;
 import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.User;
 import com.ftn.ma_sit_project.R;
@@ -94,7 +95,7 @@ public class LoadingScreenFragment extends Fragment {
                     p2Name.setText(p2.getUsername());
                     getParentFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, new SkockoFragment())
+                            .replace(R.id.fragment_container, new AssociationsFragment())
                             .setReorderingAllowed(true)
                             .commit();
                 } else {

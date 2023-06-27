@@ -83,8 +83,8 @@ public class MqttHandler {
 
 
                         User sentUser = new User();
-//                        sentUser.setUsername(Data.loggedInUser.getUsername());
-                        sentUser.setUsername("Pera");
+                        sentUser.setUsername(Data.loggedInUser.getUsername());
+//                        sentUser.setUsername("Pera");
                         sentPayload = gson.toJson(sentUser);
                         client.toAsync()
                                 .publishWith()
@@ -141,8 +141,8 @@ public class MqttHandler {
                     } else {
                         Log.i("mqtt", "Subscribed to turn topic");
 
-
-                        UserDTO userDTO = new UserDTO("Pera", 0, rnd - 1);
+                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
+//                        UserDTO userDTO = new UserDTO("Pera", 0, rnd - 1);
                         String sent = gson.toJson(userDTO);
                         client.toAsync().publishWith()
                                 .topic("Mobilne/Turn")
@@ -214,7 +214,7 @@ public class MqttHandler {
                     if (!Objects.equals(hyphens.getUserName(), Data.loggedInUser.getUsername())) {
                     textViewStoreCallback.onCallBack(hyphens);
                     Log.i("mqtt", hyphens.toString() + "");
-//                    }
+                    }
                 })
                 .send()
                 .whenComplete((mqtt5SubAck, throwable) -> {
@@ -370,23 +370,23 @@ public class MqttHandler {
                 });
     }
 
-    public void StringPublish(StrDTO string) {
+        public void StringPublish(StrDTO string) {
 
-        String sent = gson.toJson(string, StrDTO.class);
-        client.toAsync().publishWith()
-                .topic("Mobilne/string")
-                .qos(MqttQos.AT_LEAST_ONCE)
-                .payload(sent.getBytes())
-                .send()
-                .whenComplete((mqtt5PublishResult, throwable) -> {
-                    if (throwable != null) {
-                        Log.i("mqtt", "Stirng Publish Error");
-                        throwable.printStackTrace();
-                    } else {
-                        Log.i("mqtt", "Published string");
-                    }
-                });
-    }
+            String sent = gson.toJson(string, StrDTO.class);
+            client.toAsync().publishWith()
+                    .topic("Mobilne/string")
+                    .qos(MqttQos.AT_LEAST_ONCE)
+                    .payload(sent.getBytes())
+                    .send()
+                    .whenComplete((mqtt5PublishResult, throwable) -> {
+                        if (throwable != null) {
+                            Log.i("mqtt", "Stirng Publish Error");
+                            throwable.printStackTrace();
+                        } else {
+                            Log.i("mqtt", "Published string");
+                        }
+                    });
+        }
 
 
     public User getP2Username() {

@@ -211,8 +211,8 @@ public class AssociationsFragment extends Fragment {
 
                 textViewsa.add(a1);
                 textViewsa.add(a2);
-                textViewsa.add(a2);
                 textViewsa.add(a3);
+                textViewsa.add(a4);
                 textViewsa.add(a_button);
                 textViewsb.add(b1);
                 textViewsb.add(b2);
@@ -462,6 +462,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true){
+                    a_button.setClickable(true);
                     field_a = true;
                     int y = 0;
                     for(TextView textView : textViewsa){
@@ -473,6 +474,8 @@ public class AssociationsFragment extends Fragment {
                         dialog.show();
                         y=0;
                     }
+                }else {
+                    a_button.setClickable(false);
                 }
             }
         });
@@ -533,10 +536,13 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true){
+                    b_button.setClickable(true);
                     field_b = true;
                     if(!isTrueb){
                         dialog.show();
                     }
+                }else{
+                    b_button.setClickable(false);
                 }
             }
         });
@@ -597,10 +603,13 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true){
+                    c_button.setClickable(true);
                     field_c = true;
                     if(!isTruec){
                         dialog.show();
                     }
+                }else {
+                    c_button.setClickable(false);
                 }
             }
         });
@@ -661,10 +670,13 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true){
+                    d_button.setClickable(true);
                     field_d = true;
                     if(!isTrued){
                         dialog.show();
                     }
+                }else{
+                    d_button.setClickable(false);
                 }
             }
         });
@@ -810,11 +822,17 @@ public class AssociationsFragment extends Fragment {
             mqttHandler.StringSubscribe(new MqttHandler.StringCallBack() {
                 @Override
                 public void OnCallBack(StrDTO strDTO) {
-                    if(strDTO != null){
-                        Toast.makeText(getActivity(), strDTO.getColumnName().toUpperCase(Locale.ROOT)
-                                +" try:"+strDTO.getText()+"", Toast.LENGTH_LONG);
-                        setIsMyTurn();
-                    }
+                    activity.runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            if(strDTO != null && isMyTurn == false){
+                                Toast.makeText(getActivity(), strDTO.getColumnName().toUpperCase(Locale.ROOT)
+                                        +" try:"+strDTO.getText()+"", Toast.LENGTH_LONG);
+                            }
+                            setIsMyTurn();
+                        }
+                    });
                 }
             });
         }
