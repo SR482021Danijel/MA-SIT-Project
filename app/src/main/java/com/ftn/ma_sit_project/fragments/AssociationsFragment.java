@@ -288,7 +288,9 @@ public class AssociationsFragment extends Fragment {
                             StrDTO strDTO = new StrDTO("a",editText1, Data.loggedInUser.getUsername());
                             mqttHandler.StringPublish(strDTO);
 //                            Toast.makeText(getActivity(), "Column A try : " + editText1+"", Toast.LENGTH_LONG).show();
+                            Log.i("mqtt","Column A try (Before set) Turn is : "+isMyTurn + " and User" + Data.loggedInUser.getUsername());
                             setIsMyTurn();
+                            Log.i("mqtt","Column A try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());
                             isClicked = false;
                         }
                     }
@@ -314,7 +316,9 @@ public class AssociationsFragment extends Fragment {
                             StrDTO strDTO = new StrDTO("b", editText1, Data.loggedInUser.getUsername());
                             mqttHandler.StringPublish(strDTO);
 //                            Toast.makeText(getActivity(), "Column B try : " + editText1+"", Toast.LENGTH_LONG);
+                            Log.i("mqtt","Column B try (Before set) Turn is : "+isMyTurn + " and User" + Data.loggedInUser.getUsername());
                             setIsMyTurn();
+                            Log.i("mqtt","Column B try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());
                             isClicked = false;
                         }
                     }
@@ -340,7 +344,9 @@ public class AssociationsFragment extends Fragment {
                             StrDTO strDTO = new StrDTO("c", editText1, Data.loggedInUser.getUsername());
                             mqttHandler.StringPublish(strDTO);
 //                            Toast.makeText(getActivity(), "Column C try : " + editText1+"", Toast.LENGTH_LONG);
+                            Log.i("mqtt","Column C try (Before set) Turn is : "+isMyTurn + " and User" + Data.loggedInUser.getUsername());
                             setIsMyTurn();
+                            Log.i("mqtt","Column C try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());();
                             isClicked = false;
                         }
 
@@ -367,7 +373,9 @@ public class AssociationsFragment extends Fragment {
                             StrDTO strDTO = new StrDTO("d", editText1, Data.loggedInUser.getUsername());
                             mqttHandler.StringPublish(strDTO);
 //                            Toast.makeText(getActivity(), "Column D try : " + editText1+"", Toast.LENGTH_LONG);
+                            Log.i("mqtt","Column D try (Before set) Turn is : "+isMyTurn + " and User" + Data.loggedInUser.getUsername());
                             setIsMyTurn();
+                            Log.i("mqtt","Column D try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());
                             isClicked = false;
                         }
                     }
@@ -670,16 +678,9 @@ public class AssociationsFragment extends Fragment {
         d4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(isMyTurn == true && isClicked == false){
-//                    d4.setClickable(true);
-//                    d4.setText(dFields.get(3));
-//                    mqttHandler.asocijacijePublish(d4,"d");
-//                }else{
-//                    d4.setClickable(false);
-//                }
-                if(isMyTurn == false){
-                    StrDTO strDTO = new StrDTO("a","zxcvbnm","b");
-                    mqttHandler.StringPublish(strDTO);
+                if(isMyTurn == true && isClicked == false){
+                    d4.setText(dFields.get(3));
+                    mqttHandler.asocijacijePublish(d4,"d");
                 }
             }
         });
@@ -740,32 +741,34 @@ public class AssociationsFragment extends Fragment {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if(asocijacije.getColumnName().equals("a")){
-                                    for (TextView textView : textViewsa){
-                                        if(textView.getId() == asocijacije.getId()){
-                                            textView.setText(asocijacije.getText());
-                                            textView.invalidate();
+                                if(isMyTurn == false){
+                                    if(asocijacije.getColumnName().equals("a")){
+                                        for (TextView textView : textViewsa){
+                                            if(textView.getId() == asocijacije.getId()){
+                                                textView.setText(asocijacije.getText());
+                                                textView.invalidate();
+                                            }
                                         }
-                                    }
-                                }else if(asocijacije.getColumnName().equals("b")){
-                                    for (TextView textView : textViewsb){
-                                        if(textView.getId() == asocijacije.getId()){
-                                            textView.setText(asocijacije.getText());
-                                            textView.invalidate();
+                                    }else if(asocijacije.getColumnName().equals("b")){
+                                        for (TextView textView : textViewsb){
+                                            if(textView.getId() == asocijacije.getId()){
+                                                textView.setText(asocijacije.getText());
+                                                textView.invalidate();
+                                            }
                                         }
-                                    }
-                                }else if(asocijacije.getColumnName().equals("c")) {
-                                    for (TextView textView : textViewsc) {
-                                        if (textView.getId() == asocijacije.getId()) {
-                                            textView.setText(asocijacije.getText());
-                                            textView.invalidate();
+                                    }else if(asocijacije.getColumnName().equals("c")) {
+                                        for (TextView textView : textViewsc) {
+                                            if (textView.getId() == asocijacije.getId()) {
+                                                textView.setText(asocijacije.getText());
+                                                textView.invalidate();
+                                            }
                                         }
-                                    }
-                                }else if(asocijacije.getColumnName().equals("d")){
-                                    for (TextView textView : textViewsd){
-                                        if(textView.getId() == asocijacije.getId()){
-                                            textView.setText(asocijacije.getText());
-                                            textView.invalidate();
+                                    }else if(asocijacije.getColumnName().equals("d")){
+                                        for (TextView textView : textViewsd){
+                                            if(textView.getId() == asocijacije.getId()){
+                                                textView.setText(asocijacije.getText());
+                                                textView.invalidate();
+                                            }
                                         }
                                     }
                                 }
