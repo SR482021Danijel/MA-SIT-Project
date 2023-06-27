@@ -141,7 +141,7 @@ public class MqttHandler {
                     } else {
                         Log.i("mqtt", "Subscribed to turn topic");
 
-//                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
+
                         UserDTO userDTO = new UserDTO("Pera", 0, rnd - 1);
                         String sent = gson.toJson(userDTO);
                         client.toAsync().publishWith()
@@ -211,7 +211,7 @@ public class MqttHandler {
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
                     Hyphens hyphens = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), Hyphens.class);
-//                    if (!Objects.equals(hyphens.getUserName(), Data.loggedInUser.getUsername())){
+                    if (!Objects.equals(hyphens.getUserName(), Data.loggedInUser.getUsername())) {
                     textViewStoreCallback.onCallBack(hyphens);
                     Log.i("mqtt", hyphens.toString() + "");
 //                    }
@@ -255,7 +255,7 @@ public class MqttHandler {
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
                     SkockoDTO skockoDTO = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), SkockoDTO.class);
-                    if (!Objects.equals(skockoDTO.getUserName(), Data.loggedInUser.getUsername())){
+                    if (!Objects.equals(skockoDTO.getUserName(), Data.loggedInUser.getUsername())) {
                         ArrayList<String> list = new ArrayList<>();
                         list.add(skockoDTO.getFirstTag());
                         list.add(skockoDTO.getSecondTag());
@@ -263,7 +263,7 @@ public class MqttHandler {
                         list.add(skockoDTO.getFourthTag());
 
                         skockoCallback.onCallback(list);
-                        Log.i("mqtt", "List: " + list.get(0) + list.get(1) + list.get(2) + list.get(3));
+                        Log.i("mqtt", "List: " + skockoDTO.getUserName() + " " + list.get(0) + list.get(1) + list.get(2) + list.get(3));
                     }
                 })
                 .send()
@@ -279,15 +279,11 @@ public class MqttHandler {
 
     public void skockoPublish(SkockoDTO skockoDTO) {
 
-//        Type listType = new TypeToken<ArrayList<ImageView>>() {
-//        }.getType();
-//        String sent = gson.toJson(dataList, listType);
-//        String sent = String.join(",", dataList);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Thread.sleep(500);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
         String sent = gson.toJson(skockoDTO, SkockoDTO.class);
         client.toAsync().publishWith()
                 .topic("Mobilne/Skocko")
@@ -302,6 +298,11 @@ public class MqttHandler {
                         Log.i("mqtt", "Published skocko");
                     }
                 });
+    }
+
+    public void skockoUnsubscribe() {
+
+        client.toAsync().unsubscribeWith().topicFilter("Mobilne/Skocko").send();
     }
 
     public void asocijacijeSubscribe(AsocijacijeCallback asocijacijeCallback) {

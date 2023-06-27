@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class SkockoFragment extends Fragment {
     TextView player1Score, player2UserName, p1UserName;
     AppCompatActivity activity;
     GridLayout gridLayout;
+    LinearLayout linearLayout;
     ArrayList<ImageView> activeSlots = new ArrayList<>();
     ArrayList<String> answers = new ArrayList<>();
     ArrayList<String> guesses = new ArrayList<>();
@@ -52,8 +54,8 @@ public class SkockoFragment extends Fragment {
     int score = 0, j = 0, attempt = 0;
     MqttHandler mqttHandler;
     boolean isMyTurn;
-
     Button btnNext;
+    ImageView skocko, rectangle, circle, heart, triangle, star;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,21 +71,21 @@ public class SkockoFragment extends Fragment {
         });
 
         gridLayout = view.findViewById(R.id.targets);
-        ViewGroup linear = view.findViewById(R.id.skocko_options);
+        linearLayout = view.findViewById(R.id.skocko_options);
 
-        ImageView skocko = view.findViewById(R.id.option_skocko);
-        ImageView rectangle = view.findViewById(R.id.option_rectangle);
-        ImageView circle = view.findViewById(R.id.option_circle);
-        ImageView heart = view.findViewById(R.id.option_heart);
-        ImageView triangle = view.findViewById(R.id.option_triangle);
-        ImageView star = view.findViewById(R.id.option_star);
+        skocko = view.findViewById(R.id.option_skocko);
+        rectangle = view.findViewById(R.id.option_rectangle);
+        circle = view.findViewById(R.id.option_circle);
+        heart = view.findViewById(R.id.option_heart);
+        triangle = view.findViewById(R.id.option_triangle);
+        star = view.findViewById(R.id.option_star);
 
         btnNext = view.findViewById(R.id.btn_skocko);
-        btnNext.setClickable(false);
+        btnNext.setVisibility(View.GONE);
 
         if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
             colorAllTiles(gridLayout, isMyTurn);
-            colorAllTiles(linear, isMyTurn);
+            colorAllTiles(linearLayout, isMyTurn);
             if (isMyTurn) {
                 Draggable.makeDraggable(skocko, "1");
                 Draggable.makeDraggable(rectangle, "2");
@@ -91,14 +93,7 @@ public class SkockoFragment extends Fragment {
                 Draggable.makeDraggable(heart, "4");
                 Draggable.makeDraggable(triangle, "5");
                 Draggable.makeDraggable(star, "6");
-                btnNext.setClickable(true);
-
-//                guesses.add("1");
-//                guesses.add("2");
-//                guesses.add("3");
-//                guesses.add("4");
-//                SkockoDTO skockoDTO = new SkockoDTO(guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
-//                mqttHandler.skockoPublish(skockoDTO);
+                btnNext.setVisibility(View.VISIBLE);
             }
         } else {
             Draggable.makeDraggable(skocko, "1");
@@ -107,7 +102,7 @@ public class SkockoFragment extends Fragment {
             Draggable.makeDraggable(heart, "4");
             Draggable.makeDraggable(triangle, "5");
             Draggable.makeDraggable(star, "6");
-            btnNext.setClickable(true);
+            btnNext.setVisibility(View.VISIBLE);
         }
 
         setCheckButton();
@@ -142,7 +137,7 @@ public class SkockoFragment extends Fragment {
             mqttHandler.skockoSubscribe(new MqttHandler.SkockoCallback() {
                 @Override
                 public void onCallback(ArrayList<String> dataList) {
-                    if (!isMyTurn) {
+                    if (!isMyTurn || (isMyTurn && attempt == 7)) {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -253,14 +248,63 @@ public class SkockoFragment extends Fragment {
 
                     } else {
                         if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
-                            SkockoDTO skockoDTO = new SkockoDTO(Data.loggedInUser.getUsername(), guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
-                        mqttHandler.skockoPublish(skockoDTO);
+                            if (isMyTurn && attempt != 7) {
+                                SkockoDTO skockoDTO = new SkockoDTO(Data.loggedInUser.getUsername(), guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
+                                mqttHandler.skockoPublish(skockoDTO);
+                            }
                         }
-                        displayAnswer();
-                        guesses.clear();
-                        activeSlots.clear();
-                        circleAnswers.clear();
-                        j = setNewTargets(gridLayout, activeSlots);
+                        if (attempt == 6) {
+                            if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
+                                if (isMyTurn) {
+                                    btnNext.setVisibility(View.GONE);
+                                    for (int i = 0; i < 6; i++) {
+                                        View child = linearLayout.getChildAt(i);
+                                        child.setOnLongClickListener(null);
+                                    }
+                                    Toast.makeText(activity.getApplicationContext(), "Incorrect! Points: +0", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Draggable.makeDraggable(skocko, "1");
+                                    Draggable.makeDraggable(rectangle, "2");
+                                    Draggable.makeDraggable(circle, "3");
+                                    Draggable.makeDraggable(heart, "4");
+                                    Draggable.makeDraggable(triangle, "5");
+                                    Draggable.makeDraggable(star, "6");
+                                    btnNext.setVisibility(View.VISIBLE);
+                                }
+                            } else {
+                                Toast.makeText(activity.getApplicationContext(), "Incorrect! Points: +0", Toast.LENGTH_SHORT).show();
+                                CountDownTimer countDownTimer = new CountDownTimer(4000, 1000) {
+                                    @Override
+                                    public void onTick(long l) {
+                                        Long min = ((l / 1000) % 3600) / 60;
+                                        Long sec = (l / 1000) % 60;
+                                    }
+
+                                    @Override
+                                    public void onFinish() {
+                                        getParentFragmentManager()
+                                                .beginTransaction()
+                                                .replace(R.id.fragment_container, new StepByStepFragment())
+                                                .setReorderingAllowed(true)
+                                                .commit();
+                                    }
+                                }.start();
+                            }
+                        }
+                        if (attempt == 7 && !isMyTurn) {
+                            SkockoDTO skockoDTO = new SkockoDTO(Data.loggedInUser.getUsername(), guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
+                            mqttHandler.skockoPublish(skockoDTO);
+                            Toast.makeText(activity.getApplicationContext(), "P2 Incorrect", Toast.LENGTH_SHORT).show();
+                            btnNext.setVisibility(View.GONE);
+                            displayAnswer();
+                            mqttHandler.skockoUnsubscribe();
+                        } else {
+                            displayAnswer();
+                            guesses.clear();
+                            activeSlots.clear();
+                            circleAnswers.clear();
+                            j = setNewTargets(gridLayout, activeSlots);
+                        }
                     }
                 }
             }
@@ -286,6 +330,7 @@ public class SkockoFragment extends Fragment {
             }
         }
         attempt++;
+        Log.i("mqtt", attempt + ". attempt");
         return j = i;
     }
 
@@ -320,5 +365,26 @@ public class SkockoFragment extends Fragment {
                 }
             }
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+//        if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
+//            if (!isMyTurn){
+//                guesses.add("1");
+//                guesses.add("2");
+//                guesses.add("3");
+//                guesses.add("4");
+//                SkockoDTO skockoDTO = new SkockoDTO(Data.loggedInUser.getUsername(), guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
+//                mqttHandler.skockoPublish(skockoDTO);
+//                mqttHandler.skockoPublish(skockoDTO);
+//                mqttHandler.skockoPublish(skockoDTO);
+//                mqttHandler.skockoPublish(skockoDTO);
+//                mqttHandler.skockoPublish(skockoDTO);
+//                mqttHandler.skockoPublish(skockoDTO);
+//            }
+//        }
     }
 }

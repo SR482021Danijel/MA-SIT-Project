@@ -92,6 +92,25 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        Button btnA = view.findViewById(R.id.fill_a);
+        Button btnB = view.findViewById(R.id.fill_b);
+        btnA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                emailText.setText("a@gmail.com");
+                passwordText.setText("a");
+                btnLogin.performClick();
+            }
+        });
+        btnB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                emailText.setText("b@gmail.com");
+                passwordText.setText("b");
+                btnLogin.performClick();
+            }
+        });
+
         return view;
     }
 }
