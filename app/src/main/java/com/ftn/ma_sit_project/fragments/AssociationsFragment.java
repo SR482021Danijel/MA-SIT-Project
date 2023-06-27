@@ -509,6 +509,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     a2.setText(aFields.get(1));
                     mqttHandler.asocijacijePublish(a2, "a");
                 }
@@ -519,6 +520,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     a3.setText(aFields.get(2));
                     mqttHandler.asocijacijePublish(a3, "a");
                 }
@@ -529,6 +531,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     a4.setText(aFields.get(3));
                     mqttHandler.asocijacijePublish(a4, "a");
                 }
@@ -551,6 +554,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     b1.setText(bFields.get(0));
                     mqttHandler.asocijacijePublish(b1,"b");
                 }
@@ -561,6 +565,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     b2.setText(bFields.get(1));
                     mqttHandler.asocijacijePublish(b2, "b");
                 }
@@ -571,6 +576,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     b3.setText(bFields.get(2));
                     mqttHandler.asocijacijePublish(b3,"b");
                 }
@@ -581,6 +587,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     b4.setText(bFields.get(3));
                     mqttHandler.asocijacijePublish(b4,"b");
                 }
@@ -604,6 +611,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     c1.setText(cFields.get(0));
                     mqttHandler.asocijacijePublish(c1,"c");
                 }
@@ -614,6 +622,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     c2.setText(cFields.get(1));
                     mqttHandler.asocijacijePublish(c2,"c");
                 }
@@ -624,6 +633,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     c3.setText(cFields.get(2));
                     mqttHandler.asocijacijePublish(c3,"c");
                 }
@@ -634,6 +644,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     c4.setText(cFields.get(3));
                     mqttHandler.asocijacijePublish(c4,"c");
                 }
@@ -657,6 +668,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     d1.setText(dFields.get(0));
                     mqttHandler.asocijacijePublish(d1,"d");
                 }
@@ -667,6 +679,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     d2.setText(dFields.get(1));
                     mqttHandler.asocijacijePublish(d2,"d");
                 }
@@ -677,6 +690,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     d3.setText(dFields.get(2));
                     mqttHandler.asocijacijePublish(d3,"d");
                 }
@@ -687,6 +701,7 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
                     d4.setText(dFields.get(3));
                     mqttHandler.asocijacijePublish(d4,"d");
                 }
