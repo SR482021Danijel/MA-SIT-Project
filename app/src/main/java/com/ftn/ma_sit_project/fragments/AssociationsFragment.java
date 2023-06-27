@@ -497,6 +497,7 @@ public class AssociationsFragment extends Fragment {
         a1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     a1.setText(aFields.get(0));
@@ -508,6 +509,7 @@ public class AssociationsFragment extends Fragment {
         a2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     a2.setText(aFields.get(1));
@@ -519,6 +521,7 @@ public class AssociationsFragment extends Fragment {
         a3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     a3.setText(aFields.get(2));
@@ -530,6 +533,7 @@ public class AssociationsFragment extends Fragment {
         a4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     a4.setText(aFields.get(3));
@@ -553,6 +557,7 @@ public class AssociationsFragment extends Fragment {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     b1.setText(bFields.get(0));
@@ -564,6 +569,7 @@ public class AssociationsFragment extends Fragment {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     b2.setText(bFields.get(1));
@@ -575,6 +581,7 @@ public class AssociationsFragment extends Fragment {
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     b3.setText(bFields.get(2));
@@ -586,6 +593,7 @@ public class AssociationsFragment extends Fragment {
         b4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     b4.setText(bFields.get(3));
@@ -610,6 +618,7 @@ public class AssociationsFragment extends Fragment {
         c1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     c1.setText(cFields.get(0));
@@ -621,6 +630,7 @@ public class AssociationsFragment extends Fragment {
         c2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     c2.setText(cFields.get(1));
@@ -632,6 +642,7 @@ public class AssociationsFragment extends Fragment {
         c3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     c3.setText(cFields.get(2));
@@ -643,6 +654,7 @@ public class AssociationsFragment extends Fragment {
         c4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     c4.setText(cFields.get(3));
@@ -667,6 +679,7 @@ public class AssociationsFragment extends Fragment {
         d1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     d1.setText(dFields.get(0));
@@ -678,6 +691,7 @@ public class AssociationsFragment extends Fragment {
         d2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     d2.setText(dFields.get(1));
@@ -689,6 +703,7 @@ public class AssociationsFragment extends Fragment {
         d3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     d3.setText(dFields.get(2));
@@ -700,6 +715,7 @@ public class AssociationsFragment extends Fragment {
         d4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
                 if(isMyTurn == true && isClicked == false){
                     isClicked = true;
                     d4.setText(dFields.get(3));
