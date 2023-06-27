@@ -142,7 +142,7 @@ public class MqttHandler {
                         Log.i("mqtt", "Subscribed to turn topic");
 
                         UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
-//                        UserDTO userDTO = new UserDTO("Pera", 0, rnd - 1);
+//                        UserDTO userDTO = new UserDTO("Pera", 0, rnd + 1);
                         String sent = gson.toJson(userDTO);
                         client.toAsync().publishWith()
                                 .topic("Mobilne/Turn")
@@ -328,9 +328,9 @@ public class MqttHandler {
                 });
     }
 
-    public void asocijacijePublish(TextView textView) {
+    public void asocijacijePublish(TextView textView, String string) {
 
-        Asocijacije asocijacije = new Asocijacije(textView.getId(), textView.getText().toString(), Data.loggedInUser.getUsername());
+        Asocijacije asocijacije = new Asocijacije(textView.getId(), textView.getText().toString(), string, Data.loggedInUser.getUsername());
         String sent = gson.toJson(asocijacije, Asocijacije.class);
         client.toAsync().publishWith()
                 .topic("Mobilne/Asocijacije")

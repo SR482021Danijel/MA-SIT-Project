@@ -8,12 +8,16 @@ public class Asocijacije {
     private int id;
     @SerializedName("text")
     private String text;
+    @SerializedName("colunnName")
+    private String columnName;
     @SerializedName("userName")
     private String userName;
 
-    public Asocijacije(int id, String text, String userName) {
+
+    public Asocijacije(int id, String text, String columnName, String userName) {
         this.id = id;
         this.text = text;
+        this.columnName = columnName;
         this.userName = userName;
     }
 
@@ -28,6 +32,10 @@ public class Asocijacije {
         return text;
     }
 
+    public String getColumnName() {
+        return columnName;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -40,6 +48,10 @@ public class Asocijacije {
         this.text = text;
     }
 
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -49,6 +61,7 @@ public class Asocijacije {
         return "Asocijacije{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
+                ", columnName='" + columnName + '\'' +
                 ", userName='" + userName + '\'' +
                 '}';
     }
