@@ -314,7 +314,7 @@ public class MqttHandler {
                     Asocijacije  asocijacije = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), Asocijacije.class);
                     if (!Objects.equals(asocijacije.getUserName(), Data.loggedInUser.getUsername())){
                         asocijacijeCallback.onCallBack(asocijacije);
-                        Log.i("mqtt", asocijacije+"");
+                        Log.i("mqtt", "Subscribe moguce null: "+ asocijacije+"");
                     }
                 })
                 .send()
@@ -329,7 +329,6 @@ public class MqttHandler {
     }
 
     public void asocijacijePublish(TextView textView, String string) {
-
         Asocijacije asocijacije = new Asocijacije(textView.getId(), textView.getText().toString(), string, Data.loggedInUser.getUsername());
         String sent = gson.toJson(asocijacije, Asocijacije.class);
         client.toAsync().publishWith()

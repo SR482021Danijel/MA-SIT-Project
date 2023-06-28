@@ -547,8 +547,15 @@ public class AssociationsFragment extends Fragment {
                 if(isMyTurn == true) {
 //                    b_button.setClickable(true);
                     field_b = true;
-                    if (!isTrueb) {
+                    int y = 0;
+                    for(TextView textView : textViewsb){
+                        if(textView.getText() == ""){
+                            y++;
+                        }
+                    }
+                    if(!isTruea && y != 5){
                         dialog.show();
+                        y=0;
                     }
                 }
             }
@@ -607,9 +614,17 @@ public class AssociationsFragment extends Fragment {
             public void onClick(View view) {
                 if(isMyTurn == true){
 //                    c_button.setClickable(true);
+
                     field_c = true;
-                    if(!isTruec){
+                    int y = 0;
+                    for(TextView textView : textViewsc){
+                        if(textView.getText() == ""){
+                            y++;
+                        }
+                    }
+                    if(!isTruea && y != 5){
                         dialog.show();
+                        y=0;
                     }
                 }
             }
@@ -669,8 +684,15 @@ public class AssociationsFragment extends Fragment {
                 if(isMyTurn == true){
 //                    d_button.setClickable(true);
                     field_d = true;
-                    if(!isTrued){
+                    int y = 0;
+                    for(TextView textView : textViewsd){
+                        if(textView.getText() == ""){
+                            y++;
+                        }
+                    }
+                    if(!isTruea && y != 5){
                         dialog.show();
+                        y=0;
                     }
                 }
             }
@@ -716,11 +738,16 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
-                if(isMyTurn == true && isClicked == false){
-                    isClicked = true;
-                    d4.setText(dFields.get(3));
-                    mqttHandler.asocijacijePublish(d4,"d");
-                }
+//                if(isMyTurn == true && isClicked == false){
+//                    isClicked = true;
+//                    d4.setText(dFields.get(3));
+//                    mqttHandler.asocijacijePublish(d4,"d");
+//                }
+//                c4.setText("nesto");
+                mqttHandler.asocijacijePublish(c4,"c");
+                StrDTO strDTO = new StrDTO("c","zxcvbnm", "Pera");
+                mqttHandler.StringPublish(strDTO);
+
             }
         });
 
@@ -781,28 +808,36 @@ public class AssociationsFragment extends Fragment {
                             @Override
                             public void run() {
                                 if(isMyTurn == false){
+                                    Log.i("mqtt","Column subcribe: "+asocijacije.getColumnName());
                                     if(asocijacije.getColumnName().equals("a")){
+                                        Log.i("mqtt","Column A subcribe: "+asocijacije.getColumnName());
                                         for (TextView textView : textViewsa){
                                             if(textView.getId() == asocijacije.getId()){
                                                 textView.setText(asocijacije.getText());
                                                 textView.invalidate();
                                             }
                                         }
-                                    }else if(asocijacije.getColumnName().equals("b")){
+                                    }
+                                    if(asocijacije.getColumnName().equals("b")){
+                                        Log.i("mqtt","Column B subcribe: "+asocijacije.getColumnName());
                                         for (TextView textView : textViewsb){
                                             if(textView.getId() == asocijacije.getId()){
                                                 textView.setText(asocijacije.getText());
                                                 textView.invalidate();
                                             }
                                         }
-                                    }else if(asocijacije.getColumnName().equals("c")) {
+                                    }
+                                    if(asocijacije.getColumnName().equals("c")) {
+                                        Log.i("mqtt","Column C subcribe: "+asocijacije.getColumnName());
                                         for (TextView textView : textViewsc) {
                                             if (textView.getId() == asocijacije.getId()) {
                                                 textView.setText(asocijacije.getText());
                                                 textView.invalidate();
                                             }
                                         }
-                                    }else if(asocijacije.getColumnName().equals("d")){
+                                    }
+                                    if(asocijacije.getColumnName().equals("d")){
+                                        Log.i("mqtt","Column D subcribe: "+asocijacije.getColumnName());
                                         for (TextView textView : textViewsd){
                                             if(textView.getId() == asocijacije.getId()){
                                                 textView.setText(asocijacije.getText());
