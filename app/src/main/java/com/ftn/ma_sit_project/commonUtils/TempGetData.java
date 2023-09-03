@@ -44,7 +44,7 @@ public class TempGetData {
         });
     }
 
-    public static void getKorakPoKorak(FireStoreCallback firestoreCallback) {
+    public static void getKorakPoKorak(FireStoreCallback firestoreCallback, String runda) {
         ArrayList<String> list = new ArrayList<String>();
         db.collection("Games").document("KorakPoKorak")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -55,7 +55,7 @@ public class TempGetData {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 Log.d("selectTestById", "Document exists");
-                                List<String> runda1 = (List<String>) document.get("runda1");
+                                List<String> runda1 = (List<String>) document.get(runda);
                                 if (runda1 != null) {
                                     list.addAll(runda1);
                                 }

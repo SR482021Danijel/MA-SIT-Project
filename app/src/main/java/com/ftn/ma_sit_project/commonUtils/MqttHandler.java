@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.ftn.ma_sit_project.Model.Asocijacije;
 import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.Hyphens;
+import com.ftn.ma_sit_project.Model.KorakPoKorak;
 import com.ftn.ma_sit_project.Model.SkockoDTO;
 import com.ftn.ma_sit_project.Model.StrDTO;
 import com.ftn.ma_sit_project.Model.User;
@@ -387,6 +388,48 @@ public class MqttHandler {
                     });
         }
 
+    public void korakPoKorakSubscribe(KorakPoKorakCallback korakPoKorakCallback) {
+
+        client.toAsync().subscribeWith()
+                .topicFilter("Mobilne/KorakPoKorak")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .callback(mqtt5Publish -> {
+                    KorakPoKorak  korakPoKorak = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), KorakPoKorak.class);
+                    if (!Objects.equals(korakPoKorak.getUserName(), Data.loggedInUser.getUsername())){
+                        korakPoKorakCallback.onCallBack(korakPoKorak);
+                        Log.i("mqtt", "Subscribe moguce null: "+ korakPoKorak+"");
+                    }
+                })
+                .send()
+                .whenComplete((mqtt5SubAck, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "KorakPoKorak Subscribe Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Subscribed to KorakPoKorak");
+                    }
+                });
+    }
+
+    public void korakPoKorakPublish(TextView textView, boolean bool, boolean boo) {
+        KorakPoKorak korakPoKorak = new KorakPoKorak(textView.getId(), textView.getText().toString(), bool, boo, Data.loggedInUser.getUsername());
+        String sent = gson.toJson(korakPoKorak, KorakPoKorak.class);
+        client.toAsync().publishWith()
+                .topic("Mobilne/KorakPoKorak")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .payload(sent.getBytes())
+                .send()
+                .whenComplete((mqtt5PublishResult, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "KorakPoKorak Publish Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Published KorakPoKorak");
+                    }
+                });
+        Log.i("mqtt","U publisu User salje: "+Data.loggedInUser.getUsername());
+    }
+
 
     public User getP2Username() {
         return gson.fromJson(str, User.class);
@@ -424,6 +467,10 @@ public class MqttHandler {
 
     public interface StringCallBack{
         void OnCallBack(StrDTO strDTO);
+    }
+
+    public interface KorakPoKorakCallback {
+        void onCallBack(KorakPoKorak korakPoKorak);
     }
 
     public String getString1(){

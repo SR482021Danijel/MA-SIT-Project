@@ -7,8 +7,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.util.Log;
@@ -23,6 +26,7 @@ import com.ftn.ma_sit_project.commonUtils.MqttHandler;
 import com.ftn.ma_sit_project.fragments.FrendListFragment;
 import com.ftn.ma_sit_project.fragments.HomeFragment;
 import com.ftn.ma_sit_project.fragments.LoginFragment;
+import com.ftn.ma_sit_project.fragments.MyViewModel;
 import com.ftn.ma_sit_project.fragments.ProfileFragment;
 import com.ftn.ma_sit_project.fragments.RankListFragment;
 import com.ftn.ma_sit_project.fragments.RegistrationFragment;
@@ -35,6 +39,8 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private MyViewModel sharedViewModel;
 
     ListView listView;
     ProgramAdapter programAdapter;
@@ -52,6 +58,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedViewModel = new ViewModelProvider(this).get(MyViewModel.class);
+
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        // Get the current time in milliseconds
+        long currentTime = System.currentTimeMillis();
+
+        // Get the last time the player received tokens (0 if it's their first time playing)
+        long lastTokenTime = sharedPref.getLong("lastTokenTime", 0);
+
+        // Get the current number of tokens the player has (0 if it's their first time playing)
+        int currentTokens = sharedPref.getInt("currentTokens", 0);
+
+        // Check if a day has passed since the last time the player received tokens
+        if (currentTime - lastTokenTime >= 86400000) {
+            // Add 5 tokens to the player's current token count
+            currentTokens += 5;
+
+            // Update the stored values
+            editor.putLong("lastTokenTime", currentTime);
+            editor.putInt("currentTokens", currentTokens);
+            editor.apply();
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
@@ -169,5 +200,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    public int getCurrentTokens() {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        return sharedPref.getInt("currentTokens", 0);
+    }
+
+    public void subtractOneToken() {
+        // Get the current number of tokens
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        int currentTokens = sharedPref.getInt("currentTokens", 0);
+
+        // Subtract one token from the current token count
+        currentTokens -= 1;
+
+        // Update the stored value with the new token count
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("currentTokens", currentTokens);
+        editor.apply();
     }
 }

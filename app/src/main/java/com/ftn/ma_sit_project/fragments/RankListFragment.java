@@ -2,6 +2,7 @@ package com.ftn.ma_sit_project.fragments;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -44,7 +45,7 @@ public class RankListFragment extends Fragment {
                 }
                 Log.i("list", users+"");
                 listView = view.findViewById(R.id.rank_list_view);
-                arrayAdapter = new ProgramAdapter(getActivity(), title, description, true);
+                arrayAdapter = new ProgramAdapter((AppCompatActivity) getActivity(), getActivity(), title, description, true);
                 listView.setAdapter(arrayAdapter);
             }
         });

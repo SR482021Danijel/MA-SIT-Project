@@ -2,6 +2,7 @@ package com.ftn.ma_sit_project.fragments;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -33,7 +34,7 @@ public class FrendListFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_frend_list, container, false);
         listView = view.findViewById(R.id.listView);
-        arrayAdapter = new ProgramAdapter(getActivity(), title, description);
+        arrayAdapter = new ProgramAdapter((AppCompatActivity) getActivity(), getActivity(), title, description);
         listView.setAdapter(arrayAdapter);
         return view;
     }

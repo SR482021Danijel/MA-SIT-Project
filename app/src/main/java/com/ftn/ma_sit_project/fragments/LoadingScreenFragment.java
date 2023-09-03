@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ftn.ma_sit_project.MainActivity;
 import com.ftn.ma_sit_project.Model.Asocijacije;
 import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.User;
@@ -30,7 +31,7 @@ public class LoadingScreenFragment extends Fragment {
     AppCompatActivity activity;
     MqttHandler mqttHandler;
     CountDownTimer countDownTimer;
-    TextView p2Name, loadingText;
+    TextView p2Name, loadingText, tokenTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,8 @@ public class LoadingScreenFragment extends Fragment {
 
         loadingText = view.findViewById(R.id.loading_text);
 
+        MainActivity mainActivity = (MainActivity) getActivity();
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,9 +96,10 @@ public class LoadingScreenFragment extends Fragment {
                 User p2 = mqttHandler.getP2Username();
                 if (p2 != null && !Objects.equals(p2.getUsername(), Data.loggedInUser.getUsername())) {
                     p2Name.setText(p2.getUsername());
+                    mainActivity.subtractOneToken();
                     getParentFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, new AssociationsFragment())
+                            .replace(R.id.fragment_container, new StepByStepFragment())
                             .setReorderingAllowed(true)
                             .commit();
                 } else {

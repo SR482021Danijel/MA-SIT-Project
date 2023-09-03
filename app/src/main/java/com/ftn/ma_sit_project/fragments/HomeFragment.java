@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ftn.ma_sit_project.MainActivity;
 import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.R;
 import com.ftn.ma_sit_project.commonUtils.MqttHandler;
@@ -28,10 +30,20 @@ public class HomeFragment extends Fragment {
 
     MqttHandler mqttHandler;
 
+    TextView tokenTextView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        //deo za tokene
+        MainActivity mainActivity = (MainActivity) getActivity();
+        int currentTokens = mainActivity.getCurrentTokens();
+
+        tokenTextView = view.findViewById(R.id.tokensAmount);
+        tokenTextView.setText(String.valueOf(currentTokens));
+        //!!!!!!!!
 
         Button btnPlay = view.findViewById(R.id.play);
         btnPlay.setOnClickListener(new View.OnClickListener() {

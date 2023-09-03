@@ -67,6 +67,7 @@ public class AssociationsFragment extends Fragment {
     int score = 0;
 
     boolean isMyTurn;
+    boolean canEBeClicked = false;
 
 //    private void Score(int poinst){
 //        score = Integer.parseInt((String) player1Score.getText());
@@ -143,11 +144,11 @@ public class AssociationsFragment extends Fragment {
     public void setEFields(){
         e.setText(arrayList.get(20));
         mqttHandler.asocijacijePublish(e,"e");
-        getParentFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new SkockoFragment())
-                .setReorderingAllowed(true)
-                .commit();
+//        getParentFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.fragment_container, new SkockoFragment())
+//                .setReorderingAllowed(true)
+//                .commit();
     }
 
     @Override
@@ -284,13 +285,15 @@ public class AssociationsFragment extends Fragment {
                             setPoints(poinst);
                             setAFields();
                             isTruea = true;
+                            isClicked = false;
+                            canEBeClicked = true;
                         }else{
                             StrDTO strDTO = new StrDTO("a",editText1, Data.loggedInUser.getUsername());
                             mqttHandler.StringPublish(strDTO);
 //                            Toast.makeText(getActivity(), "Column A try : " + editText1+"", Toast.LENGTH_LONG).show();
-                            Log.i("mqtt","Column A try (Before set) Turn is : "+isMyTurn + " and User" + Data.loggedInUser.getUsername());
+                            Log.i("mqtt","Column A try (Before setting turn ) Turn is : "+isMyTurn + " and User: " + Data.loggedInUser.getUsername());
                             setIsMyTurn();
-                            Log.i("mqtt","Column A try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());
+                            Log.i("mqtt","Column A try (After setting turn ) Turn is: "+isMyTurn+" and User: "+Data.loggedInUser.getUsername());
                             Log.i("mqtt", "isClickedA before: "+isClicked);
                             isClicked = false;
                             Log.i("mqtt", "isClickedA after: "+isClicked);
@@ -314,13 +317,15 @@ public class AssociationsFragment extends Fragment {
                             setPoints(poinst);
                             setBFields();
                             isTrueb = true;
+                            isClicked = false;
+                            canEBeClicked = true;
                         }else{
                             StrDTO strDTO = new StrDTO("b", editText1, Data.loggedInUser.getUsername());
                             mqttHandler.StringPublish(strDTO);
 //                            Toast.makeText(getActivity(), "Column B try : " + editText1+"", Toast.LENGTH_LONG);
-                            Log.i("mqtt","Column B try (Before set) Turn is : "+isMyTurn + " and User" + Data.loggedInUser.getUsername());
+                            Log.i("mqtt","Column B try (Before setting turn ) Turn is : "+isMyTurn + " and User: " + Data.loggedInUser.getUsername());
                             setIsMyTurn();
-                            Log.i("mqtt","Column B try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());
+                            Log.i("mqtt","Column B try (After setting turn ) Turn is: "+isMyTurn+" and User: "+Data.loggedInUser.getUsername());
                             Log.i("mqtt", "isClickedB before: "+isClicked);
                             isClicked = false;
                             Log.i("mqtt", "isClickedB after: "+isClicked);
@@ -344,13 +349,15 @@ public class AssociationsFragment extends Fragment {
                             setPoints(poinst);
                             setCFields();
                             isTruec = true;
+                            isClicked = false;
+                            canEBeClicked = true;
                         }else{
                             StrDTO strDTO = new StrDTO("c", editText1, Data.loggedInUser.getUsername());
                             mqttHandler.StringPublish(strDTO);
 //                            Toast.makeText(getActivity(), "Column C try : " + editText1+"", Toast.LENGTH_LONG);
-                            Log.i("mqtt","Column C try (Before set) Turn is : "+isMyTurn + " and User" + Data.loggedInUser.getUsername());
+                            Log.i("mqtt","Column C try (Before setting turn ) Turn is : "+isMyTurn + " and User: " + Data.loggedInUser.getUsername());
                             setIsMyTurn();
-                            Log.i("mqtt","Column C try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());
+                            Log.i("mqtt","Column C try (After setting turn ) Turn is: "+isMyTurn+" and User: "+Data.loggedInUser.getUsername());
                             Log.i("mqtt", "isClickedC before: "+isClicked);
                             isClicked = false;
                             Log.i("mqtt", "isClickedC after: "+isClicked);
@@ -375,13 +382,15 @@ public class AssociationsFragment extends Fragment {
                             setPoints(poinst);
                             setDFields();
                             isTrued = true;
+                            isClicked = false;
+                            canEBeClicked = true;
                         }else{
                             StrDTO strDTO = new StrDTO("d", editText1, Data.loggedInUser.getUsername());
                             mqttHandler.StringPublish(strDTO);
 //                            Toast.makeText(getActivity(), "Column D try : " + editText1+"", Toast.LENGTH_LONG);
-                            Log.i("mqtt","Column D try (Before set) Turn is : "+isMyTurn + " and User" + Data.loggedInUser.getUsername());
+                            Log.i("mqtt","Column D try (Before setting turn ) Turn is : "+isMyTurn + " and User: " + Data.loggedInUser.getUsername());
                             setIsMyTurn();
-                            Log.i("mqtt","Column D try (After set) and set Turn is: "+isMyTurn+" and User:"+Data.loggedInUser.getUsername());
+                            Log.i("mqtt","Column D try (After setting turn ) Turn is: "+isMyTurn+" and User: "+Data.loggedInUser.getUsername());
                             Log.i("mqtt", "isClickedD before: "+isClicked);
                             isClicked = false;
                             Log.i("mqtt", "isClickedD after: "+isClicked);
@@ -502,6 +511,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     a1.setText(aFields.get(0));
                     mqttHandler.asocijacijePublish(a1,"a");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -514,6 +527,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     a2.setText(aFields.get(1));
                     mqttHandler.asocijacijePublish(a2, "a");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -526,6 +543,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     a3.setText(aFields.get(2));
                     mqttHandler.asocijacijePublish(a3, "a");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -538,6 +559,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     a4.setText(aFields.get(3));
                     mqttHandler.asocijacijePublish(a4, "a");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -553,7 +578,7 @@ public class AssociationsFragment extends Fragment {
                             y++;
                         }
                     }
-                    if(!isTruea && y != 5){
+                    if(!isTrueb && y != 5){
                         dialog.show();
                         y=0;
                     }
@@ -569,6 +594,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     b1.setText(bFields.get(0));
                     mqttHandler.asocijacijePublish(b1,"b");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -581,6 +610,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     b2.setText(bFields.get(1));
                     mqttHandler.asocijacijePublish(b2, "b");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -593,6 +626,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     b3.setText(bFields.get(2));
                     mqttHandler.asocijacijePublish(b3,"b");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -605,6 +642,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     b4.setText(bFields.get(3));
                     mqttHandler.asocijacijePublish(b4,"b");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -622,7 +663,7 @@ public class AssociationsFragment extends Fragment {
                             y++;
                         }
                     }
-                    if(!isTruea && y != 5){
+                    if(!isTruec && y != 5){
                         dialog.show();
                         y=0;
                     }
@@ -638,6 +679,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     c1.setText(cFields.get(0));
                     mqttHandler.asocijacijePublish(c1,"c");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -650,6 +695,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     c2.setText(cFields.get(1));
                     mqttHandler.asocijacijePublish(c2,"c");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -662,6 +711,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     c3.setText(cFields.get(2));
                     mqttHandler.asocijacijePublish(c3,"c");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -674,6 +727,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     c4.setText(cFields.get(3));
                     mqttHandler.asocijacijePublish(c4,"c");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -690,7 +747,7 @@ public class AssociationsFragment extends Fragment {
                             y++;
                         }
                     }
-                    if(!isTruea && y != 5){
+                    if(!isTrued && y != 5){
                         dialog.show();
                         y=0;
                     }
@@ -706,6 +763,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     d1.setText(dFields.get(0));
                     mqttHandler.asocijacijePublish(d1,"d");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -718,6 +779,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     d2.setText(dFields.get(1));
                     mqttHandler.asocijacijePublish(d2,"d");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -730,6 +795,10 @@ public class AssociationsFragment extends Fragment {
                     isClicked = true;
                     d3.setText(dFields.get(2));
                     mqttHandler.asocijacijePublish(d3,"d");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
                 }
             }
         });
@@ -738,16 +807,15 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
-//                if(isMyTurn == true && isClicked == false){
-//                    isClicked = true;
-//                    d4.setText(dFields.get(3));
-//                    mqttHandler.asocijacijePublish(d4,"d");
-//                }
-//                c4.setText("nesto");
-                mqttHandler.asocijacijePublish(c4,"c");
-                StrDTO strDTO = new StrDTO("c","zxcvbnm", "Pera");
-                mqttHandler.StringPublish(strDTO);
-
+                if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
+                    d4.setText(dFields.get(3));
+                    mqttHandler.asocijacijePublish(d4,"d");
+//                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+//                    mqttHandler.StringPublish(strDTO);
+//                    setIsMyTurn();
+//                    isClicked = false;
+                }
             }
         });
 
@@ -776,8 +844,8 @@ public class AssociationsFragment extends Fragment {
                     }
                 }
 
-                field_e = true;
-                if(y != 20){
+                if(y != 20 && canEBeClicked){
+                    field_e = true;
                     dialog.show();
                 }
             }
@@ -863,7 +931,7 @@ public class AssociationsFragment extends Fragment {
                                 Toast.makeText(getActivity(), strDTO.getColumnName().toUpperCase(Locale.ROOT)
                                         +" try:"+strDTO.getText()+"", Toast.LENGTH_LONG).show();
                                 setIsMyTurn();
-                                Log.i("mqtt", "MyTurn: "+ isMyTurn+"");
+                                Log.i("mqtt", "MyTurn: "+ isMyTurn+", " + "User: "+ strDTO.getUserName());
                             }
                         }
                     });
@@ -873,7 +941,7 @@ public class AssociationsFragment extends Fragment {
 
         ShowHideElements.showScoreBoard(activity);
 
-        countDownTimer = new CountDownTimer(200000, 1000) {
+        countDownTimer = new CountDownTimer(1000000, 1000) {
             @Override
             public void onTick(long l) {
                 Long min = ((l / 1000) % 3600) / 60;
@@ -885,11 +953,11 @@ public class AssociationsFragment extends Fragment {
             @Override
             public void onFinish() {
                 scoreTimer.setText("00:00");
-                getParentFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new HomeFragment())
-                        .setReorderingAllowed(true)
-                        .commit();
+//                getParentFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.fragment_container, new HomeFragment())
+//                        .setReorderingAllowed(true)
+//                        .commit();
             }
         }.start();
 
