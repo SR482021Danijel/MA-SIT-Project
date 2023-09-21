@@ -22,12 +22,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ftn.ma_sit_project.Model.Asocijacije;
 import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.KorakPoKorak;
+import com.ftn.ma_sit_project.Model.UserDTO;
 import com.ftn.ma_sit_project.R;
 import com.ftn.ma_sit_project.commonUtils.MqttHandler;
 import com.ftn.ma_sit_project.commonUtils.ShowHideElements;
 import com.ftn.ma_sit_project.commonUtils.TempGetData;
+import com.ftn.ma_sit_project.repository.UserRepository;
 
 
 import java.util.ArrayList;
@@ -48,7 +51,7 @@ public class StepByStepFragment extends Fragment {
     MqttHandler mqttHandler = new MqttHandler();
 
     TempGetData tempGetData = new TempGetData();
-    TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView_answer, points_right, player1Score, player2UserName;
+    TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView_answer, points_right, player1Score, player2Score,  player2UserName;
     Map<Integer, TextView> textViwMap = new HashMap<>();
     Map<String, Object> runda1 = new HashMap<>();
     ArrayList<String> arrayList = new ArrayList<>();
@@ -73,26 +76,33 @@ public class StepByStepFragment extends Fragment {
 
     private static final String KEY_STATE = "state";
 
+    UserRepository userRepository = new UserRepository();
+    boolean isOnline;
+
     public StepByStepFragment() {
     }
 
+    AssociationsFragment associationsFragment = new AssociationsFragment();
     public void setIsMyTurn(){
-        if(isMyTurn == true){
+        if(isMyTurn){
             isMyTurn = false;
-        }else if(isMyTurn == false){
+        }else{
             isMyTurn = true;
         }
     }
 
-    public static StepByStepFragment newInstance(boolean round) {
+    public static StepByStepFragment newInstance(boolean round, boolean bool) {
 
         Bundle args = new Bundle();
         args.putBoolean("isFirstRound", round);
+        args.putBoolean("isOnline", bool);
 
         StepByStepFragment fragment = new StepByStepFragment();
         fragment.setArguments(args);
         return fragment;
     }
+
+
 
     public void TempGetDataMethod(String runda){
         TempGetData.getKorakPoKorak(new TempGetData.FireStoreCallback() {
@@ -119,10 +129,23 @@ public class StepByStepFragment extends Fragment {
 
                 Log.d("LITS", arrayList.toString());
 
+                if(getArguments() != null){
+                    isOnline = getArguments().getBoolean("isOnline", false);
+                }
 
-                isMyTurn = mqttHandler.getTurnPlayer();
+
+                if(isOnline){
+                    isMyTurn = mqttHandler.getTurnPlayer();
+                    if (getArguments() != null) {
+                        setIsMyTurn();
+                    }
+                }
             }
         }, runda);
+    }
+
+    public void setIsOnline(boolean bool){
+        isOnline = true;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -139,6 +162,7 @@ public class StepByStepFragment extends Fragment {
         textView7 = view.findViewById(R.id.step_by_stepTextView7);
         textView_answer = view.findViewById(R.id.step_by_stepTextView_answer);
         player1Score = activity.findViewById(R.id.player_1_score);
+        player2Score = activity.findViewById(R.id.player_2_score);
         points_right = view.findViewById(R.id.step_by_stepTextView_points_right);
 
         dialog = new Dialog(getActivity());
@@ -162,6 +186,9 @@ public class StepByStepFragment extends Fragment {
             public void onClick(View view) {
                 Log.i("mqtt", "MyTurn: " + isMyTurn);
                 if(isMyTurn){
+                    dialog.show();
+                }
+                if(!isOnline){
                     dialog.show();
                 }
             }
@@ -188,21 +215,23 @@ public class StepByStepFragment extends Fragment {
 //                        if (viewModel.getIsFirstRoundLiveData() != null) {
 //                            viewModel.getIsFirstRoundLiveData().observe(getViewLifecycleOwner(), isFirstRound -> {
 //                                if (isFirstRound == true && isOkButtonClicked) {
-                        if(getArguments() == null) {
-//                                    isOkButtonClicked = false;
-                            Log.i("mqtt", "IsFirstRound = true");
-                            mqttHandler.korakPoKorakPublish(textView_answer, true, false);
-                            isFragment(true);
-//                                    viewModel.setIsFirstRound(false);
-//                                } else if(isFirstRound == false && isOkButtonClicked) {
-                        }else{
-//                            isOkButtonClicked = false;
-                            Log.i("mqtt", "IsFirstRound = false");
-                            mqttHandler.korakPoKorakPublish(textView_answer, false, false);
-                            isFragment(false);
-//                            viewModel.setIsFirstRound(true);
-//                                }
-//                            });
+                        if(isOnline){
+                            if(getArguments() == null) {
+    //                                    isOkButtonClicked = false;
+                                Log.i("mqtt", "IsFirstRound = true");
+                                mqttHandler.korakPoKorakPublish(textView_answer, true, false);
+                                isFragment(true);
+    //                                    viewModel.setIsFirstRound(false);
+    //                                } else if(isFirstRound == false && isOkButtonClicked) {
+                            }else{
+    //                            isOkButtonClicked = false;
+                                Log.i("mqtt", "IsFirstRound = false");
+                                mqttHandler.korakPoKorakPublish(textView_answer, false, false);
+                                isFragment(false);
+    //                            viewModel.setIsFirstRound(true);
+    //                                }
+    //                            });
+                            }
                         }
 //                        Log.i("mqtt","counter1: "+ counter1);!!!!!!!!!!!!!!!!
 //                        viewModel.getIsFirstRoundLiveData().observe(getViewLifecycleOwner(), isFirstRound -> {
@@ -292,7 +321,19 @@ public class StepByStepFragment extends Fragment {
         }
         isAnswerCorrect = true;
         player1Score.setText(score + "");
+        Data.loggedInUser.setKorakPoKorak(Data.loggedInUser.getKorakPoKorak()+score);
+        if(isOnline){
+            userRepository.updateKorakPoKorak(Data.loggedInUser, Data.loggedInUser.getKorakPoKorak()+score);
+            mqttHandler.pointPublish(score);
+        }
         points_right.setTextColor(Color.RED);
+        if(!isOnline){
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new AssociationsFragment())
+                    .setReorderingAllowed(true)
+                    .commit();
+        }
     }
 
     public void isFragment(boolean bool) {
@@ -303,13 +344,13 @@ public class StepByStepFragment extends Fragment {
                     if(bool){
                         getParentFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.fragment_container, StepByStepFragment.newInstance(true))
+                                .replace(R.id.fragment_container, StepByStepFragment.newInstance(true, true))
                                 .setReorderingAllowed(true)
                                 .commit();
                     }else{
                         getParentFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.fragment_container, new SkockoFragment())
+                                .replace(R.id.fragment_container, new AssociationsFragment())
                                 .setReorderingAllowed(true)
                                 .commit();
                     }
@@ -392,10 +433,11 @@ public class StepByStepFragment extends Fragment {
                                             public void onFinish() {
                                                 scoreTimer.setText("00:00");
                                                 if(savedInstanceState == null){
-                                                    getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new StepByStepFragment()).commit();
+                                                    getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new StepByStepFragment().newInstance(true, true)).commit();
                                                     isFirstRound = false;
                                                 }else{
-                                                    getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new SkockoFragment()).commit();
+                                                    associationsFragment.setIsOnline(true);
+                                                    getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, associationsFragment).commit();
                                                 }
                                             }
                                         }.start();
@@ -404,6 +446,18 @@ public class StepByStepFragment extends Fragment {
 //                            }
                         });
                     }
+                }
+            });
+
+            mqttHandler.pointSubscribe(new MqttHandler.PointCallback() {
+                @Override
+                public void onCallback(UserDTO userDTO) {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            player2Score.setText(userDTO.getPoints()+"");
+                        }
+                    });
                 }
             });
         }
@@ -418,10 +472,15 @@ public class StepByStepFragment extends Fragment {
                     if(count < 9){
                         Log.e("AA","rad2");
                         //treba da se stavi if ako igra jedna ili dva igraca ako igra jedan igrac onda treba da se pokazuje resenje na kraju ako ne onda treba da bude prazno resenje
-                        if(count == 8){
+                        if(isOnline){
+                            if(count == 8){
 
-                        }
-                        else{
+                            }
+                            else{
+                                TextView textView = (TextView)textViwMap.get(count);
+                                textView.setTextColor(Color.RED);
+                            }
+                        }else{
                             TextView textView = (TextView)textViwMap.get(count);
                             textView.setTextColor(Color.RED);
                         }
@@ -439,25 +498,34 @@ public class StepByStepFragment extends Fragment {
             public void onFinish() {
                 scoreTimer.setText("00:00");
                 count = 1;
+                if(!isOnline){
+                    getParentFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new AssociationsFragment())
+                            .setReorderingAllowed(true)
+                            .commit();
+                }
+                if(isOnline){
 //                if(!isAnswerCorrect){ //ako je prva ili drugs igra i igrac nije pogodio resenje jos jedan timer za 1 min
                     Log.i("mqtt", "User sending: "+Data.loggedInUser.getUsername());
                     mqttHandler.korakPoKorakPublish(textView_answer, true, true);
                     //moramo ovde poslati publish
-                    countDownTimer = new CountDownTimer(60000, 1000) {
-                        @Override
-                        public void onTick(long l) {
-                            Log.e("AA","rad3" + l);
-                            Long min = ((l / 1000) % 3600) / 60;
-                            Long sec = (l / 1000) % 60;
-                            String format = String.format(Locale.getDefault(), "%02d:%02d", min, sec);
-                            scoreTimer.setText(format);
-                        }
-
-                        @Override
-                        public void onFinish() {
-                            scoreTimer.setText("00:00");
-                        }
-                    }.start();
+//                    countDownTimer = new CountDownTimer(60000, 1000) {
+//                        @Override
+//                        public void onTick(long l) {
+//                            Log.e("AA","rad3" + l);
+//                            Long min = ((l / 1000) % 3600) / 60;
+//                            Long sec = (l / 1000) % 60;
+//                            String format = String.format(Locale.getDefault(), "%02d:%02d", min, sec);
+//                            scoreTimer.setText(format);
+//                        }
+//
+//                        @Override
+//                        public void onFinish() {
+//                            scoreTimer.setText("00:00");
+//                        }
+//                    }.start();
+                }
                 }
 //                if(!isFirstRound){//ovaj if ne treba tu da stoji stavio si ga jer imas gore if koji kaze da ako je kraj i odgovor je netacan ond drugi igrac ima pravo da igra pa samo da znas
 //                    getParentFragmentManager()

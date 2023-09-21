@@ -22,6 +22,10 @@ public class TempGetData {
 
     static ArrayList<String> list = new ArrayList<>();
 
+    public static void saveAsocijacije(int broj){
+
+    }
+
     public static void getSkocko(FireStoreCallback fireStoreCallback) {
 
         DocumentReference docRef = db.collection("Games").document("Skocko");
@@ -71,7 +75,7 @@ public class TempGetData {
 
     }
 
-    public static void getAsocijacije(FireStoreCallback firestoreCallback) {
+    public static void getAsocijacije(FireStoreCallback firestoreCallback, String runda) {
         ArrayList<String> list = new ArrayList<String>();
         db.collection("Games").document("Asocijacije")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -82,7 +86,7 @@ public class TempGetData {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 Log.d("selectTestById", "Document exists");
-                                List<String> runda1 = (List<String>) document.get("runda1");
+                                List<String> runda1 = (List<String>) document.get(runda);
                                 if (runda1 != null) {
                                     list.addAll(runda1);
                                 }
@@ -133,8 +137,8 @@ public class TempGetData {
 //
 //    }
 
-    public static void getDataAsMap(FireStoreCallback1 firestoreCallback) {
-        db.collection("Games").document("Spojnice")
+    public static void getDataAsMap(FireStoreCallback1 firestoreCallback, String document) {
+        db.collection("Games").document(document)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {

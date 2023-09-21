@@ -50,6 +50,54 @@ public class UserRepository {
 
     }
 
+    public void updateAsocijacije(User user, int broj) {
+        DocumentReference docRef = db.collection("Users").document(user.getId());
+        docRef.update("asocijacije", broj)
+                .addOnSuccessListener(aVoid -> Log.d("REZ_DB", "User successfully changed"))
+                .addOnFailureListener(e -> Log.w("REZ_DB", "Error getting documents.", e));
+
+    }
+
+    public void updateKorakPoKorak(User user, int broj) {
+        DocumentReference docRef = db.collection("Users").document(user.getId());
+        docRef.update("korakPoKorak", broj)
+                .addOnSuccessListener(aVoid -> Log.d("REZ_DB", "User successfully changed"))
+                .addOnFailureListener(e -> Log.w("REZ_DB", "Error getting documents.", e));
+
+    }
+
+    public void updateSpojnice(User user, int broj) {
+        DocumentReference docRef = db.collection("Users").document(user.getId());
+        docRef.update("spojnice", broj)
+                .addOnSuccessListener(aVoid -> Log.d("REZ_DB", "User successfully changed"))
+                .addOnFailureListener(e -> Log.w("REZ_DB", "Error getting documents.", e));
+
+    }
+
+    public void updatePobede(User user, int broj) {
+        DocumentReference docRef = db.collection("Users").document(user.getId());
+        docRef.update("pobede", broj)
+                .addOnSuccessListener(aVoid -> Log.d("REZ_DB", "User successfully changed"))
+                .addOnFailureListener(e -> Log.w("REZ_DB", "Error getting documents.", e));
+
+    }
+
+    public void updatePorazi(User user, int broj) {
+        DocumentReference docRef = db.collection("Users").document(user.getId());
+        docRef.update("porazi", broj)
+                .addOnSuccessListener(aVoid -> Log.d("REZ_DB", "User successfully changed"))
+                .addOnFailureListener(e -> Log.w("REZ_DB", "Error getting documents.", e));
+
+    }
+
+    public void updatePartije(User user, int broj) {
+        DocumentReference docRef = db.collection("Users").document(user.getId());
+        docRef.update("partije", broj)
+                .addOnSuccessListener(aVoid -> Log.d("REZ_DB", "User successfully changed"))
+                .addOnFailureListener(e -> Log.w("REZ_DB", "Error getting documents.", e));
+
+    }
+
     public void getUser(String email, String password, FireStoreCallback fireStoreCallback) {
         db.collection("Users")
                 .whereEqualTo("email", email)

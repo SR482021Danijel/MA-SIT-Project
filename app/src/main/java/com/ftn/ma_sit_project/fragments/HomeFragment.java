@@ -27,6 +27,7 @@ public class HomeFragment extends Fragment {
     View view;
 
     AppCompatActivity activity;
+    HyphensFragment hyphensFragment = new HyphensFragment();
 
     MqttHandler mqttHandler;
 
@@ -55,6 +56,7 @@ public class HomeFragment extends Fragment {
                 if (Data.loggedInUser == null) {
                     Toast.makeText(activity.getApplicationContext(), "Please log in/register", Toast.LENGTH_SHORT).show();
                 } else {
+                    hyphensFragment.setIsOnline(false);
                     getParentFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, new LoadingScreenFragment())
@@ -73,7 +75,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 getParentFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new SkockoFragment())
+                        .replace(R.id.fragment_container, new AssociationsFragment())
                         .setReorderingAllowed(true)
                         .commit();
             }

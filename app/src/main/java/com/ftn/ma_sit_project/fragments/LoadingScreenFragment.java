@@ -29,6 +29,9 @@ public class LoadingScreenFragment extends Fragment {
 
     View view;
     AppCompatActivity activity;
+//    HyphensFragment hyphensFragment = new HyphensFragment();
+//    StepByStepFragment stepByStepFragment = new StepByStepFragment();
+    AssociationsFragment associationsFragment = new AssociationsFragment();
     MqttHandler mqttHandler;
     CountDownTimer countDownTimer;
     TextView p2Name, loadingText, tokenTextView;
@@ -97,9 +100,12 @@ public class LoadingScreenFragment extends Fragment {
                 if (p2 != null && !Objects.equals(p2.getUsername(), Data.loggedInUser.getUsername())) {
                     p2Name.setText(p2.getUsername());
                     mainActivity.subtractOneToken();
+                    associationsFragment.setIsOnline(true);
+//                    stepByStepFragment.setIsOnline(true);
+//                    associationsFragment.setIsOnline(true);
                     getParentFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, new StepByStepFragment())
+                            .replace(R.id.fragment_container, associationsFragment)
                             .setReorderingAllowed(true)
                             .commit();
                 } else {

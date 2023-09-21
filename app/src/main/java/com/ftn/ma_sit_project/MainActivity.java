@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ftn.ma_sit_project.Model.Data;
 import com.ftn.ma_sit_project.Model.User;
@@ -214,6 +215,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Subtract one token from the current token count
         currentTokens -= 1;
+
+        if(currentTokens == 0){
+            Toast.makeText(this, "Nemate dovoljno tokena", Toast.LENGTH_SHORT).show();
+            currentTokens = 0;
+        }
 
         // Update the stored value with the new token count
         SharedPreferences.Editor editor = sharedPref.edit();

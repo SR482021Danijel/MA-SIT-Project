@@ -14,11 +14,24 @@ public class Hyphens {
     @SerializedName("color")
     private int color;
 
-    public Hyphens(int id, String text, int color, String userName){
+    @SerializedName("turn")
+    private boolean isTurnChanged;
+
+    @SerializedName("start")
+    private boolean isStart;
+
+    @SerializedName("counter")
+    private int counterIsMyTurnOver;
+
+
+    public Hyphens(int id, String text, int color, String userName, boolean isTurnChanged, boolean isStart, int counterIsMyTurnOver){
         this.id = id;
         this.text = text;
         this.color = color;
         this.userName = userName;
+        this.isTurnChanged = isTurnChanged;
+        this.isStart = isStart;
+        this.counterIsMyTurnOver = counterIsMyTurnOver;
     }
 
     public Hyphens(){
@@ -56,6 +69,31 @@ public class Hyphens {
         this.userName = userName;
     }
 
+    public boolean isTurnChanged() {
+        return isTurnChanged;
+    }
+
+    public void setTurnChanged(boolean turnChanged) {
+        isTurnChanged = turnChanged;
+    }
+
+    public boolean isStart() {
+        return isStart;
+    }
+
+    public void setStart(boolean start) {
+        isStart = start;
+    }
+
+    public int getCounterIsMyTurnOver() {
+        return counterIsMyTurnOver;
+    }
+
+    public void setCounterIsMyTurnOver(int counterIsMyTurnOver) {
+        this.counterIsMyTurnOver = counterIsMyTurnOver;
+    }
+
+
     @Override
     public String toString() {
         return "Hyphens{" +
@@ -63,6 +101,9 @@ public class Hyphens {
                 ", id=" + id +
                 ", text='" + text + '\'' +
                 ", color=" + color +
+                ", isTurnChanged=" + isTurnChanged +
+                ", isStart=" + isStart +
+                ", counterIsMyTurnOver=" + counterIsMyTurnOver +
                 '}';
     }
 }
