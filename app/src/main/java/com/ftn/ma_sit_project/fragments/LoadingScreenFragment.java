@@ -105,7 +105,7 @@ public class LoadingScreenFragment extends Fragment {
 //                    associationsFragment.setIsOnline(true);
                     getParentFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, associationsFragment)
+                            .replace(R.id.fragment_container, new SkockoFragment())
                             .setReorderingAllowed(true)
                             .commit();
                 } else {

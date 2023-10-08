@@ -1073,11 +1073,11 @@ public class AssociationsFragment extends Fragment {
             public void onClick(View view) {
                 if(isOnline){
                     Log.i("mqtt", "isMyTurn before click: "+isMyTurn+" "+"isClicked: "+isClicked+"User: "+Data.loggedInUser.getUsername());
-                    if(isMyTurn == true && isClicked == false){
-                        isClicked = true;
-                        d4.setText(dFields.get(3));
-                        mqttHandler.asocijacijePublish(d4,"d");
-    //                    StrDTO strDTO = new StrDTO("b", "blabla", Data.loggedInUser.getUsername());
+                if(isMyTurn == true && isClicked == false){
+                    isClicked = true;
+                    d4.setText(dFields.get(3));
+                    mqttHandler.asocijacijePublish(d4,"d");
+                }
     //                    mqttHandler.StringPublish(strDTO);
     //                    setIsMyTurn();
     //                    isClicked = false;

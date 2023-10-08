@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -43,7 +44,7 @@ public class SkockoFragment extends Fragment {
 
     View view;
     CountDownTimer countDownTimer;
-    TextView player1Score, player2UserName, p1UserName;
+    TextView player1Score, player2UserName, p1UserName, roundText;
     AppCompatActivity activity;
     GridLayout gridLayout;
     LinearLayout linearLayout;
@@ -56,6 +57,16 @@ public class SkockoFragment extends Fragment {
     boolean isMyTurn;
     Button btnNext;
     ImageView skocko, rectangle, circle, heart, triangle, star;
+
+    public static SkockoFragment newInstance(String round) {
+
+        Bundle args = new Bundle();
+        args.putString("ROUND", round);
+
+        SkockoFragment fragment = new SkockoFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,6 +90,16 @@ public class SkockoFragment extends Fragment {
         heart = view.findViewById(R.id.option_heart);
         triangle = view.findViewById(R.id.option_triangle);
         star = view.findViewById(R.id.option_star);
+
+        roundText = view.findViewById(R.id.round_text);
+
+        if (getArguments() != null){
+            roundText.setText(getArguments().getString("ROUND"));
+        }
+//        if (savedInstanceState != null){
+//            Log.i("stated", "new state");
+//            roundText.setText(savedInstanceState.getString("ROUND"));
+//        }
 
         btnNext = view.findViewById(R.id.btn_skocko);
         btnNext.setVisibility(View.GONE);
@@ -240,7 +261,7 @@ public class SkockoFragment extends Fragment {
                             public void onFinish() {
                                 getParentFragmentManager()
                                         .beginTransaction()
-                                        .replace(R.id.fragment_container, new StepByStepFragment())
+                                        .replace(R.id.fragment_container, SkockoFragment.newInstance("Round: 2"))
                                         .setReorderingAllowed(true)
                                         .commit();
                             }
@@ -387,4 +408,15 @@ public class SkockoFragment extends Fragment {
 //            }
 //        }
     }
+
+//    @Override
+//    public void onSaveInstanceState(@NonNull Bundle outState) {
+//
+//        Log.i("stated", "saved state");
+//        outState.putString("ROUND", "Round: 2");
+//
+//        super.onSaveInstanceState(outState);
+//
+//
+//    }
 }
