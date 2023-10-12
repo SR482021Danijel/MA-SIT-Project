@@ -93,7 +93,7 @@ public class SkockoFragment extends Fragment {
 
         roundText = view.findViewById(R.id.round_text);
 
-        if (getArguments() != null){
+        if (getArguments() != null) {
             roundText.setText(getArguments().getString("ROUND"));
         }
 //        if (savedInstanceState != null){
@@ -104,29 +104,21 @@ public class SkockoFragment extends Fragment {
         btnNext = view.findViewById(R.id.btn_skocko);
         btnNext.setVisibility(View.GONE);
 
-        if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
+//        Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")
+
+        if (Data.userStatus == 2) {
             colorAllTiles(gridLayout, isMyTurn);
             colorAllTiles(linearLayout, isMyTurn);
+            setCheckMultiButton();
             if (isMyTurn) {
-                Draggable.makeDraggable(skocko, "1");
-                Draggable.makeDraggable(rectangle, "2");
-                Draggable.makeDraggable(circle, "3");
-                Draggable.makeDraggable(heart, "4");
-                Draggable.makeDraggable(triangle, "5");
-                Draggable.makeDraggable(star, "6");
+                setOptions();
                 btnNext.setVisibility(View.VISIBLE);
             }
         } else {
-            Draggable.makeDraggable(skocko, "1");
-            Draggable.makeDraggable(rectangle, "2");
-            Draggable.makeDraggable(circle, "3");
-            Draggable.makeDraggable(heart, "4");
-            Draggable.makeDraggable(triangle, "5");
-            Draggable.makeDraggable(star, "6");
+            setOptions();
             btnNext.setVisibility(View.VISIBLE);
+            setCheckSoloButton();
         }
-
-        setCheckButton();
 
         j = setNewTargets(gridLayout, activeSlots);
 
@@ -151,7 +143,7 @@ public class SkockoFragment extends Fragment {
 
         ShowHideElements.showScoreBoard(activity);
 
-        if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
+        if (Data.userStatus == 2) {
             mqttHandler = new MqttHandler();
             isMyTurn = mqttHandler.getTurnPlayer();
 
@@ -210,7 +202,7 @@ public class SkockoFragment extends Fragment {
         ShowHideElements.unlockDrawerLayout(activity);
     }
 
-    public void setCheckButton() {
+    public void setCheckMultiButton() {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,20 +242,28 @@ public class SkockoFragment extends Fragment {
                         }
                         player1Score.setText(score + "");
 
+                        displayAnswer();
                         CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
                             @Override
                             public void onTick(long l) {
-                                Long min = ((l / 1000) % 3600) / 60;
-                                Long sec = (l / 1000) % 60;
                             }
 
                             @Override
                             public void onFinish() {
-                                getParentFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.fragment_container, SkockoFragment.newInstance("Round: 2"))
-                                        .setReorderingAllowed(true)
-                                        .commit();
+                                if (roundText.getText().equals("Round: 1")) {
+                                    getParentFragmentManager()
+                                            .beginTransaction()
+                                            .replace(R.id.fragment_container, SkockoFragment.newInstance("Round: 2"))
+                                            .setReorderingAllowed(true)
+                                            .commit();
+                                } else {
+                                    getParentFragmentManager()
+                                            .beginTransaction()
+                                            .replace(R.id.fragment_container, new MyNumberFragment())
+                                            .setReorderingAllowed(true)
+                                            .commit();
+                                }
+
                             }
                         }.start();
 
@@ -332,6 +332,83 @@ public class SkockoFragment extends Fragment {
         });
     }
 
+    public void setCheckSoloButton() {
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isFull = true;
+                for (ImageView imageView : activeSlots) {
+                    if (imageView != null && imageView.getTag() != null) {
+                        imageView.setOnDragListener(null);
+                        guesses.add((String) imageView.getTag());
+                        Log.i("tag", imageView.getTag() + "");
+                    } else {
+                        isFull = false;
+                        Log.i("error", "empty");
+                    }
+                }
+                if (isFull) {
+                    boolean isCorrect = guesses.equals(answers);
+                    Log.i("answer", isCorrect + "");
+                    if (isCorrect) {
+                        score = Integer.parseInt((String) player1Score.getText());
+                        switch (attempt) {
+                            case 1:
+                            case 2:
+                                score += 20;
+                                Toast.makeText(activity.getApplicationContext(), "Correct! Points: +" + 20, Toast.LENGTH_SHORT).show();
+                                break;
+                            case 3:
+                            case 4:
+                                score += 15;
+                                Toast.makeText(activity.getApplicationContext(), "Correct! Points: +" + 15, Toast.LENGTH_SHORT).show();
+                                break;
+                            case 5:
+                            case 6:
+                                score += 10;
+                                Toast.makeText(activity.getApplicationContext(), "Correct! Points: +" + 10, Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        player1Score.setText(score + "");
+
+                        displayAnswer();
+                        CountDownTimer countDownTimer = new CountDownTimer(3000, 1000) {
+                            @Override
+                            public void onTick(long l) {
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                if (roundText.getText().equals("Round: 1")) {
+                                    getParentFragmentManager()
+                                            .beginTransaction()
+                                            .replace(R.id.fragment_container, SkockoFragment.newInstance("Round: 2"))
+                                            .setReorderingAllowed(true)
+                                            .commit();
+                                } else {
+                                    getParentFragmentManager()
+                                            .beginTransaction()
+                                            .replace(R.id.fragment_container, new MyNumberFragment())
+                                            .setReorderingAllowed(true)
+                                            .commit();
+                                }
+
+                            }
+                        }.start();
+
+                    } else {
+                        displayAnswer();
+                        guesses.clear();
+                        activeSlots.clear();
+                        circleAnswers.clear();
+                        j = setNewTargets(gridLayout, activeSlots);
+                    }
+                }
+            }
+        });
+    }
+
     public int setNewTargets(ViewGroup parent, ArrayList<ImageView> list) {
         int i;
         for (i = j; i < j + 5; i++) {
@@ -386,6 +463,15 @@ public class SkockoFragment extends Fragment {
                 }
             }
         }
+    }
+
+    public void setOptions() {
+        Draggable.makeDraggable(skocko, "1");
+        Draggable.makeDraggable(rectangle, "2");
+        Draggable.makeDraggable(circle, "3");
+        Draggable.makeDraggable(heart, "4");
+        Draggable.makeDraggable(triangle, "5");
+        Draggable.makeDraggable(star, "6");
     }
 
     @Override

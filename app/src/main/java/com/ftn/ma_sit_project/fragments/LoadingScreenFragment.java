@@ -99,7 +99,7 @@ public class LoadingScreenFragment extends Fragment {
                 User p2 = mqttHandler.getP2Username();
                 if (p2 != null && !Objects.equals(p2.getUsername(), Data.loggedInUser.getUsername())) {
                     p2Name.setText(p2.getUsername());
-                    mainActivity.subtractOneToken();
+//                    mainActivity.subtractOneToken(); TODO
                     associationsFragment.setIsOnline(true);
 //                    stepByStepFragment.setIsOnline(true);
 //                    associationsFragment.setIsOnline(true);

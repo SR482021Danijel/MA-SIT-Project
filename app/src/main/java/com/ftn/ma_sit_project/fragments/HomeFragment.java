@@ -56,7 +56,10 @@ public class HomeFragment extends Fragment {
                 if (Data.loggedInUser == null) {
                     Toast.makeText(activity.getApplicationContext(), "Please log in/register", Toast.LENGTH_SHORT).show();
                 } else {
+                    Data.userStatus = 2;
+
                     hyphensFragment.setIsOnline(false);
+
                     getParentFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, new LoadingScreenFragment())
@@ -73,9 +76,15 @@ public class HomeFragment extends Fragment {
         btnSolo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (Data.loggedInUser != null) {
+                    Data.userStatus = 1;
+                } else {
+                    Data.userStatus = 0;
+                }
+
                 getParentFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new AssociationsFragment())
+                        .replace(R.id.fragment_container, new SkockoFragment())
                         .setReorderingAllowed(true)
                         .commit();
             }
