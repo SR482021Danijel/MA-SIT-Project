@@ -39,6 +39,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SkockoFragment extends Fragment {
 
@@ -58,10 +60,11 @@ public class SkockoFragment extends Fragment {
     Button btnNext;
     ImageView skocko, rectangle, circle, heart, triangle, star;
 
-    public static SkockoFragment newInstance(String round) {
+    public static SkockoFragment newInstance(String round, boolean isMyTurn) {
 
         Bundle args = new Bundle();
         args.putString("ROUND", round);
+        args.putBoolean("TURN", !isMyTurn);
 
         SkockoFragment fragment = new SkockoFragment();
         fragment.setArguments(args);
@@ -73,13 +76,6 @@ public class SkockoFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_skocko, container, false);
-
-        TempGetData.getSkocko(new TempGetData.FireStoreCallback() {
-            @Override
-            public void onCallBack(ArrayList<String> list) {
-                answers.addAll(list);
-            }
-        });
 
         gridLayout = view.findViewById(R.id.targets);
         linearLayout = view.findViewById(R.id.skocko_options);
@@ -95,11 +91,8 @@ public class SkockoFragment extends Fragment {
 
         if (getArguments() != null) {
             roundText.setText(getArguments().getString("ROUND"));
+            isMyTurn = getArguments().getBoolean("TURN");
         }
-//        if (savedInstanceState != null){
-//            Log.i("stated", "new state");
-//            roundText.setText(savedInstanceState.getString("ROUND"));
-//        }
 
         btnNext = view.findViewById(R.id.btn_skocko);
         btnNext.setVisibility(View.GONE);
@@ -135,6 +128,13 @@ public class SkockoFragment extends Fragment {
 
         activity = (AppCompatActivity) getActivity();
 
+        TempGetData.getSkocko(new TempGetData.FireStoreCallback() {
+            @Override
+            public void onCallBack(ArrayList<String> list) {
+                answers.addAll(list);
+            }
+        });
+
         TextView scoreTimer = activity.findViewById(R.id.score_timer);
 
         p1UserName = activity.findViewById(R.id.player_1_user_name);
@@ -145,25 +145,27 @@ public class SkockoFragment extends Fragment {
 
         if (Data.userStatus == 2) {
             mqttHandler = new MqttHandler();
-            isMyTurn = mqttHandler.getTurnPlayer();
+
+            if (getArguments() == null)
+                isMyTurn = mqttHandler.getTurnPlayer();
 
             mqttHandler.skockoSubscribe(new MqttHandler.SkockoCallback() {
                 @Override
                 public void onCallback(ArrayList<String> dataList) {
-                    if (!isMyTurn || (isMyTurn && attempt == 7)) {
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                for (int i = 0; i < 4; i++) {
-                                    int imageId = Skocko.getImage(dataList.get(i));
-                                    activeSlots.get(i).setImageResource(imageId);
-                                    activeSlots.get(i).setTag(dataList.get(i));
-                                    activeSlots.get(i).invalidate();
-                                }
-                                btnNext.performClick();
+//                    if (!isMyTurn) {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < 4; i++) {
+                                int imageId = Skocko.getImage(dataList.get(i));
+                                activeSlots.get(i).setImageResource(imageId);
+                                activeSlots.get(i).setTag(dataList.get(i));
+                                activeSlots.get(i).invalidate();
                             }
-                        });
-                    }
+                            btnNext.performClick();
+                        }
+                    });
+//                    }
                 }
             });
         }
@@ -194,6 +196,8 @@ public class SkockoFragment extends Fragment {
         super.onStop();
 
         countDownTimer.cancel();
+
+        mqttHandler.skockoUnsubscribe();
 
         ShowHideElements.hideScoreBoard(activity);
 
@@ -243,6 +247,11 @@ public class SkockoFragment extends Fragment {
                         player1Score.setText(score + "");
 
                         displayAnswer();
+                        if (isMyTurn) {
+                            SkockoDTO skockoDTO = new SkockoDTO("Pera", guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
+                            mqttHandler.skockoPublish(skockoDTO);
+                        }
+
                         CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
                             @Override
                             public void onTick(long l) {
@@ -251,9 +260,10 @@ public class SkockoFragment extends Fragment {
                             @Override
                             public void onFinish() {
                                 if (roundText.getText().equals("Round: 1")) {
+                                    Log.i("mqtt", "switch now");
                                     getParentFragmentManager()
                                             .beginTransaction()
-                                            .replace(R.id.fragment_container, SkockoFragment.newInstance("Round: 2"))
+                                            .replace(R.id.fragment_container, SkockoFragment.newInstance("Round: 2", isMyTurn))
                                             .setReorderingAllowed(true)
                                             .commit();
                                 } else {
@@ -267,65 +277,27 @@ public class SkockoFragment extends Fragment {
                             }
                         }.start();
 
-                    } else {
-                        if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
-                            if (isMyTurn && attempt != 7) {
-                                SkockoDTO skockoDTO = new SkockoDTO(Data.loggedInUser.getUsername(), guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
-                                mqttHandler.skockoPublish(skockoDTO);
-                            }
-                        }
-                        if (attempt == 6) {
-                            if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
-                                if (isMyTurn) {
-                                    btnNext.setVisibility(View.GONE);
-                                    for (int i = 0; i < 6; i++) {
-                                        View child = linearLayout.getChildAt(i);
-                                        child.setOnLongClickListener(null);
-                                    }
-                                    Toast.makeText(activity.getApplicationContext(), "Incorrect! Points: +0", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Draggable.makeDraggable(skocko, "1");
-                                    Draggable.makeDraggable(rectangle, "2");
-                                    Draggable.makeDraggable(circle, "3");
-                                    Draggable.makeDraggable(heart, "4");
-                                    Draggable.makeDraggable(triangle, "5");
-                                    Draggable.makeDraggable(star, "6");
-                                    btnNext.setVisibility(View.VISIBLE);
-                                }
-                            } else {
-                                Toast.makeText(activity.getApplicationContext(), "Incorrect! Points: +0", Toast.LENGTH_SHORT).show();
-                                CountDownTimer countDownTimer = new CountDownTimer(4000, 1000) {
-                                    @Override
-                                    public void onTick(long l) {
-                                        Long min = ((l / 1000) % 3600) / 60;
-                                        Long sec = (l / 1000) % 60;
-                                    }
+                    } else if (attempt == 6) {
+                        Log.i("mqtt", "switch now");
 
-                                    @Override
-                                    public void onFinish() {
-                                        getParentFragmentManager()
-                                                .beginTransaction()
-                                                .replace(R.id.fragment_container, new StepByStepFragment())
-                                                .setReorderingAllowed(true)
-                                                .commit();
-                                    }
-                                }.start();
-                            }
-                        }
-                        if (attempt == 7 && !isMyTurn) {
-                            SkockoDTO skockoDTO = new SkockoDTO(Data.loggedInUser.getUsername(), guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
-                            mqttHandler.skockoPublish(skockoDTO);
-                            Toast.makeText(activity.getApplicationContext(), "P2 Incorrect", Toast.LENGTH_SHORT).show();
+                        setNextTurn();
+
+                        if (isMyTurn) {
+                            skocko.setOnLongClickListener(null);
+                            rectangle.setOnLongClickListener(null);
+                            circle.setOnLongClickListener(null);
+                            heart.setOnLongClickListener(null);
+                            triangle.setOnLongClickListener(null);
+                            star.setOnLongClickListener(null);
                             btnNext.setVisibility(View.GONE);
-                            displayAnswer();
-                            mqttHandler.skockoUnsubscribe();
                         } else {
-                            displayAnswer();
-                            guesses.clear();
-                            activeSlots.clear();
-                            circleAnswers.clear();
-                            j = setNewTargets(gridLayout, activeSlots);
+                            setOptions();
+                            btnNext.setVisibility(View.VISIBLE);
                         }
+                    } else if (attempt == 7) {
+                        displayAnswer();
+                    } else {
+                        setNextTurn();
                     }
                 }
             }
@@ -383,7 +355,7 @@ public class SkockoFragment extends Fragment {
                                 if (roundText.getText().equals("Round: 1")) {
                                     getParentFragmentManager()
                                             .beginTransaction()
-                                            .replace(R.id.fragment_container, SkockoFragment.newInstance("Round: 2"))
+                                            .replace(R.id.fragment_container, SkockoFragment.newInstance("Round: 2", isMyTurn))
                                             .setReorderingAllowed(true)
                                             .commit();
                                 } else {
@@ -398,15 +370,19 @@ public class SkockoFragment extends Fragment {
                         }.start();
 
                     } else {
-                        displayAnswer();
-                        guesses.clear();
-                        activeSlots.clear();
-                        circleAnswers.clear();
-                        j = setNewTargets(gridLayout, activeSlots);
+                        setNextTurn();
                     }
                 }
             }
         });
+    }
+
+    public void setNextTurn() {
+        displayAnswer();
+        guesses.clear();
+        activeSlots.clear();
+        circleAnswers.clear();
+        j = setNewTargets(gridLayout, activeSlots);
     }
 
     public int setNewTargets(ViewGroup parent, ArrayList<ImageView> list) {
@@ -478,31 +454,52 @@ public class SkockoFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-//        if (Data.loggedInUser != null && !player2UserName.getText().toString().equals("Guest")) {
-//            if (!isMyTurn){
-//                guesses.add("1");
-//                guesses.add("2");
-//                guesses.add("3");
-//                guesses.add("4");
-//                SkockoDTO skockoDTO = new SkockoDTO(Data.loggedInUser.getUsername(), guesses.get(0), guesses.get(1), guesses.get(2), guesses.get(3));
-//                mqttHandler.skockoPublish(skockoDTO);
-//                mqttHandler.skockoPublish(skockoDTO);
-//                mqttHandler.skockoPublish(skockoDTO);
-//                mqttHandler.skockoPublish(skockoDTO);
-//                mqttHandler.skockoPublish(skockoDTO);
-//                mqttHandler.skockoPublish(skockoDTO);
-//            }
-//        }
-    }
+        if (Data.userStatus == 2) {
+            int n;
+            SkockoDTO skockoDTO = new SkockoDTO((String) player2UserName.getText(), "1", "2", "3", "4");
+            SkockoDTO skockoDTOCorrect = new SkockoDTO((String) player2UserName.getText(), "3", "2", "4", "1");
 
-//    @Override
-//    public void onSaveInstanceState(@NonNull Bundle outState) {
-//
-//        Log.i("stated", "saved state");
-//        outState.putString("ROUND", "Round: 2");
-//
-//        super.onSaveInstanceState(outState);
-//
-//
-//    }
+            if (!isMyTurn) {
+//                n = 6;
+//                SkockoDTO skockoDTO = new SkockoDTO((String) player2UserName.getText(), "1", "2", "3", "4");
+//                for (int i = 0; i < n; i++) {
+//                    mqttHandler.skockoPublish(skockoDTO);
+//                }
+
+
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        mqttHandler.skockoPublish(skockoDTO);
+
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        mqttHandler.skockoPublish(skockoDTOCorrect);
+                    }
+                });
+
+
+//                mqttHandler.skockoPublish(skockoDTO);
+//                mqttHandler.skockoPublish(skockoDTO);
+//                mqttHandler.skockoPublish(skockoDTO);
+//                mqttHandler.skockoPublish(skockoDTO);
+            } else {
+//                n = 5;
+//                for (int i = 0; i < n; i++) {
+//                    mqttHandler.skockoPublish(skockoDTO);
+//                }
+            }
+        }
+    }
 }

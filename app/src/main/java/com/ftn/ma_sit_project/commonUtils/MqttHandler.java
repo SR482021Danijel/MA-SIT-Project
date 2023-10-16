@@ -143,7 +143,7 @@ public class MqttHandler {
                         Log.i("mqtt", "Subscribed to turn topic");
 
 //                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
-                        UserDTO userDTO = new UserDTO("Pera", 0, rnd - 1);
+                        UserDTO userDTO = new UserDTO("Pera", 0, rnd + 1);
                         String sent = gson.toJson(userDTO);
                         client.toAsync().publishWith()
                                 .topic("Mobilne/Turn")
@@ -322,11 +322,7 @@ public class MqttHandler {
 
     public void skockoPublish(SkockoDTO skockoDTO) {
 
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
+
         String sent = gson.toJson(skockoDTO, SkockoDTO.class);
         client.toAsync().publishWith()
                 .topic("Mobilne/Skocko")
