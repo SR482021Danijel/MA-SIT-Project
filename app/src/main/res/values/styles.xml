@@ -111,7 +111,7 @@
 
     <style name="btnAnswers" parent="Widget.Material3.Button.ElevatedButton">
         <item name="android:textSize">18sp</item>
-        <item name="android:layout_marginHorizontal">12sp</item>
+        <item name="android:layout_margin">5sp</item>
     </style>
 
     <style name="image_placeholder">

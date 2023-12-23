@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment {
 
                 getParentFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new SkockoFragment())
+                        .replace(R.id.fragment_container, new WhoKnowsFragment())
                         .setReorderingAllowed(true)
                         .commit();
             }

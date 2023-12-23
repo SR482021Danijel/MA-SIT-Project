@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ftn.ma_sit_project.R;
+import com.ftn.ma_sit_project.commonUtils.TempGetData;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -27,6 +28,8 @@ public class WhoKnowsFragment extends Fragment {
 
     View view;
 
+    TextView roundText;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,17 +38,19 @@ public class WhoKnowsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_who_knows, container, false);
 
 
-        Button btnNext = view.findViewById(R.id.btn_who_knows);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getParentFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new HyphensFragment())
-                        .setReorderingAllowed(true)
-                        .commit();
-            }
-        });
+//        Button btnNext = view.findViewById(R.id.btn_who_knows);
+//        btnNext.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getParentFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.fragment_container, new HyphensFragment())
+//                        .setReorderingAllowed(true)
+//                        .commit();
+//            }
+//        });
+
+        roundText = view.findViewById(R.id.round_text);
 
         return view;
     }
@@ -55,6 +60,10 @@ public class WhoKnowsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         TextView scoreTimer = getActivity().findViewById(R.id.score_timer);
+
+//        TempGetData.setWhoKnows();
+
+        TempGetData.getWhoKnows();
 
         new CountDownTimer(10000, 1000) {
             @Override

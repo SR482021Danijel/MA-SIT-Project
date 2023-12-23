@@ -4,29 +4,35 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.ftn.ma_sit_project.Model.WhoKnows;
+import com.ftn.ma_sit_project.Model.WhoKnowsAnswer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class TempGetData {
 
-    static FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-    static String TAG = "skocko";
+    static String TAG = "games";
 
     static ArrayList<String> list = new ArrayList<>();
 
-    public static void saveAsocijacije(int broj){
+    public static void saveAsocijacije(int broj) {
 
     }
 
     public static void getSkocko(FireStoreCallback fireStoreCallback) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         DocumentReference docRef = db.collection("Games").document("Skocko");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -48,7 +54,52 @@ public class TempGetData {
         });
     }
 
+    public static void getWhoKnows() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("WhoKnowsGame").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        WhoKnows whoKnows = document.toObject(WhoKnows.class);
+                        Log.i(TAG, whoKnows.getQuestion());
+                        for (WhoKnowsAnswer answer: whoKnows.getAnswers()){
+                            Log.d(TAG, answer.getText() + " is correct: " + answer.isCorrect());
+                        }
+
+//                        for (Question question : questions) {
+//                            Log.d("Question", question.getQuestion());
+//                            for (Answer answer : question.getAnswers()) {
+//                                Log.d("Answer", answer.getText() + " is correct: " + answer.isCorrect());
+//                            }
+//                        }
+
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+
+            }
+        });
+    }
+
+    public static void setWhoKnows() {
+        WhoKnows whoKnows = new WhoKnows("question1", Arrays.asList(
+                new WhoKnowsAnswer("answer1", false),
+                new WhoKnowsAnswer("answer2", false),
+                new WhoKnowsAnswer("answer3", true),
+                new WhoKnowsAnswer("answer4", false))
+        );
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("WhoKnowsGame").document("Round1").set(whoKnows);
+    }
+
     public static void getKorakPoKorak(FireStoreCallback firestoreCallback, String runda) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         ArrayList<String> list = new ArrayList<String>();
         db.collection("Games").document("KorakPoKorak")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -76,6 +127,7 @@ public class TempGetData {
     }
 
     public static void getAsocijacije(FireStoreCallback firestoreCallback, String runda) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         ArrayList<String> list = new ArrayList<String>();
         db.collection("Games").document("Asocijacije")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -102,11 +154,11 @@ public class TempGetData {
 
     }
 
-    public interface FireStoreCallback{
+    public interface FireStoreCallback {
         void onCallBack(ArrayList<String> list);
     }
 
-    public interface FireStoreCallback1{
+    public interface FireStoreCallback1 {
         void onCallBack(Map<String, Object> map);
     }
 
@@ -138,6 +190,7 @@ public class TempGetData {
 //    }
 
     public static void getDataAsMap(FireStoreCallback1 firestoreCallback, String document) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Games").document(document)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
