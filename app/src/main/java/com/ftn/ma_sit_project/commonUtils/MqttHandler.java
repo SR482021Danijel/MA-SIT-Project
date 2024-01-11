@@ -84,8 +84,8 @@ public class MqttHandler {
 
 
                         User sentUser = new User();
-//                        sentUser.setUsername(Data.loggedInUser.getUsername());
-                        sentUser.setUsername("Pera");
+                        sentUser.setUsername(Data.loggedInUser.getUsername());
+//                        sentUser.setUsername("Pera");
                         sentPayload = gson.toJson(sentUser);
                         client.toAsync()
                                 .publishWith()
@@ -142,8 +142,8 @@ public class MqttHandler {
                     } else {
                         Log.i("mqtt", "Subscribed to turn topic");
 
-//                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
-                        UserDTO userDTO = new UserDTO("Pera", 0, rnd + 1);
+                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), 0, rnd);
+//                        UserDTO userDTO = new UserDTO("Pera", 0, rnd + 1);
                         String sent = gson.toJson(userDTO);
                         client.toAsync().publishWith()
                                 .topic("Mobilne/Turn")

@@ -16,23 +16,35 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class TempGetData {
 
     static String TAG = "games";
-
     static ArrayList<String> list = new ArrayList<>();
+    static List<Integer> roundNumbersList = Arrays.asList(1,2);
 
     public static void saveAsocijacije(int broj) {
 
     }
 
-    public static void getSkocko(FireStoreCallback fireStoreCallback) {
+//    public static void shuffleRounds() {
+//        Collections.shuffle(roundNumbersList);
+//    }
+
+    public static void getSkocko(String currentRound, FireStoreCallback fireStoreCallback) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        int roundNum;
+        if (currentRound.equals("Round: 1")){
+            roundNum = 1;
+        } else {
+            roundNum = 2;
+        }
 
         DocumentReference docRef = db.collection("Games").document("Skocko");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -42,7 +54,7 @@ public class TempGetData {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        list = (ArrayList<String>) document.get("answer1");
+                        list = (ArrayList<String>) document.get("answer" + roundNum);
                         fireStoreCallback.onCallBack(list);
                     } else {
                         Log.d(TAG, "No such document");
@@ -64,17 +76,9 @@ public class TempGetData {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         WhoKnows whoKnows = document.toObject(WhoKnows.class);
                         Log.i(TAG, whoKnows.getQuestion());
-                        for (WhoKnowsAnswer answer: whoKnows.getAnswers()){
+                        for (WhoKnowsAnswer answer : whoKnows.getAnswers()) {
                             Log.d(TAG, answer.getText() + " is correct: " + answer.isCorrect());
                         }
-
-//                        for (Question question : questions) {
-//                            Log.d("Question", question.getQuestion());
-//                            for (Answer answer : question.getAnswers()) {
-//                                Log.d("Answer", answer.getText() + " is correct: " + answer.isCorrect());
-//                            }
-//                        }
-
                         Log.d(TAG, document.getId() + " => " + document.getData());
                     }
                 } else {

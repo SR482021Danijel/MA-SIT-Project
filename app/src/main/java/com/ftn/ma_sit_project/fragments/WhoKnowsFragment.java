@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ftn.ma_sit_project.R;
+import com.ftn.ma_sit_project.commonUtils.ShowHideElements;
 import com.ftn.ma_sit_project.commonUtils.TempGetData;
 
 import java.util.Locale;
@@ -27,28 +28,15 @@ import java.util.Objects;
 public class WhoKnowsFragment extends Fragment {
 
     View view;
-
     TextView roundText;
-
+    AppCompatActivity activity;
+    CountDownTimer mainCountDownTimer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_who_knows, container, false);
-
-
-//        Button btnNext = view.findViewById(R.id.btn_who_knows);
-//        btnNext.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                getParentFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.fragment_container, new HyphensFragment())
-//                        .setReorderingAllowed(true)
-//                        .commit();
-//            }
-//        });
 
         roundText = view.findViewById(R.id.round_text);
 
@@ -59,13 +47,13 @@ public class WhoKnowsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TextView scoreTimer = getActivity().findViewById(R.id.score_timer);
+        activity = (AppCompatActivity) getActivity();
 
-//        TempGetData.setWhoKnows();
+        TextView scoreTimer = getActivity().findViewById(R.id.score_timer);
 
         TempGetData.getWhoKnows();
 
-        new CountDownTimer(10000, 1000) {
+        mainCountDownTimer = new CountDownTimer(10000, 1000) {
             @Override
             public void onTick(long l) {
                 Long min = ((l / 1000) % 3600) / 60;
@@ -80,24 +68,27 @@ public class WhoKnowsFragment extends Fragment {
             }
         }.start();
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        activity.getSupportActionBar().hide();
 
+        ShowHideElements.showScoreBoard(activity);
 
-        ((AppCompatActivity) getActivity()).findViewById(R.id.score_board).setVisibility(View.VISIBLE);
-
-        DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        ShowHideElements.lockDrawerLayout(activity);
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        mainCountDownTimer.cancel();
 
-        getActivity().findViewById(R.id.score_board).setVisibility(View.GONE);
+        ShowHideElements.hideScoreBoard(activity);
 
-        DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        activity.getSupportActionBar().show();
+
+        ShowHideElements.unlockDrawerLayout(activity);
+    }
+
+    public void setBtnClick(){
+
     }
 }

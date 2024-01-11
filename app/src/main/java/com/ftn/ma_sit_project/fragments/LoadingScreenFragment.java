@@ -22,6 +22,7 @@ import com.ftn.ma_sit_project.R;
 import com.ftn.ma_sit_project.commonUtils.MqttHandler;
 import com.ftn.ma_sit_project.commonUtils.ShowHideElements;
 
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -34,13 +35,15 @@ public class LoadingScreenFragment extends Fragment {
     AssociationsFragment associationsFragment = new AssociationsFragment();
     MqttHandler mqttHandler;
     CountDownTimer countDownTimer;
-    TextView p2Name, loadingText, tokenTextView;
+    TextView p1Name, p2Name, loadingText, tokenTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         activity = (AppCompatActivity) getActivity();
+
+        p1Name = activity.findViewById(R.id.player_1_user_name);
 
         p2Name = activity.findViewById(R.id.player_2_user_name);
 
@@ -99,6 +102,7 @@ public class LoadingScreenFragment extends Fragment {
                 User p2 = mqttHandler.getP2Username();
                 if (p2 != null && !Objects.equals(p2.getUsername(), Data.loggedInUser.getUsername())) {
                     p2Name.setText(p2.getUsername());
+                    p1Name.setText(Data.loggedInUser.getUsername());
 //                    mainActivity.subtractOneToken(); TODO
                     associationsFragment.setIsOnline(true);
 //                    stepByStepFragment.setIsOnline(true);

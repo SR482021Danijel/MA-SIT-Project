@@ -28,36 +28,19 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MyNumberFragment extends Fragment {
 
+    //region Vars
     View view;
-
     CountDownTimer countDownTimer;
-
     AppCompatActivity activity;
-
-    TextView targetNumber;
-    TextView display;
+    TextView targetNumber, display, displayResult, player1Score;
     int deleteStart = 0;
     boolean isTargetSet = false;
     boolean isAllStopped = false;
-    Button btnDelete;
-    Button number1;
-    Button number2;
-    Button number3;
-    Button number4;
-    Button number5;
-    Button number6;
-    Button symbolBracketLeft;
-    Button symbolBracketRight;
-    Button symbolAdd;
-    Button symbolSub;
-    Button symbolMulti;
-    Button symbolDivide;
+    Button btnDelete, number1, number2, number3, number4, number5, number6, symbolBracketLeft ,symbolBracketRight;
+    Button symbolAdd, symbolSub, symbolMulti, symbolDivide, btnStop;
     double result;
-    TextView displayResult;
-    Button btnStop;
-    TextView player1Score;
-
     ArrayList<String> expressionList = new ArrayList<>();
+    //endregion
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
