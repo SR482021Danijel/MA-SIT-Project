@@ -25,17 +25,22 @@ import com.ftn.ma_sit_project.commonUtils.ShowHideElements;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LoadingScreenFragment extends Fragment {
 
     View view;
     AppCompatActivity activity;
-//    HyphensFragment hyphensFragment = new HyphensFragment();
+    //    HyphensFragment hyphensFragment = new HyphensFragment();
 //    StepByStepFragment stepByStepFragment = new StepByStepFragment();
     AssociationsFragment associationsFragment = new AssociationsFragment();
     MqttHandler mqttHandler;
     CountDownTimer countDownTimer;
     TextView p1Name, p2Name, loadingText, tokenTextView;
+    boolean localPlayerReady = false, localOpponentReady = false;
+    User p2;
+    Button btnCancel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +64,44 @@ public class LoadingScreenFragment extends Fragment {
 
         mqttHandler.pointShareSubscribe();
 
-        mqttHandler.decideTurnPlayer();
+        mqttHandler.decideTurnPlayer(new MqttHandler.RoundListCallback() {
+            @Override
+            public void onCallback(boolean isMyTurn) {
+                if (!isMyTurn) {
+                    mqttHandler.roundListSubscribe();
+                } else {
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    mqttHandler.roundListPublish();
+                }
+            }
+        });
+
+        mqttHandler.startGameSubscribe(new MqttHandler.StartGameCallback() {
+            @Override
+            public void onCallback(boolean opponentReady) {
+                localOpponentReady = opponentReady;
+                if (p2 != null && !Objects.equals(p2.getUsername(), Data.loggedInUser.getUsername())) {
+                    if (localPlayerReady && localOpponentReady) {
+//                        Toast.makeText(activity.getApplicationContext(), "Start Game", Toast.LENGTH_SHORT).show();
+                        p2Name.setText(p2.getUsername());
+                        p1Name.setText(Data.loggedInUser.getUsername());
+//                    mainActivity.subtractOneToken(); TODO
+                        associationsFragment.setIsOnline(true);
+//                    stepByStepFragment.setIsOnline(true);
+//                    associationsFragment.setIsOnline(true);
+                        getParentFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, new MyNumberFragment())
+                                .setReorderingAllowed(true)
+                                .commit();
+                    }
+                }
+            }
+        });
 
     }
 
@@ -69,7 +111,7 @@ public class LoadingScreenFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_loading_screen, container, false);
 
-        Button btnCancel = view.findViewById(R.id.loading_btn);
+        btnCancel = view.findViewById(R.id.loading_btn);
 
         loadingText = view.findViewById(R.id.loading_text);
 
@@ -90,28 +132,35 @@ public class LoadingScreenFragment extends Fragment {
         countDownTimer = new CountDownTimer(5000, 1000) {
             @Override
             public void onTick(long l) {
-                if (loadingText.getText().toString().equals( "Loading...")) {
-                    loadingText.setText("Loading");
-                } else {
-                    loadingText.append(".");
-                }
+//                if (loadingText.getText().toString().equals("Loading...")) {
+//                    loadingText.setText("Loading");
+//                } else {
+//                    loadingText.append(".");
+//                }
             }
 
             @Override
             public void onFinish() {
-                User p2 = mqttHandler.getP2Username();
+                p2 = mqttHandler.getP2Username();
+                localPlayerReady = true;
+//                localOpponentReady = true;
+                mqttHandler.StartGamePublish();
+
                 if (p2 != null && !Objects.equals(p2.getUsername(), Data.loggedInUser.getUsername())) {
-                    p2Name.setText(p2.getUsername());
-                    p1Name.setText(Data.loggedInUser.getUsername());
+                    if (localPlayerReady && localOpponentReady) {
+//                        Toast.makeText(activity.getApplicationContext(), "Start Game", Toast.LENGTH_SHORT).show();
+                        p2Name.setText(p2.getUsername());
+                        p1Name.setText(Data.loggedInUser.getUsername());
 //                    mainActivity.subtractOneToken(); TODO
-                    associationsFragment.setIsOnline(true);
+                        associationsFragment.setIsOnline(true);
 //                    stepByStepFragment.setIsOnline(true);
 //                    associationsFragment.setIsOnline(true);
-                    getParentFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, new WhoKnowsFragment())
-                            .setReorderingAllowed(true)
-                            .commit();
+                        getParentFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, new MyNumberFragment())
+                                .setReorderingAllowed(true)
+                                .commit();
+                    }
                 } else {
                     Toast.makeText(activity.getApplicationContext(), "No opponent found", Toast.LENGTH_SHORT).show();
                     btnCancel.performClick();

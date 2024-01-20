@@ -17,6 +17,7 @@
     </TextView>
 
     <TextView
+        android:id="@+id/round_question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -36,27 +37,19 @@
         android:columnCount="1"
         android:rowCount="4">
 
-        <Button
-            style="@style/btnAnswers"
-            android:text="Answer#1">
+        <Button style="@style/btnAnswers">
 
         </Button>
 
-        <Button
-            style="@style/btnAnswers"
-            android:text="Answer#2">
+        <Button style="@style/btnAnswers">
 
         </Button>
 
-        <Button
-            style="@style/btnAnswers"
-            android:text="Answer#3">
+        <Button style="@style/btnAnswers">
 
         </Button>
 
-        <Button
-            style="@style/btnAnswers"
-            android:text="Answer#4">
+        <Button style="@style/btnAnswers">
 
         </Button>
 

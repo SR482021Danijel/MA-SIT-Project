@@ -16,17 +16,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class TempGetData {
 
     static String TAG = "games";
     static ArrayList<String> list = new ArrayList<>();
-    static List<Integer> roundNumbersList = Arrays.asList(1,2);
+//    static List<Integer> roundNumbersList = Arrays.asList(1,2);
 
     public static void saveAsocijacije(int broj) {
 
@@ -40,7 +37,7 @@ public class TempGetData {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         int roundNum;
-        if (currentRound.equals("Round: 1")){
+        if (currentRound.equals("Round: 1")) {
             roundNum = 1;
         } else {
             roundNum = 2;
@@ -66,40 +63,40 @@ public class TempGetData {
         });
     }
 
-    public static void getWhoKnows() {
+    public static void getWhoKnows(Integer currentRound, WhoFireStoreCallback fireStoreCallback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("WhoKnowsGame").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+        DocumentReference docRef = db.collection("WhoKnowsGame").document("Round" + currentRound);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
                         WhoKnows whoKnows = document.toObject(WhoKnows.class);
-                        Log.i(TAG, whoKnows.getQuestion());
-                        for (WhoKnowsAnswer answer : whoKnows.getAnswers()) {
-                            Log.d(TAG, answer.getText() + " is correct: " + answer.isCorrect());
-                        }
-                        Log.d(TAG, document.getId() + " => " + document.getData());
+                        fireStoreCallback.onCallback(whoKnows);
+                    } else {
+                        Log.d(TAG, "No such document");
                     }
                 } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
+                    Log.d(TAG, "get failed with ", task.getException());
                 }
-
             }
         });
     }
 
     public static void setWhoKnows() {
-        WhoKnows whoKnows = new WhoKnows("question1", Arrays.asList(
-                new WhoKnowsAnswer("answer1", false),
-                new WhoKnowsAnswer("answer2", false),
-                new WhoKnowsAnswer("answer3", true),
-                new WhoKnowsAnswer("answer4", false))
+        WhoKnows whoKnows = new WhoKnows("What is the atomic number of Hydrogen?", Arrays.asList(
+                new WhoKnowsAnswer("1", true),
+                new WhoKnowsAnswer("2", false),
+                new WhoKnowsAnswer("3", false),
+                new WhoKnowsAnswer("4", false))
         );
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("WhoKnowsGame").document("Round1").set(whoKnows);
+        db.collection("WhoKnowsGame").document("Round5").set(whoKnows);
     }
 
     public static void getKorakPoKorak(FireStoreCallback firestoreCallback, String runda) {
@@ -160,6 +157,10 @@ public class TempGetData {
 
     public interface FireStoreCallback {
         void onCallBack(ArrayList<String> list);
+    }
+
+    public interface WhoFireStoreCallback {
+        void onCallback(WhoKnows whoKnows);
     }
 
     public interface FireStoreCallback1 {

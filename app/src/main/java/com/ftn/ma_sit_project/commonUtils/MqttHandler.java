@@ -14,6 +14,7 @@ import com.ftn.ma_sit_project.Model.SkockoDTO;
 import com.ftn.ma_sit_project.Model.StrDTO;
 import com.ftn.ma_sit_project.Model.User;
 import com.ftn.ma_sit_project.Model.UserDTO;
+import com.ftn.ma_sit_project.Model.WhoKnowsAnswer;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
@@ -25,8 +26,10 @@ import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,16 +39,15 @@ import java.util.UUID;
 public class MqttHandler {
 
     public static Mqtt5BlockingClient client;
+    private static int points;
+    private static boolean isMyTurn = false;
+    public static ArrayList<Integer> shuffledList;
+    private ArrayList<Integer> roundList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
     private String str = "";
-
     private User user = new User("1", "Pera", "pera123", "pera@gmail.com", 0, 0, 0, 0, 0, 0, 0, 0, 0);
     Gson gson = new Gson();
     private String sentPayload;
-    private static int points;
-    private static boolean isMyTurn = false;
-
     public TextView textView;
-
     public String string1;
 //    public Hyphens hyphens;
 
@@ -116,7 +118,7 @@ public class MqttHandler {
         }));
     }
 
-    public void decideTurnPlayer() {
+    public void decideTurnPlayer(RoundListCallback roundListCallback) {
 
         double rnd = Math.random();
 
@@ -128,6 +130,7 @@ public class MqttHandler {
                     if (!Objects.equals(user.getUsername(), Data.loggedInUser.getUsername())) {
                         Log.i("mqtt", "opponent:" + user.getTurnNumber());
                         isMyTurn = rnd > user.getTurnNumber();
+                        roundListCallback.onCallback(isMyTurn);
                         Log.i("mqtt", "turn: " + isMyTurn);
                     } else {
                         Log.i("mqtt", "me: " + user.getTurnNumber());
@@ -159,6 +162,43 @@ public class MqttHandler {
                                         Log.i("mqtt", "Published to turn topic");
                                     }
                                 });
+                    }
+                });
+    }
+
+    public void startGameSubscribe(StartGameCallback startGameCallback) {
+        client.toAsync().subscribeWith()
+                .topicFilter("Mobilne/StartGame")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .callback(mqtt5Publish -> {
+                    UserDTO user = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), UserDTO.class);
+                    startGameCallback.onCallback(!Objects.equals(user.getUsername(), Data.loggedInUser.getUsername()) && !user.getUsername().equals(""));
+                })
+                .send()
+                .whenComplete((mqtt5SubAck, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "StartGame Subscribe Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Subscribed to StartGame topic");
+                    }
+                });
+    }
+
+    public void StartGamePublish() {
+        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername());
+        String sent = gson.toJson(userDTO);
+        client.toAsync().publishWith()
+                .topic("Mobilne/StartGame")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .payload(sent.getBytes())
+                .send()
+                .whenComplete((mqtt5PublishResult, throwable1) -> {
+                    if (throwable1 != null) {
+                        Log.i("mqtt", "StartGame Publish Error");
+                        throwable1.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Published to StartGame topic");
                     }
                 });
     }
@@ -321,8 +361,6 @@ public class MqttHandler {
     }
 
     public void skockoPublish(SkockoDTO skockoDTO) {
-
-
         String sent = gson.toJson(skockoDTO, SkockoDTO.class);
         client.toAsync().publishWith()
                 .topic("Mobilne/Skocko")
@@ -340,8 +378,103 @@ public class MqttHandler {
     }
 
     public void skockoUnsubscribe() {
-
         client.toAsync().unsubscribeWith().topicFilter("Mobilne/Skocko").send();
+    }
+
+    public void WhoKnowsUnsubscribe() {
+        client.toAsync().unsubscribeWith().topicFilter("Mobilne/WhoKnows").send();
+    }
+
+    public void whoKnowsSubscribe(WhoKnowsCallback whoKnowsCallback) {
+        client.toAsync().subscribeWith()
+                .topicFilter("Mobilne/WhoKnows")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .callback(mqtt5Publish -> {
+                    WhoKnowsAnswer answer = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), WhoKnowsAnswer.class);
+                    if (!Objects.equals(answer.getUsername(), Data.loggedInUser.getUsername())) {
+                        Log.i("mqtt", "opponent answer: " + answer.getText() + " " + answer.isCorrect());
+                        whoKnowsCallback.onCallback(answer);
+                    }
+                })
+                .send()
+                .whenComplete((mqtt5SubAck, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "WhoKnows Subscribe Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Subscribed to WhoKnows");
+                    }
+                });
+    }
+
+    public void whoKnowsPublish(WhoKnowsAnswer answer) {
+//        if (answer.getUsername() != null && !answer.getUsername().equals("Pera")) {
+        answer.setUsername(Data.loggedInUser.getUsername());
+//        }
+        String sent = gson.toJson(answer, WhoKnowsAnswer.class);
+        client.toAsync().publishWith()
+                .topic("Mobilne/WhoKnows")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .payload(sent.getBytes())
+                .send()
+                .whenComplete((mqtt5PublishResult, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "WhoKnows Publish Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Published WhoKnows");
+                    }
+                });
+    }
+
+    public void roundListSubscribe() {
+        client.toAsync().subscribeWith()
+                .topicFilter("Mobilne/RoundList")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .callback(mqtt5Publish -> {
+                    UserDTO user = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), UserDTO.class);
+                    shuffledList = user.getRoundList();
+                    Log.i("mqtt", "Received: " + shuffledList.get(0).toString() +
+                            shuffledList.get(1).toString() +
+                            shuffledList.get(2).toString() +
+                            shuffledList.get(3).toString() +
+                            shuffledList.get(4).toString());
+                })
+                .send()
+                .whenComplete((mqtt5SubAck, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "RoundList Subscribe Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Subscribed to RoundList");
+                    }
+                });
+    }
+
+    public void roundListPublish() {
+        Collections.shuffle(roundList);
+        shuffledList = roundList;
+        Log.i("mqtt", "Published: " + roundList.get(0).toString() +
+                roundList.get(1).toString() +
+                roundList.get(2).toString() +
+                roundList.get(3).toString() +
+                roundList.get(4).toString());
+        UserDTO userDTO = new UserDTO(roundList);
+        String sent = gson.toJson(userDTO, UserDTO.class);
+        client.toAsync().publishWith()
+                .topic("Mobilne/RoundList")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .retain(true)
+                .payload(sent.getBytes())
+                .send()
+                .whenComplete((mqtt5PublishResult, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "RoundList Publish Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Published RoundList");
+                    }
+                });
     }
 
     public void asocijacijeSubscribe(AsocijacijeCallback asocijacijeCallback) {
@@ -350,10 +483,10 @@ public class MqttHandler {
                 .topicFilter("Mobilne/Asocijacije")
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
-                    Asocijacije  asocijacije = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), Asocijacije.class);
-                    if (!Objects.equals(asocijacije.getUserName(), Data.loggedInUser.getUsername())){
+                    Asocijacije asocijacije = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), Asocijacije.class);
+                    if (!Objects.equals(asocijacije.getUserName(), Data.loggedInUser.getUsername())) {
                         asocijacijeCallback.onCallBack(asocijacije);
-                        Log.i("mqtt", "Subscribe moguce null: "+ asocijacije+"");
+                        Log.i("mqtt", "Subscribe moguce null: " + asocijacije + "");
                     }
                 })
                 .send()
@@ -392,9 +525,9 @@ public class MqttHandler {
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
                     StrDTO string = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), StrDTO.class);
-                    if (!Objects.equals(string.getUserName(), Data.loggedInUser.getUsername())){
+                    if (!Objects.equals(string.getUserName(), Data.loggedInUser.getUsername())) {
                         stringCallBack.OnCallBack(string);
-                        Log.i("mqtt", string1+"");
+                        Log.i("mqtt", string1 + "");
                     }
                 })
                 .send()
@@ -408,23 +541,23 @@ public class MqttHandler {
                 });
     }
 
-        public void StringPublish(StrDTO string) {
+    public void StringPublish(StrDTO string) {
 
-            String sent = gson.toJson(string, StrDTO.class);
-            client.toAsync().publishWith()
-                    .topic("Mobilne/string")
-                    .qos(MqttQos.AT_LEAST_ONCE)
-                    .payload(sent.getBytes())
-                    .send()
-                    .whenComplete((mqtt5PublishResult, throwable) -> {
-                        if (throwable != null) {
-                            Log.i("mqtt", "Stirng Publish Error");
-                            throwable.printStackTrace();
-                        } else {
-                            Log.i("mqtt", "Published string");
-                        }
-                    });
-        }
+        String sent = gson.toJson(string, StrDTO.class);
+        client.toAsync().publishWith()
+                .topic("Mobilne/string")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .payload(sent.getBytes())
+                .send()
+                .whenComplete((mqtt5PublishResult, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "Stirng Publish Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Published string");
+                    }
+                });
+    }
 
     public void korakPoKorakSubscribe(KorakPoKorakCallback korakPoKorakCallback) {
 
@@ -432,10 +565,10 @@ public class MqttHandler {
                 .topicFilter("Mobilne/KorakPoKorak")
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
-                    KorakPoKorak  korakPoKorak = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), KorakPoKorak.class);
-                    if (!Objects.equals(korakPoKorak.getUserName(), Data.loggedInUser.getUsername())){
+                    KorakPoKorak korakPoKorak = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), KorakPoKorak.class);
+                    if (!Objects.equals(korakPoKorak.getUserName(), Data.loggedInUser.getUsername())) {
                         korakPoKorakCallback.onCallBack(korakPoKorak);
-                        Log.i("mqtt", "Subscribe moguce null: "+ korakPoKorak+"");
+                        Log.i("mqtt", "Subscribe moguce null: " + korakPoKorak + "");
                     }
                 })
                 .send()
@@ -465,7 +598,7 @@ public class MqttHandler {
                         Log.i("mqtt", "Published KorakPoKorak");
                     }
                 });
-        Log.i("mqtt","U publisu User salje: "+Data.loggedInUser.getUsername());
+        Log.i("mqtt", "U publisu User salje: " + Data.loggedInUser.getUsername());
     }
 
 
@@ -481,12 +614,28 @@ public class MqttHandler {
         return isMyTurn;
     }
 
+    public ArrayList<Integer> getRoundList() {
+        return shuffledList;
+    }
+
     public interface PointCallback {
-        public void onCallback(UserDTO userDTO);
+        void onCallback(UserDTO userDTO);
+    }
+
+    public interface RoundListCallback{
+        void onCallback(boolean isMyTurn);
     }
 
     public interface SkockoCallback {
-        public void onCallback(ArrayList<String> dataList);
+        void onCallback(ArrayList<String> dataList);
+    }
+
+    public interface WhoKnowsCallback {
+        void onCallback(WhoKnowsAnswer answer);
+    }
+
+    public interface StartGameCallback {
+        void onCallback(boolean opponentReady);
     }
 
     public boolean getP2Boolean() {
@@ -507,7 +656,7 @@ public class MqttHandler {
         void onCallBack(Asocijacije asocijacije);
     }
 
-    public interface StringCallBack{
+    public interface StringCallBack {
         void OnCallBack(StrDTO strDTO);
     }
 
@@ -515,7 +664,7 @@ public class MqttHandler {
         void onCallBack(KorakPoKorak korakPoKorak);
     }
 
-    public String getString1(){
+    public String getString1() {
         return string1;
     }
 }

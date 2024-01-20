@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment {
 
                 getParentFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new WhoKnowsFragment())
+                        .replace(R.id.fragment_container, new MyNumberFragment())
                         .setReorderingAllowed(true)
                         .commit();
             }
