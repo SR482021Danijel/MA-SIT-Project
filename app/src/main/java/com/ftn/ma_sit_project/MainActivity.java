@@ -127,7 +127,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_item_friends_list:
-                replaceFragment(new FrendListFragment());
+                if (Data.loggedInUser == null) {
+                    replaceFragment(new LoginFragment());
+                    navigationView.getMenu().findItem(R.id.nav_item_log_in).setChecked(true);
+                } else {
+                    replaceFragment(new FrendListFragment());
+                }
                 break;
             case R.id.nav_item_rank_list:
                 replaceFragment(new RankListFragment());

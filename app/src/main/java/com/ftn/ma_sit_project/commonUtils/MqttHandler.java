@@ -427,6 +427,48 @@ public class MqttHandler {
                 });
     }
 
+    public void myNumberSubscribe(PointCallback pointCallback) {
+        client.toAsync().subscribeWith()
+                .topicFilter("Mobilne/MyNumber")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .callback(mqtt5Publish -> {
+                    UserDTO user = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), UserDTO.class);
+                    if (!Objects.equals(user.getUsername(), Data.loggedInUser.getUsername())) {
+                        pointCallback.onCallback(user);
+                    }
+                })
+                .send()
+                .whenComplete((mqtt5SubAck, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "MyNumber Subscribe Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Subscribed to MyNumber");
+                    }
+                });
+    }
+
+    public void myNumberPublish(UserDTO userDTO) {
+        String sent = gson.toJson(userDTO, UserDTO.class);
+        client.toAsync().publishWith()
+                .topic("Mobilne/MyNumber")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .payload(sent.getBytes())
+                .send()
+                .whenComplete((mqtt5PublishResult, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "MyNumber Publish Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Published MyNumber");
+                    }
+                });
+    }
+
+    public void myNumberUnsubscribe(){
+        client.toAsync().unsubscribeWith().topicFilter("Mobilne/MyNumber").send();
+    }
+
     public void roundListSubscribe() {
         client.toAsync().subscribeWith()
                 .topicFilter("Mobilne/RoundList")
@@ -622,7 +664,7 @@ public class MqttHandler {
         void onCallback(UserDTO userDTO);
     }
 
-    public interface RoundListCallback{
+    public interface RoundListCallback {
         void onCallback(boolean isMyTurn);
     }
 

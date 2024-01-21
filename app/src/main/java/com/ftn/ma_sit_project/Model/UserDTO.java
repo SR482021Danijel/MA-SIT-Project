@@ -18,6 +18,12 @@ public class UserDTO {
     @SerializedName("roundList")
     private ArrayList<Integer> roundList;
 
+    @SerializedName("isOpponentCorrect")
+    private boolean isOpponentCorrect;
+
+    @SerializedName("opponentNumber")
+    private double opponentNumber;
+
     public UserDTO(String username, int points, double turnNumber) {
         this.username = username;
         this.points = points;
@@ -28,8 +34,15 @@ public class UserDTO {
         this.roundList = roundList;
     }
 
-    public UserDTO(String username){
+    public UserDTO(String username) {
         this.username = username;
+    }
+
+    public UserDTO(String username, int points, boolean isOpponentCorrect, double opponentNumber) {
+        this.username = username;
+        this.points = points;
+        this.isOpponentCorrect = isOpponentCorrect;
+        this.opponentNumber = opponentNumber;
     }
 
     public UserDTO() {
@@ -65,5 +78,21 @@ public class UserDTO {
 
     public void setRoundList(ArrayList<Integer> roundList) {
         this.roundList = roundList;
+    }
+
+    public boolean isOpponentCorrect() {
+        return isOpponentCorrect;
+    }
+
+    public void setOpponentCorrect(boolean opponentCorrect) {
+        isOpponentCorrect = opponentCorrect;
+    }
+
+    public double getOpponentNumber() {
+        return opponentNumber;
+    }
+
+    public void setOpponentNumber(double opponentNumber) {
+        this.opponentNumber = opponentNumber;
     }
 }

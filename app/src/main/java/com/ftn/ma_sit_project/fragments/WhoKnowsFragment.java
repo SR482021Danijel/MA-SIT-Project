@@ -174,7 +174,7 @@ public class WhoKnowsFragment extends Fragment {
             });
         }
 
-        mainCountDownTimer = new CountDownTimer(10000, 1000) {
+        mainCountDownTimer = new CountDownTimer(8000, 1000) {
             @Override
             public void onTick(long l) {
                 Long min = ((l / 1000) % 3600) / 60;

@@ -169,7 +169,7 @@ public class SkockoFragment extends Fragment {
         }
 
 
-        mainCountDownTimer = new CountDownTimer(1000000, 1000) {
+        mainCountDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long l) {
                 Long min = ((l / 1000) % 3600) / 60;
