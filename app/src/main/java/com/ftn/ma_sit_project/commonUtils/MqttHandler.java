@@ -429,7 +429,7 @@ public class MqttHandler {
 
     public void myNumberSubscribe(PointCallback pointCallback) {
         client.toAsync().subscribeWith()
-                .topicFilter("Mobilne/MyNumber")
+                .topicFilter("Mobilne/MyNumber1")
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(mqtt5Publish -> {
                     UserDTO user = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), UserDTO.class);
@@ -440,10 +440,31 @@ public class MqttHandler {
                 .send()
                 .whenComplete((mqtt5SubAck, throwable) -> {
                     if (throwable != null) {
-                        Log.i("mqtt", "MyNumber Subscribe Error");
+                        Log.i("mqtt", "MyNumber1 Subscribe Error");
                         throwable.printStackTrace();
                     } else {
-                        Log.i("mqtt", "Subscribed to MyNumber");
+                        Log.i("mqtt", "Subscribed to MyNumber1");
+                    }
+                });
+    }
+
+    public void myNumberSubscribeP2(PointCallback pointCallback) {
+        client.toAsync().subscribeWith()
+                .topicFilter("Mobilne/MyNumber2")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .callback(mqtt5Publish -> {
+                    UserDTO user = gson.fromJson(StandardCharsets.UTF_8.decode(mqtt5Publish.getPayload().get()).toString(), UserDTO.class);
+                    if (!Objects.equals(user.getUsername(), Data.loggedInUser.getUsername())) {
+                        pointCallback.onCallback(user);
+                    }
+                })
+                .send()
+                .whenComplete((mqtt5SubAck, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "MyNumber2 Subscribe Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Subscribed to MyNumber2");
                     }
                 });
     }
@@ -451,22 +472,43 @@ public class MqttHandler {
     public void myNumberPublish(UserDTO userDTO) {
         String sent = gson.toJson(userDTO, UserDTO.class);
         client.toAsync().publishWith()
-                .topic("Mobilne/MyNumber")
+                .topic("Mobilne/MyNumber1")
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .payload(sent.getBytes())
                 .send()
                 .whenComplete((mqtt5PublishResult, throwable) -> {
                     if (throwable != null) {
-                        Log.i("mqtt", "MyNumber Publish Error");
+                        Log.i("mqtt", "MyNumber1 Publish Error");
                         throwable.printStackTrace();
                     } else {
-                        Log.i("mqtt", "Published MyNumber");
+                        Log.i("mqtt", "Published MyNumber1");
                     }
                 });
     }
 
-    public void myNumberUnsubscribe(){
-        client.toAsync().unsubscribeWith().topicFilter("Mobilne/MyNumber").send();
+    public void myNumberPublishP2(UserDTO userDTO) {
+        String sent = gson.toJson(userDTO, UserDTO.class);
+        client.toAsync().publishWith()
+                .topic("Mobilne/MyNumber2")
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .payload(sent.getBytes())
+                .send()
+                .whenComplete((mqtt5PublishResult, throwable) -> {
+                    if (throwable != null) {
+                        Log.i("mqtt", "MyNumber2 Publish Error");
+                        throwable.printStackTrace();
+                    } else {
+                        Log.i("mqtt", "Published MyNumber2");
+                    }
+                });
+    }
+
+    public void myNumberUnsubscribe() {
+        client.toAsync().unsubscribeWith().topicFilter("Mobilne/MyNumber1").send();
+    }
+
+    public void myNumberUnsubscribeP2(){
+        client.toAsync().unsubscribeWith().topicFilter("Mobilne/MyNumber2").send();
     }
 
     public void roundListSubscribe() {

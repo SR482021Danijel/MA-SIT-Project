@@ -95,7 +95,7 @@ public class LoadingScreenFragment extends Fragment {
 //                    associationsFragment.setIsOnline(true);
                         getParentFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.fragment_container, new MyNumberFragment())
+                                .replace(R.id.fragment_container, new WhoKnowsFragment())
                                 .setReorderingAllowed(true)
                                 .commit();
                     }
@@ -157,7 +157,7 @@ public class LoadingScreenFragment extends Fragment {
 //                    associationsFragment.setIsOnline(true);
                         getParentFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.fragment_container, new MyNumberFragment())
+                                .replace(R.id.fragment_container, new WhoKnowsFragment())
                                 .setReorderingAllowed(true)
                                 .commit();
                     }

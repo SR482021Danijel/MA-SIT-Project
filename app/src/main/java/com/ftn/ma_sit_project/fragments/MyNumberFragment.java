@@ -45,8 +45,9 @@ public class MyNumberFragment extends Fragment implements SensorEventListener {
     CountDownTimer countDownTimer;
     AppCompatActivity activity;
     TextView targetNumber, display, displayResult, player1Score, player2Score, roundText, scoreTimer;
-    int potentialScore = 0;
-    boolean isAllStopped = false, isMyTurn, isTargetSet = false, isOpponentCorrect = false, isMyCorrect;
+    int potentialScore = 0, scoreP1, scoreP2;
+    boolean isAllStopped = false, isMyTurn, isTargetSet = false, isOpponentCorrect = false;
+    Boolean isMyCorrect;
     Button btnDelete, number1, number2, number3, number4, number5, number6, symbolBracketLeft, symbolBracketRight;
     Button symbolAdd, symbolSub, symbolMulti, symbolDivide, btnStop;
     double result, opponentNumber = 0;
@@ -56,6 +57,7 @@ public class MyNumberFragment extends Fragment implements SensorEventListener {
     MqttHandler mqttHandler;
     SensorManager sensorManager;
     private Sensor sensor;
+    UserDTO opponentData = new UserDTO();
 
     //endregion
 
@@ -110,86 +112,102 @@ public class MyNumberFragment extends Fragment implements SensorEventListener {
                 } catch (Exception e) {
                     Toast.makeText(activity.getApplicationContext(), "Incorrect expression", Toast.LENGTH_SHORT).show();
                 }
-                int score = Integer.parseInt((String) player1Score.getText());
-                int oppoScore = Integer.parseInt((String) player2Score.getText());
+
                 if (result != 0.0) {
                     displayResult.setText(result + "");
                     isMyCorrect = result == Double.parseDouble((String) targetNumber.getText());
                     if (isMyCorrect) {
                         if (isMyTurn) {
-                            score += 20;
-                            player1Score.setText(score + "");
-                            UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), score, true, result);
-                            mqttHandler.myNumberPublish(userDTO);
+                            scoreP1 += 20;
+                            player1Score.setText(scoreP1 + "");
+                            UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), scoreP1, true, result);
+                            mqttHandler.myNumberPublishP2(userDTO);
                             Toast.makeText(activity.getApplicationContext(), "Correct! Points: +20", Toast.LENGTH_SHORT).show();
                             endGame();
                         } else {
-                            if (opponentNumber != 0) {
-                                score += 20;
-                                player1Score.setText(score + "");
-                                UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), score, true, result);
+                            if (opponentData.isOpponentCorrect() != null && !opponentData.isOpponentCorrect()) {
+                                scoreP1 += 20;
+                                player1Score.setText(scoreP1 + "");
+                                UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), scoreP1, true, result);
                                 mqttHandler.myNumberPublish(userDTO);
                                 Toast.makeText(activity.getApplicationContext(), "Correct! Points: +20", Toast.LENGTH_SHORT).show();
                                 endGame();
-                            } else {
-                                potentialScore += 20;
-                                UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), score, true, result);
-                                mqttHandler.myNumberPublish(userDTO);
-                                Toast.makeText(activity.getApplicationContext(), "Sending to opponent", Toast.LENGTH_SHORT).show();
-
                             }
                         }
-
                     } else {
-                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), score, false, result);
-                        mqttHandler.myNumberPublish(userDTO);
-//                        Toast.makeText(activity.getApplicationContext(), "Incorrect! Points: +0", Toast.LENGTH_SHORT).show();
-                        if (isOpponentCorrect) {
-                            oppoScore += 20;
-                            player2Score.setText(oppoScore + "");
-                        } else if (opponentNumber != 0) {
-                            double target = Double.parseDouble((String) targetNumber.getText());
-                            double myRange;
-                            double theirRange;
-                            if (target < result) {
-                                myRange = result - target;
-                            } else {
-                                myRange = target - result;
-                            }
-                            if (target < opponentNumber) {
-                                theirRange = opponentNumber - target;
-                            } else {
-                                theirRange = target - opponentNumber;
-                            }
+                        if (isMyTurn) {
+                            UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), scoreP1, false, result);
+                            mqttHandler.myNumberPublishP2(userDTO);
+                            Toast.makeText(activity.getApplicationContext(), "Incorrect +0", Toast.LENGTH_SHORT).show();
+                            if (opponentData.isOpponentCorrect() != null)
+                                endGame();
 
-                            if (myRange < theirRange) {
-                                score += 5;
-                                player1Score.setText(score + "");
-                            } else {
-                                oppoScore += 5;
-                                player2Score.setText(oppoScore + "");
-                            }
-                        }
-                        if (opponentNumber != 0) {
-                            endGame();
+                        } else {
+                            UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), scoreP1, false, result);
+                            mqttHandler.myNumberPublish(userDTO);
+                            Toast.makeText(activity.getApplicationContext(), "Incorrect +0", Toast.LENGTH_SHORT).show();
+                            if (opponentData.isOpponentCorrect() != null)
+                                endGame();
                         }
                     }
-//                    CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
-//                        @Override
-//                        public void onTick(long l) {
-//                            Long min = ((l / 1000) % 3600) / 60;
-//                            Long sec = (l / 1000);
+//                        if (isMyTurn) {
+//                            score += 20;
+//                            player1Score.setText(score + "");
+//                            UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), score, true, result);
+//                            mqttHandler.myNumberPublish(userDTO);
+//                            Toast.makeText(activity.getApplicationContext(), "Correct! Points: +20", Toast.LENGTH_SHORT).show();
+//                            endGame();
+//                        } else {
+//                            if (opponentNumber != 0) {
+//                                score += 20;
+//                                player1Score.setText(score + "");
+//                                UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), score, true, result);
+//                                mqttHandler.myNumberPublish(userDTO);
+//                                Toast.makeText(activity.getApplicationContext(), "Correct! Points: +20", Toast.LENGTH_SHORT).show();
+//                                endGame();
+//                            } else {
+//                                potentialScore += 20;
+//                                UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), score, true, result);
+//                                mqttHandler.myNumberPublish(userDTO);
+//                                Toast.makeText(activity.getApplicationContext(), "Sending to opponent", Toast.LENGTH_SHORT).show();
+//
+//                            }
 //                        }
 //
-//                        @Override
-//                        public void onFinish() {
-//                            getParentFragmentManager()
-//                                    .beginTransaction()
-//                                    .replace(R.id.fragment_container, new HomeFragment())
-//                                    .setReorderingAllowed(true)
-//                                    .commit();
+//                    } else {
+//                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), score, false, result);
+//                        mqttHandler.myNumberPublish(userDTO);
+////                        Toast.makeText(activity.getApplicationContext(), "Incorrect! Points: +0", Toast.LENGTH_SHORT).show();
+//                        if (isOpponentCorrect) {
+//                            oppoScore += 20;
+//                            player2Score.setText(oppoScore + "");
+//                        } else if (opponentNumber != 0) {
+//                            double target = Double.parseDouble((String) targetNumber.getText());
+//                            double myRange;
+//                            double theirRange;
+//                            if (target < result) {
+//                                myRange = result - target;
+//                            } else {
+//                                myRange = target - result;
+//                            }
+//                            if (target < opponentNumber) {
+//                                theirRange = opponentNumber - target;
+//                            } else {
+//                                theirRange = target - opponentNumber;
+//                            }
+//
+//                            if (myRange < theirRange) {
+//                                score += 5;
+//                                player1Score.setText(score + "");
+//                            } else {
+//                                oppoScore += 5;
+//                                player2Score.setText(oppoScore + "");
+//                            }
 //                        }
-//                    }.start();
+//                        if (opponentNumber != 0) {
+//                            endGame();
+//                        }
+//                    }
                     btnCheck.setOnClickListener(null);
                 }
             }
@@ -252,24 +270,24 @@ public class MyNumberFragment extends Fragment implements SensorEventListener {
                 }
                 if (isAllStopped) {
                     btnStop.setOnClickListener(null);
-                    expressionList.add("(");
-                    expressionList.add("100");
-                    expressionList.add("*");
-                    expressionList.add("2");
-                    expressionList.add(")");
-                    expressionList.add("+");
-                    expressionList.add("(");
-                    expressionList.add("7");
-                    expressionList.add("-");
-                    expressionList.add("(");
-                    expressionList.add("15");
-                    expressionList.add("-");
-                    expressionList.add("9");
-                    expressionList.add(")");
-                    expressionList.add(")");
-                    expressionList.add("+");
-                    expressionList.add("3");
-                    display();
+//                    expressionList.add("(");
+//                    expressionList.add("100");
+//                    expressionList.add("*");
+//                    expressionList.add("2");
+//                    expressionList.add(")");
+//                    expressionList.add("+");
+//                    expressionList.add("(");
+//                    expressionList.add("7");
+//                    expressionList.add("-");
+//                    expressionList.add("(");
+//                    expressionList.add("15");
+//                    expressionList.add("-");
+//                    expressionList.add("9");
+//                    expressionList.add(")");
+//                    expressionList.add(")");
+//                    expressionList.add("+");
+//                    expressionList.add("3");
+//                    display();
                 }
             }
         });
@@ -430,6 +448,9 @@ public class MyNumberFragment extends Fragment implements SensorEventListener {
         player1Score = activity.findViewById(R.id.player_1_score);
         player2Score = activity.findViewById(R.id.player_2_score);
 
+        scoreP1 = Integer.parseInt((String) player1Score.getText());
+        scoreP2 = Integer.parseInt((String) player2Score.getText());
+
         ShowHideElements.showScoreBoard(activity);
 
         sensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
@@ -451,58 +472,123 @@ public class MyNumberFragment extends Fragment implements SensorEventListener {
             mqttHandler.myNumberSubscribe(new MqttHandler.PointCallback() {
                 @Override
                 public void onCallback(UserDTO userDTO) {
-                    isOpponentCorrect = userDTO.isOpponentCorrect();
-                    opponentNumber = userDTO.getOpponentNumber();
-
-                    if (isOpponentCorrect) {
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(activity.getApplicationContext(), "Opponent won round", Toast.LENGTH_SHORT).show();
-                                player2Score.setText(userDTO.getPoints() + "");
-                                if (result != 0.0 || !isMyTurn)
-                                    endGame();
-                            }
-                        });
-                    } else {
-                        if (opponentNumber != 0) {
+                    if (isMyTurn) {
+                        opponentData = new UserDTO(userDTO.getUsername(), userDTO.getPoints(), userDTO.isOpponentCorrect(), userDTO.getOpponentNumber());
+                        if (opponentData.isOpponentCorrect() != null && opponentData.isOpponentCorrect() && isMyCorrect != null && !isMyCorrect
+                        ) {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(activity.getApplicationContext(), "Opponent lost round", Toast.LENGTH_SHORT).show();
-                                    if (result != 0.0) {
-                                        if (!isMyTurn && isMyCorrect) {
-                                            int score = Integer.parseInt((String) player1Score.getText());
-                                            score += 20;
-                                            player1Score.setText(score + "");
-                                        }
-                                        if (!isMyCorrect) {
-                                            int score = Integer.parseInt((String) player1Score.getText());
-                                            int oppoScore = Integer.parseInt((String) player2Score.getText());
-                                            double target = Double.parseDouble((String) targetNumber.getText());
-                                            double myRange;
-                                            double theirRange;
-                                            if (target < result) {
-                                                myRange = result - target;
-                                            } else {
-                                                myRange = target - result;
-                                            }
-                                            if (target < opponentNumber) {
-                                                theirRange = opponentNumber - target;
-                                            } else {
-                                                theirRange = target - opponentNumber;
-                                            }
+                                    player2Score.setText(opponentData.getPoints() + "");
+                                    Toast.makeText(activity.getApplicationContext(), "P2 won round", Toast.LENGTH_SHORT).show();
+                                    endGame();
+                                }
+                            });
 
-                                            if (myRange < theirRange) {
-                                                score += 5;
-                                                player1Score.setText(score + "");
-                                            } else {
-                                                oppoScore += 5;
-                                                player2Score.setText(oppoScore + "");
-                                            }
-                                        }
-                                        endGame();
-                                    }
+                        } else if (!opponentData.isOpponentCorrect()) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(activity.getApplicationContext(), "P2 was Incorrect", Toast.LENGTH_SHORT).show();
+                                    endGame();
+                                }
+                            });
+                        } else if (opponentData.isOpponentCorrect() != null && opponentData.isOpponentCorrect()) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    player2Score.setText(opponentData.getPoints() + "");
+                                    Toast.makeText(activity.getApplicationContext(), "P2 won round", Toast.LENGTH_SHORT).show();
+                                    endGame();
+                                }
+                            });
+                        }
+                    }
+//                    if (isOpponentCorrect) {
+//                        activity.runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Toast.makeText(activity.getApplicationContext(), "Opponent won round", Toast.LENGTH_SHORT).show();
+//                                player2Score.setText(userDTO.getPoints() + "");
+//                                if (result != 0.0 || !isMyTurn)
+//                                    endGame();
+//                            }
+//                        });
+//                    } else {
+//                        if (opponentNumber != 0) {
+//                            activity.runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    Toast.makeText(activity.getApplicationContext(), "Opponent lost round", Toast.LENGTH_SHORT).show();
+//                                    if (result != 0.0) {
+//                                        if (!isMyTurn && isMyCorrect) {
+//                                            int score = Integer.parseInt((String) player1Score.getText());
+//                                            score += 20;
+//                                            player1Score.setText(score + "");
+//                                        }
+//                                        if (!isMyCorrect) {
+//                                            int score = Integer.parseInt((String) player1Score.getText());
+//                                            int oppoScore = Integer.parseInt((String) player2Score.getText());
+//                                            double target = Double.parseDouble((String) targetNumber.getText());
+//                                            double myRange;
+//                                            double theirRange;
+//                                            if (target < result) {
+//                                                myRange = result - target;
+//                                            } else {
+//                                                myRange = target - result;
+//                                            }
+//                                            if (target < opponentNumber) {
+//                                                theirRange = opponentNumber - target;
+//                                            } else {
+//                                                theirRange = target - opponentNumber;
+//                                            }
+//
+//                                            if (myRange < theirRange) {
+//                                                score += 5;
+//                                                player1Score.setText(score + "");
+//                                            } else {
+//                                                oppoScore += 5;
+//                                                player2Score.setText(oppoScore + "");
+//                                            }
+//                                        }
+//                                        endGame();
+//                                    }
+//                                }
+//                            });
+//                        }
+//                    }
+                }
+            });
+
+            mqttHandler.myNumberSubscribeP2(new MqttHandler.PointCallback() {
+                @Override
+                public void onCallback(UserDTO userDTO) {
+                    if (!isMyTurn) {
+                        opponentData = new UserDTO(userDTO.getUsername(), userDTO.getPoints(), userDTO.isOpponentCorrect(), userDTO.getOpponentNumber());
+                        if (userDTO.isOpponentCorrect()) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    player2Score.setText(userDTO.getPoints() + "");
+                                    Toast.makeText(activity.getApplicationContext(), "P1 won round", Toast.LENGTH_SHORT).show();
+                                    endGame();
+                                }
+                            });
+                        } else if (!userDTO.isOpponentCorrect() && result == 0.0) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(activity.getApplicationContext(), "P1 was Incorrect", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    scoreP1 += 20;
+                                    player1Score.setText(scoreP1 + "");
+                                    Toast.makeText(activity.getApplicationContext(), "P2 won round", Toast.LENGTH_SHORT).show();
+                                    endGame();
                                 }
                             });
                         }
@@ -511,7 +597,7 @@ public class MyNumberFragment extends Fragment implements SensorEventListener {
             });
         }
 
-        countDownTimer = new CountDownTimer(15000, 1000) {
+        countDownTimer = new CountDownTimer(20000, 1000) {
             @Override
             public void onTick(long l) {
                 Long min = ((l / 1000) % 3600) / 60;
@@ -527,7 +613,7 @@ public class MyNumberFragment extends Fragment implements SensorEventListener {
             @Override
             public void onFinish() {
                 scoreTimer.setText("00:00");
-                if (result == 0.0){
+                if (result == 0.0) {
                     int score = Integer.parseInt((String) player1Score.getText());
                     UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), score, false, 1);
                     mqttHandler.myNumberPublish(userDTO);
@@ -550,8 +636,10 @@ public class MyNumberFragment extends Fragment implements SensorEventListener {
 
         ShowHideElements.hideScoreBoard(activity);
 
-        if (Data.userStatus == 2)
+        if (Data.userStatus == 2) {
             mqttHandler.myNumberUnsubscribe();
+            mqttHandler.myNumberUnsubscribeP2();
+        }
 
         activity.getSupportActionBar().show();
 
@@ -599,16 +687,10 @@ public class MyNumberFragment extends Fragment implements SensorEventListener {
                     int score = Integer.parseInt((String) player1Score.getText());
                     int oppoScore = Integer.parseInt((String) player2Score.getText());
 
-                    if (score > oppoScore){
+                    if (score > oppoScore) {
                         Toast.makeText(activity.getApplicationContext(), "You Win", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(activity.getApplicationContext(), "You Lose", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    if (!isMyTurn && isMyCorrect) {
-                        int score = Integer.parseInt((String) player1Score.getText());
-                        UserDTO userDTO = new UserDTO(Data.loggedInUser.getUsername(), score, true, result);
-                        mqttHandler.myNumberPublish(userDTO);
                     }
                 }
 
@@ -636,6 +718,7 @@ public class MyNumberFragment extends Fragment implements SensorEventListener {
     private float last_x;
     private float last_y;
     private float last_z;
+
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
@@ -650,7 +733,7 @@ public class MyNumberFragment extends Fragment implements SensorEventListener {
             float y = values[1];
             float z = values[2];
 
-            float speed = Math.abs(x+y+z - last_x - last_y - last_z) / diffTime * 10000;
+            float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
             if (speed > SHAKE_THRESHOLD) {
 //                Log.d("REZ", "shake detected w/ speed: " + speed);
